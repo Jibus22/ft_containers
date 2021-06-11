@@ -69,13 +69,18 @@ public:
 	reference			at(size_type n)
 	{
 		if (n >= _size)
-			throw std::out_of_range("vector");
+		{
+			if (__APPLE__)
+				throw std::out_of_range("vector darwin");
+			else
+				throw std::out_of_range("vector linux");
+		}
 		return _array[n];
 	};
 	const_reference		at(size_type n) const
 	{
 		if (n >= _size)
-			throw std::out_of_range("vector");
+			throw std::out_of_range("vector const");
 		return _array[n];
 	};
 	reference			front() {};
