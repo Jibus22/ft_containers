@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include <exception>
 #include "randomAccessIterator.hpp"
 
 namespace ft {
@@ -46,17 +47,86 @@ public:
 	};
 
 	//___________Iterators____________________________________________________//
-	iterator	begin() {return iterator(_array);};
-	iterator	end() {return iterator(_array + _size);};
+	iterator			begin() {return iterator(_array);};
+	iterator			end() {return iterator(_array + _size);};
 	//___________Capacity_____________________________________________________//
-	size_type	capacity() const {return _capacity;};
-	size_type	size() const {return _size;};
+	size_type			size() const {return _size;};
+	size_type			max_size() const {return _allocator.max_size();};
+	void				resize(size_type n, value_type val = value_type())
+	{
+		(void)n;
+		(void)val;
+	};
+	size_type			capacity() const {return _capacity;};
+	bool				empty() const {return (!(_size));};
+	void				reserve(size_type n)
+	{
+		(void)n;
+	};
 	//___________Element access_______________________________________________//
+	reference			operator[](size_type n) {return _array[n];};
+	const_reference		operator[](size_type n) const {return _array[n];};
+	reference			at(size_type n)
+	{
+		if (n >= _size)
+			throw std::out_of_range("vector");
+		return _array[n];
+	};
+	const_reference		at(size_type n) const
+	{
+		if (n >= _size)
+			throw std::out_of_range("vector");
+		return _array[n];
+	};
+	reference			front() {};
+	const_reference		front() const {};
+	reference			back() {};
+	const_reference		back() const {};
 	//___________Modifiers____________________________________________________//
-	void		push_back(const value_type& val)
+	template <typename InputIterator>
+	void				assign(InputIterator first, InputIterator last)
+	{
+		(void)first;
+		(void)last;
+	};
+	void				assign(size_type n, const value_type& val)
+	{
+		(void)n;
+		(void)val;
+	};
+	void				push_back(const value_type& val)
 	{
 		(void)val;
 	};
+	void				pop_back() {};
+	iterator			insert(iterator position, const value_type& val)
+	{
+		(void)position;
+		(void)val;
+	};
+	void				insert(iterator position, size_type n,
+						const value_type& val)
+	{
+		(void)position;
+		(void)n;
+		(void)val;
+	};
+	template <typename InputIterator>
+	void				insert(iterator position, InputIterator first,
+						InputIterator last)
+	{
+		(void)position;
+		(void)first;
+		(void)last;
+	};
+	iterator			erase(iterator position) {(void)position;};
+	iterator			erase(iterator first, iterator last)
+	{
+		(void)first;
+		(void)last;
+	};
+	void				swap(vector& x) {(void)x;};
+	void				clear() {};
 }; //end class vector
 
 } //end ft

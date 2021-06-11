@@ -11,5 +11,6 @@ void	modifiersTest(void);
 void	title(std::string title);
 void	subTitle(std::string title);
 void	subsubTitle(std::string title);
+void	thisTestIs(std::string title);
 
 #endif

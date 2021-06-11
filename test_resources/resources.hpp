@@ -29,6 +29,8 @@
 # define RESET			"\033[1;0m"  // (everything back to normal)
 # define BOLD       	"\033[1;1m"  // (often a brighter shade of the same color)
 # define BOLD_OFF		"\033[1;21m"
+# define ITALIC       	"\033[1;3m"
+# define ITALIC_OFF		"\033[1;23m"
 # define UNDERLINE		"\033[1;4m"
 # define UNDERLINE_OFF	"\033[1;24m"
 # define INVERSE		"\033[1;7m"  // (swap foreground and background colours)

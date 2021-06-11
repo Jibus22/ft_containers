@@ -18,3 +18,9 @@ void	subsubTitle(std::string title)
 	std::cout << RED_C << std::setfill ('*') << std::setw(20) << title <<
 	std::setw(20) << RESET << std::endl;
 }
+
+void	thisTestIs(std::string title)
+{
+	std::cout << ITALIC << MAGENTA_B << " " << RESET << MAGENTA_B << " "
+	<< RESET << title << std::endl;
+}
