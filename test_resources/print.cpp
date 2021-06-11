@@ -24,3 +24,15 @@ void	thisTestIs(std::string title)
 	std::cout << MAGENTA_B << " " << RESET << MAGENTA_B << " "
 	<< RESET << ITALIC << WHITE_C << title << RESET << std::endl;
 }
+
+void	ftResult(void)
+{
+	std::cout << WHITE_B << GREEN_C << "V" << RESET << WHITE_C
+	<< " ft:\t" << RESET;
+}
+
+void	stdResult(void)
+{
+	std::cout << WHITE_B << GREEN_C << "V" << RESET << WHITE_C
+	<< "std:\t" << RESET;
+}

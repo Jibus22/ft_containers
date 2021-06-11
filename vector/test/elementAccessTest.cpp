@@ -9,8 +9,10 @@ void	atTest()
 	ft::vector<int>		ftvec;
 
 	thisTestIs("making wrong 'at': try to reach 30th in empty vector:");
+	_STD_;
 	try {stdvec.at(30);}
 	catch (std::out_of_range & e) {std::cout << e.what() << std::endl;}
+	_FT_;
 	try {ftvec.at(30);}
 	catch (std::out_of_range & e) {std::cout << e.what() << std::endl;}
 }

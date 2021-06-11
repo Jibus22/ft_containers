@@ -36,4 +36,7 @@
 # define INVERSE		"\033[1;7m"  // (swap foreground and background colours)
 # define INVERSE_OFF	"\033[1;27m"
 
+# define _FT_			ftResult()
+# define _STD_			stdResult()
+
 #endif
