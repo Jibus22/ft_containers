@@ -7,6 +7,8 @@
 
 #ifdef __APPLE__
 #define FT_APPLE 1
+#else
+#define FT_APPLE 0
 #endif
 
 namespace ft {
