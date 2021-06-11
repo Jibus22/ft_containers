@@ -11,9 +11,11 @@ LIBSD = -lbsd
 ##### INCLUDE #####
 PATH_INCLUDE = .
 PATH_INCLUDE2 = ../iterators
+PATH_INCLUDE3 = ../test_resources
 HEADERS = $(PATH_INCLUDE)/*.hpp
 HEADERS += $(PATH_INCLUDE2)/*.hpp
-INC = $(addprefix -I , $(PATH_INCLUDE) $(PATH_INCLUDE2))
+HEADERS += $(PATH_INCLUDE3)/*.hpp
+INC = $(addprefix -I , $(PATH_INCLUDE) $(PATH_INCLUDE2) $(PATH_INCLUDE3))
 
 
 ##### COMPILER #####
@@ -32,7 +34,8 @@ else
 endif
 
 ##### SRCS #####
-SRCS = $(addprefix $(SRCPATH)/, main.cpp)
+SRCS = $(addprefix $(SRCPATH)/, main.cpp iteratorsTest.cpp capacityTest.cpp\
+	   elementAccessTest.cpp modifiersTest.cpp)
 
 OBJ = $(SRCS:$(SRCPATH)/%.cpp=$(OBJPATH)/%.o)
 

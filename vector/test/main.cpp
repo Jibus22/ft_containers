@@ -1,17 +1,6 @@
 #include "vector.hpp"
+#include "prototypes.hpp"
 #include <vector>
-
-void	iteratorsTest()
-{
-}
-void	capacityTest()
-{}
-
-void	elementAccessTest()
-{}
-
-void	modifiersTest()
-{}
 
 int	main(int ac, char *av[])
 {
