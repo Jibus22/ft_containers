@@ -2,7 +2,9 @@ NAME = vector.out
 
 ##### SRC & OBJ PATH #####
 SRCPATH = ./test
+SRCPATH2 = ../test_resources
 OBJPATH = $(SRCPATH)/obj
+OBJPATH2 = $(SRCPATH2)/obj
 
 ##### LIB #####
 LIBS =
@@ -36,8 +38,10 @@ endif
 ##### SRCS #####
 SRCS = $(addprefix $(SRCPATH)/, main.cpp iteratorsTest.cpp capacityTest.cpp\
 	   elementAccessTest.cpp modifiersTest.cpp)
+SRCS2 = $(addprefix $(SRCPATH2)/, print.cpp)
 
 OBJ = $(SRCS:$(SRCPATH)/%.cpp=$(OBJPATH)/%.o)
+OBJ += $(SRCS2:$(SRCPATH2)/%.cpp=$(OBJPATH2)/%.o)
 
 
 ### RULES ###
@@ -47,6 +51,7 @@ all : mk_objdir $(NAME)
 
 mk_objdir:
 	@if [ ! -d $(OBJPATH) ]; then mkdir $(OBJPATH); fi
+	@if [ ! -d $(OBJPATH2) ]; then mkdir $(OBJPATH2); fi
 
 
 $(NAME) : message $(OBJ)
@@ -59,6 +64,9 @@ message :
 
 
 $(OBJPATH)/%.o : $(SRCPATH)/%.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
+
+$(OBJPATH2)/%.o : $(SRCPATH2)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
 ### CLEAN ###
