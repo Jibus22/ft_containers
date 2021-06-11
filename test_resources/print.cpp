@@ -21,6 +21,6 @@ void	subsubTitle(std::string title)
 
 void	thisTestIs(std::string title)
 {
-	std::cout << ITALIC << MAGENTA_B << " " << RESET << MAGENTA_B << " "
-	<< RESET << title << std::endl;
+	std::cout << MAGENTA_B << " " << RESET << MAGENTA_B << " "
+	<< RESET << ITALIC << WHITE_C << title << RESET << std::endl;
 }
