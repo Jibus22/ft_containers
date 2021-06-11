@@ -1,14 +1,12 @@
 #ifndef VECTOR_HPP
-#define VECTOR_HPP
+# define VECTOR_HPP
 
 #include <iostream>
 #include <exception>
 #include "randomAccessIterator.hpp"
 
-#ifdef __APPLE__
-#define FT_APPLE 1
-#else
-#define FT_APPLE 0
+#ifndef __APPLE__
+# define __APPLE__ 0
 #endif
 
 namespace ft {
@@ -76,8 +74,8 @@ public:
 	{
 		if (n >= _size)
 		{
-			if (FT_APPLE)
-				throw std::out_of_range("vector darwin");
+			if (__APPLE__)
+				throw std::out_of_range("vector apple");
 			else
 				throw std::out_of_range("vector linux");
 		}
@@ -86,7 +84,12 @@ public:
 	const_reference		at(size_type n) const
 	{
 		if (n >= _size)
-			throw std::out_of_range("vector const");
+		{
+			if (__APPLE__)
+				throw std::out_of_range("vector const apple");
+			else
+				throw std::out_of_range("vector const linux");
+		}
 		return _array[n];
 	};
 	reference			front() {};

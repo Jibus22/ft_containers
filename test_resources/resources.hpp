@@ -1,5 +1,5 @@
-#ifndef RESOURCES
-# define RESOURCES
+#ifndef RESOURCES_HPP
+# define RESOURCES_HPP
 
 #include <iostream>
 #include <sstream>

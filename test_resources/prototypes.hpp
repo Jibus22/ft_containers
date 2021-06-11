@@ -1,5 +1,5 @@
 #ifndef PROTOTYPES_HPP
-#define PROTOTYPES_HPP
+# define PROTOTYPES_HPP
 
 //TEST FUNCTIONS
 void	iteratorsTest(void);
