@@ -5,6 +5,10 @@
 #include <exception>
 #include "randomAccessIterator.hpp"
 
+#ifdef __APPLE__
+#define FT_APPLE 1
+#endif
+
 namespace ft {
 
 template <typename T, typename Allocator = std::allocator<T> >
@@ -70,7 +74,7 @@ public:
 	{
 		if (n >= _size)
 		{
-			if (__APPLE__)
+			if (FT_APPLE)
 				throw std::out_of_range("vector darwin");
 			else
 				throw std::out_of_range("vector linux");
