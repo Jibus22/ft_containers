@@ -5,6 +5,8 @@
 #include <exception>
 #include "randomAccessIterator.hpp"
 
+//If the macro below isn't defined it means we aren't on a mac but
+//we have to define it to 0 to be able to use it on any platform
 #ifndef __APPLE__
 # define __APPLE__ 0
 #endif
@@ -39,6 +41,7 @@ public:
 		//recopier avec les iterators, peu etre avec l'aide d'une fonction mebre
 		(void)src;
 	};
+
 	//___________Destructor___________________________________________________//
 	virtual	~vector() {};
 
@@ -53,6 +56,7 @@ public:
 	//___________Iterators____________________________________________________//
 	iterator			begin() {return iterator(_array);};
 	iterator			end() {return iterator(_array + _size);};
+
 	//___________Capacity_____________________________________________________//
 	size_type			size() const {return _size;};
 	size_type			max_size() const {return _allocator.max_size();};
@@ -65,8 +69,20 @@ public:
 	bool				empty() const {return (!(_size));};
 	void				reserve(size_type n)
 	{
-		(void)n;
+		pointer	tmp;
+
+		if (n <= _capacity)
+			return ;
+		if (n > max_size())
+			throw std::length_error("apple lenght error");
+		tmp = _allocator.allocate(n);
+		for (int i = 0; i < _size; i++)
+			_allocator.construct(&tmp[i], _array[i]);
+		_allocator.deallocate(_array, _capacity);
+		_array = tmp;
+		_capacity = n;
 	};
+
 	//___________Element access_______________________________________________//
 	reference			operator[](size_type n) {return _array[n];};
 	const_reference		operator[](size_type n) const {return _array[n];};
@@ -92,10 +108,11 @@ public:
 		}
 		return _array[n];
 	};
-	reference			front() {};
-	const_reference		front() const {};
-	reference			back() {};
-	const_reference		back() const {};
+	reference			front() {return _array[0];};
+	const_reference		front() const {return _array[0];};
+	reference			back() {return _array[_size - 1];};
+	const_reference		back() const {return _array[_size - 1];};
+
 	//___________Modifiers____________________________________________________//
 	template <typename InputIterator>
 	void				assign(InputIterator first, InputIterator last)
@@ -105,14 +122,25 @@ public:
 	};
 	void				assign(size_type n, const value_type& val)
 	{
-		(void)n;
+		pointer	tmp;
+
+		if (n > _capacity)
+			tmp = _allocator.allocate(n);
+		//erase();
 		(void)val;
 	};
 	void				push_back(const value_type& val)
 	{
-		(void)val;
+		if (_size == _capacity)
+			reserve(_capacity > 0 ? _capacity * 2 : 1);
+		_allocator.construct(&_array[_size], val);
+		_size ++;
 	};
-	void				pop_back() {};
+	void				pop_back()
+	{
+		_allocator.destroy(&_array[_size - 1]);
+		_size--;
+	};
 	iterator			insert(iterator position, const value_type& val)
 	{
 		(void)position;

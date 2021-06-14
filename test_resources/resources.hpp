@@ -4,39 +4,37 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-#include "prototypes.hpp"
+#include "colorResources.hpp"
 
-// https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
+//MACROS
+# define _PRINT_FT_V_(vec)	_FT_BOX_();_PRINT_VEC_(vec)
+# define _PRINT_STD_V_(vec)	_STD_BOX_();_PRINT_VEC_(vec)
 
-# define BLACK_C		"\033[1;30m"
-# define RED_C			"\033[1;31m"
-# define GREEN_C		"\033[1;32m"
-# define YELLOW_C		"\033[1;33m"
-# define BLUE_C			"\033[1;34m"
-# define MAGENTA_C		"\033[1;35m"
-# define CYAN_C			"\033[1;36m"
-# define WHITE_C		"\033[1;37m"
+//TESTING FUNCTIONS
+void	iteratorsTest(void);
+void	capacityTest(void);
+void	elementAccessTest(void);
+void	modifiersTest(void);
 
-# define BLACK_B		"\033[1;40m"
-# define RED_B			"\033[1;41m"
-# define GREEN_B		"\033[1;42m"
-# define YELLOW_B		"\033[1;43m"
-# define BLUE_B			"\033[1;44m"
-# define MAGENTA_B		"\033[1;45m"
-# define CYAN_B			"\033[1;46m"
-# define WHITE_B		"\033[1;47m"
+//PRINT PRESENTATION
+void	_TITLE_(std::string title);
+void	_STITLE_(std::string title);
+void	_SSTITLE_(std::string title);
+void	_THISTESTIS_(std::string title);
+void	_FT_BOX_(void);
+void	_STD_BOX_(void);
 
-# define RESET			"\033[1;0m"  // (everything back to normal)
-# define BOLD       	"\033[1;1m"  // (often a brighter shade of the same color)
-# define BOLD_OFF		"\033[1;21m"
-# define ITALIC       	"\033[1;3m"
-# define ITALIC_OFF		"\033[1;23m"
-# define UNDERLINE		"\033[1;4m"
-# define UNDERLINE_OFF	"\033[1;24m"
-# define INVERSE		"\033[1;7m"  // (swap foreground and background colours)
-# define INVERSE_OFF	"\033[1;27m"
-
-# define _FT_			ftResult()
-# define _STD_			stdResult()
+//PRINT OBJECTS
+template <typename T>
+void	_PRINT_VEC_(T & vec)
+{
+	std::cout << YELLOW_B << BLACK_C << "P->" << RESET << std::setfill (' ')
+	<< std::setw(10) << "size: " << vec.size() << std::setw(16)
+	<< "capacity: " << vec.capacity();
+	if (vec.size())
+		std::cout << std::setw(16) << "front: " << vec.front() << std::setw(16)
+		<< "back: " << vec.back();
+	std::cout << std::endl;
+}
 
 #endif

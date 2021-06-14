@@ -4,7 +4,7 @@
 
 void	iteratorsTest()
 {
-	subTitle("ITERATORS TEST");
+	_SSTITLE_("ITERATORS TEST");
 }
 
 /*

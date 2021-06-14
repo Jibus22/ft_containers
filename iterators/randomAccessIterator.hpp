@@ -20,13 +20,16 @@ public:
 	randomAccessIterator() : _ptr(nullptr) {};
 	randomAccessIterator(randomAccessIterator const & src) { _ptr = src._ptr;};
 	randomAccessIterator(pointer ptr) : _ptr(ptr) {};
+
 	//___________Destructor___________________________________________________//
 	virtual	~randomAccessIterator() {};
+
 	//___________Operator =___________________________________________________//
 	randomAccessIterator &	operator=(randomAccessIterator const & src) {
 		_ptr = src._ptr;
 		return (*this);
 	};
+
 private:
 	pointer					_ptr;
 };//end randomAccessIterator

@@ -4,7 +4,7 @@
 
 void	capacityTest()
 {
-	subTitle("CAPACITY TEST");
+	_SSTITLE_("CAPACITY TEST");
 }
 
 /*
