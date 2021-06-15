@@ -31,4 +31,7 @@
 # define INVERSE		"\033[1;7m"  // (swap foreground and background colours)
 # define INVERSE_OFF	"\033[1;27m"
 
+# define NOENDL			0
+# define ENDL			1
+
 #endif

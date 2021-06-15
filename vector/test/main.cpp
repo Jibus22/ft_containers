@@ -1,7 +1,6 @@
 #include "vector.hpp"
 #include "resources.hpp"
 #include <vector>
-#include <typeinfo>
 
 int	main(int ac, char *av[])
 {

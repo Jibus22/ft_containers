@@ -10,9 +10,9 @@ void	_TITLE_(const std::string & title)
 
 void	_STITLE_(const std::string & title)
 {
-	std::cout << YELLOW_C << BLUE_B << BOLD << std::setfill ('-')
-	<< std::setw(30) << RESET << YELLOW_C << title << BLUE_B << std::setw(30)
-	<< RESET << std::endl;
+	std::cout << std::endl << std::endl << YELLOW_C << BLUE_B << BOLD
+	<< std::setfill ('-') << std::setw(30) << RESET << YELLOW_C << title
+	<< BLUE_B << std::setw(30) << RESET << std::endl;
 }
 
 void	_SSTITLE_(const std::string & title)
@@ -21,10 +21,12 @@ void	_SSTITLE_(const std::string & title)
 	std::setw(20) << RESET << std::endl;
 }
 
-void	_THISTESTIS_(const std::string & title)
+void	_THISTESTIS_(const std::string & title, int isendl)
 {
 	std::cout << MAGENTA_B << "  " << RESET << MAGENTA_B << " "
-	<< RESET << ITALIC << WHITE_C << title << RESET << std::endl;
+	<< RESET << ITALIC << WHITE_C << title << "  " << RESET;
+	if (isendl)
+		std::cout << std::endl;
 }
 
 void	_FT_TITLE_(const std::string & type)
