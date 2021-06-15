@@ -26,6 +26,7 @@ public:
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
     typedef ft::randomAccessIterator<T>					iterator;
+    typedef ft::randomAccessIterator<const T>			const_iterator;
 private:
 protected:
 	pointer												_array;
@@ -36,26 +37,30 @@ public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	vector() : _array(nullptr), _capacity(0), _size(0) {};
-	vector(vector const & src)
-	{
-		//recopier avec les iterators, peu etre avec l'aide d'une fonction mebre
-		(void)src;
-	};
+	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0)
+	{*this = src;};
 
 	//___________Destructor___________________________________________________//
-	virtual	~vector() {};
+	virtual	~vector()
+	{
+		clear();
+		_allocator.deallocate(_array, _capacity);
+	};
 
 	//___________Operator =___________________________________________________//
-	vector&	operator=(vector const & src)
+	vector&	operator=(const vector& src)
 	{
-		//deep copy egalement, utiliser une fonction membre qui fait le taf
-		(void)src;
-		return (*this);
+		if (this == &src)
+			return *this;
+		assign(src.begin(), src.end());
+		return *this;
 	};
 
 	//___________Iterators____________________________________________________//
 	iterator			begin() {return iterator(_array);};
+	const_iterator		begin() const {return const_iterator(_array);};
 	iterator			end() {return iterator(_array + _size);};
+	const_iterator		end() const {return const_iterator(_array + _size);};
 
 	//___________Capacity_____________________________________________________//
 	size_type			size() const {return _size;};
@@ -76,8 +81,8 @@ public:
 		if (n > max_size())
 			throw std::length_error("apple lenght error");
 		tmp = _allocator.allocate(n);
-		for (int i = 0; i < _size; i++)
-			_allocator.construct(&tmp[i], _array[i]);
+		for (size_type i = 0; i < _size; i++)
+			_allocator.construct(tmp + i, _array[i]);
 		_allocator.deallocate(_array, _capacity);
 		_array = tmp;
 		_capacity = n;
@@ -117,36 +122,39 @@ public:
 	template <typename InputIterator>
 	void				assign(InputIterator first, InputIterator last)
 	{
-		(void)first;
-		(void)last;
+		clear();
+		for (InputIterator i = first; i != last; i++)
+			push_back(*i);
 	};
-	void				assign(size_type n, const value_type& val)
+	/*void				assign(size_type n, const value_type& val)
 	{
-		pointer	tmp;
-
-		if (n > _capacity)
-			tmp = _allocator.allocate(n);
-		//erase();
-		(void)val;
-	};
+		clear();
+		for (size_type i = 0; i < n; i++)
+			push_back(val);
+	};*/
 	void				push_back(const value_type& val)
 	{
 		if (_size == _capacity)
 			reserve(_capacity > 0 ? _capacity * 2 : 1);
-		_allocator.construct(&_array[_size], val);
-		_size ++;
+		_allocator.construct(_array + _size++, val);
 	};
-	void				pop_back()
-	{
-		_allocator.destroy(&_array[_size - 1]);
-		_size--;
-	};
+	void				pop_back() {_allocator.destroy(_array + --_size);};
 	iterator			insert(iterator position, const value_type& val)
 	{
-		(void)position;
-		(void)val;
+		iterator		it = end();
+
+		if (_size == _capacity)
+			reserve(_capacity > 0 ? _capacity * 2 : 1);
+		while (it != position)
+		{
+			_allocator.construct(&(*it), *(it - 1));
+			_allocator.destroy(&(*(it - 1)));
+			it--;
+		}
+		_allocator.construct(&(*it), val);
+		return it;
 	};
-	void				insert(iterator position, size_type n,
+	/*void				insert(iterator position, size_type n,
 						const value_type& val)
 	{
 		(void)position;
@@ -167,8 +175,12 @@ public:
 		(void)first;
 		(void)last;
 	};
-	void				swap(vector& x) {(void)x;};
-	void				clear() {};
+	void				swap(vector& x) {(void)x;};*/
+	void				clear()
+	{
+		while (_size > 0)
+			pop_back();
+	};
 }; //end class vector
 
 } //end ft

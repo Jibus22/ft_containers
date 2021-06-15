@@ -6,10 +6,6 @@
 #include <iomanip>
 #include "colorResources.hpp"
 
-//MACROS
-# define _PRINT_FT_V_(vec)	_FT_BOX_();_PRINT_VEC_(vec)
-# define _PRINT_STD_V_(vec)	_STD_BOX_();_PRINT_VEC_(vec)
-
 //TESTING FUNCTIONS
 void	iteratorsTest(void);
 void	capacityTest(void);
@@ -17,16 +13,19 @@ void	elementAccessTest(void);
 void	modifiersTest(void);
 
 //PRINT PRESENTATION
-void	_TITLE_(std::string title);
-void	_STITLE_(std::string title);
-void	_SSTITLE_(std::string title);
-void	_THISTESTIS_(std::string title);
+void	_TITLE_(const std::string & title);
+void	_STITLE_(const std::string & title);
+void	_SSTITLE_(const std::string & title);
+void	_THISTESTIS_(const std::string & title);
+void	_FT_TITLE_(const std::string & type);
+void	_STD_TITLE_(const std::string & type);
+
 void	_FT_BOX_(void);
 void	_STD_BOX_(void);
 
 //PRINT OBJECTS
 template <typename T>
-void	_PRINT_VEC_(T & vec)
+void	printVec(const T & vec)
 {
 	std::cout << YELLOW_B << BLACK_C << "P->" << RESET << std::setfill (' ')
 	<< std::setw(10) << "size: " << vec.size() << std::setw(16)
@@ -37,4 +36,19 @@ void	_PRINT_VEC_(T & vec)
 	std::cout << std::endl;
 }
 
+template <typename T>
+void	_PRINT_VEC_(const T & vec)
+{
+	_FT_BOX_();
+	printVec(vec);
+}
+
+template <typename T>
+void	_PRINT_VEC_(const std::vector<T> & vec)
+{
+	_STD_BOX_();
+	printVec(vec);
+}
+
+//MOD OBJECTS
 #endif
