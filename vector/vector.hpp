@@ -13,6 +13,12 @@
 
 namespace ft {
 
+//Thanks to these template struct definitions, type is only defined when bool
+//is true because of this is only defined into the specialized
+//struct with Cond = true
+template<bool Cond, class T = void> struct enable_if {};
+template<class T> struct enable_if<true, T> {typedef T type;};
+
 template <typename T, typename Allocator = std::allocator<T> >
 class vector
 {
@@ -67,14 +73,17 @@ public:
 	size_type			max_size() const {return _allocator.max_size();};
 	void				resize(size_type n, value_type val = value_type())
 	{
-		(void)n;
-		(void)val;
+		for (size_type s = _size; s > n; s--)
+			pop_back();
+		for (size_type s = _size; s < n; s++)
+			push_back(val);
 	};
 	size_type			capacity() const {return _capacity;};
 	bool				empty() const {return (!(_size));};
 	void				reserve(size_type n)
 	{
-		pointer	tmp;
+		pointer		tmp;
+		size_type	sizecpy = _size;
 
 		if (n <= _capacity)
 			return ;
@@ -83,9 +92,11 @@ public:
 		tmp = _allocator.allocate(n);
 		for (size_type i = 0; i < _size; i++)
 			_allocator.construct(tmp + i, _array[i]);
+		clear();
 		_allocator.deallocate(_array, _capacity);
 		_array = tmp;
 		_capacity = n;
+		_size = sizecpy;
 	};
 
 	//___________Element access_______________________________________________//
@@ -120,18 +131,26 @@ public:
 
 	//___________Modifiers____________________________________________________//
 	template <typename InputIterator>
-	void				assign(InputIterator first, InputIterator last)
+	void				assign(typename
+			ft::enable_if<!std::numeric_limits<InputIterator>::is_integer,
+			InputIterator>::type first, InputIterator last)
 	{
+		ptrdiff_t	size = 0;
+
+		for (InputIterator it = first; it != last; it++)
+			size++;
 		clear();
+		reserve(size);
 		for (InputIterator i = first; i != last; i++)
 			push_back(*i);
 	};
-	/*void				assign(size_type n, const value_type& val)
+	void				assign(size_type n, const value_type& val)
 	{
 		clear();
+		reserve(n);
 		for (size_type i = 0; i < n; i++)
 			push_back(val);
-	};*/
+	};
 	void				push_back(const value_type& val)
 	{
 		if (_size == _capacity)
@@ -141,27 +160,49 @@ public:
 	void				pop_back() {_allocator.destroy(_array + --_size);};
 	iterator			insert(iterator position, const value_type& val)
 	{
-		iterator		it = end();
+		typename iterator::difference_type	diff = end() - position;
+		iterator							it;
 
+		if (diff < 0)
+			return end();
 		if (_size == _capacity)
 			reserve(_capacity > 0 ? _capacity * 2 : 1);
-		while (it != position)
+		it = end();
+		while (diff-- > 0)
 		{
 			_allocator.construct(&(*it), *(it - 1));
 			_allocator.destroy(&(*(it - 1)));
 			it--;
 		}
 		_allocator.construct(&(*it), val);
+		_size++;
 		return it;
 	};
-	/*void				insert(iterator position, size_type n,
+	void				insert(iterator position, size_type n,
 						const value_type& val)
 	{
-		(void)position;
-		(void)n;
-		(void)val;
+		typename iterator::difference_type	diff = end() - position;
+		size_type							i = _size + n;
+		size_type							j = _size;
+
+		if (diff < 0 || n == 0)
+			return ;
+		if (i > _capacity)
+			reserve(i);
+		while (diff-- > 0)
+		{
+			_allocator.construct(_array + --i, _array[--j]);
+			if (diff)
+				_allocator.destroy(_array + j);
+		}
+		diff = n;
+		while (diff-- > 0)
+		{
+			_allocator.construct(_array + --i, val);
+		}
+		_size += n;
 	};
-	template <typename InputIterator>
+	/*template <typename InputIterator>
 	void				insert(iterator position, InputIterator first,
 						InputIterator last)
 	{

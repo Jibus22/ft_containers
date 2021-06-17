@@ -27,11 +27,11 @@ void	_STD_BOX_(void);
 template <typename T>
 void	printVec(const T & vec)
 {
-	std::cout << std::setfill (' ') << "size: " << std::setw(5) << vec.size()
-	<< "   " << "capacity: " << std::setw(5) << vec.capacity() << "  ";
+	std::cout << std::setfill (' ') << "size:" << std::setw(5) << vec.size()
+	<< "   " << "capacity:" << std::setw(5) << vec.capacity() << "  ";
 	if (vec.size())
-		std::cout << "front: " << std::setw(5) << vec.front() << "  "
-		<< "back: " << std::setw(5) << vec.back();
+		std::cout << "front:" << std::setw(5) << vec.front() << "  "
+		<< "back:" << std::setw(5) << vec.back();
 	std::cout << std::endl;
 }
 
@@ -62,6 +62,7 @@ void	_PRINT_CONTENT_(Container<Element, Allocator> & vec)
 }
 
 //MOD OBJECTS
+//FILLCONTAINER
 template <template <typename, typename> class Container,
 		typename Allocator>
 void	fillContainer(Container<std::string, Allocator> & vec, size_t n)
@@ -87,6 +88,21 @@ void	fillContainer(Container<Element, Allocator> & vec, size_t n)
 
 	for (size_t i = 0; i < n; i++)
 		vec.push_back(j++);
+}
+
+//SIZEASSIGN
+template <template <typename, typename> class Container,
+		typename Allocator>
+void	sizeAssign(Container<std::string, Allocator> & vec, size_t n)
+{
+	vec.assign(n, std::string("bla", 3));
+}
+
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator>
+void	sizeAssign(Container<Element, Allocator> & vec, size_t n)
+{
+	vec.assign(n, 42);
 }
 
 #endif

@@ -3,9 +3,8 @@
 #include <vector>
 
 //SIZE TEST
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	sizeTest(Container<Element, Allocator> vec)
+template <typename Container>
+void	sizeTest(Container vec)
 {
 	_THISTESTIS_("size of empty container:             ", NOENDL);
 	std::cout << vec.size() << std::endl;
@@ -24,18 +23,53 @@ void	sizeTest(Container<Element, Allocator> vec)
 }
 
 //MAX_SIZE TEST
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	maxsizeTest(Container<Element, Allocator> vec)
+template <typename Container>
+void	maxsizeTest(Container vec)
 {
 	_THISTESTIS_("max_size of container:", NOENDL);
 	std::cout << vec.max_size() << std::endl;
 }
 
-//CAPACITY TEST
+//RESIZE TEST
 template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
-void	capacityTest(Container<Element, Allocator> vec)
+void	tResize(Container<Element, Allocator> & vec, size_t n)
+{
+	vec.resize(n, 42);
+}
+
+template <template <typename, typename> class Container,
+		typename Allocator>
+void	tResize(Container<std::string, Allocator> & vec, size_t n)
+{
+	vec.resize(n, "blo");
+}
+
+template <typename Container>
+void	resizeTest(Container vec)
+{
+	_THISTESTIS_("resize from x5 to x25:  ", NOENDL);
+	fillContainer(vec, 5);
+	vec.resize(25);
+	_PRINT_VEC_(vec);
+
+	_THISTESTIS_("resize from x25 to x33: ", NOENDL);
+	vec.resize(33);
+	_PRINT_VEC_(vec);
+
+	_THISTESTIS_("resize from x33 to x5:  ", NOENDL);
+	vec.resize(5);
+	_PRINT_VEC_(vec);
+
+	_THISTESTIS_("resize from x5 to x10", ENDL);
+	_THISTESTIS_("with value:             ", NOENDL);
+	tResize(vec, 10);
+	_PRINT_VEC_(vec);
+}
+
+//CAPACITY TEST
+template <typename Container>
+void	capacityTest(Container vec)
 {
 	_THISTESTIS_("capacity of empty container:             ", NOENDL);
 	std::cout << vec.capacity() << std::endl;
@@ -54,9 +88,8 @@ void	capacityTest(Container<Element, Allocator> vec)
 }
 
 //EMPTY TEST
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	emptyTest(Container<Element, Allocator> vec)
+template <typename Container>
+void	emptyTest(Container vec)
 {
 	_THISTESTIS_("empty of empty container:    ", NOENDL);
 	std::cout << vec.empty() << std::endl;
@@ -67,9 +100,8 @@ void	emptyTest(Container<Element, Allocator> vec)
 }
 
 //RESERVE TEST
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	reserveTest(Container<Element, Allocator> vec)
+template <typename Container>
+void	reserveTest(Container vec)
 {
 	_THISTESTIS_("capacity & size of empty container:          ", NOENDL);
 	std::cout << vec.capacity() << " & " << vec.size() << std::endl;
@@ -124,10 +156,10 @@ void	capacityTest()
 	_FT_TITLE_("(str)"); maxsizeTest(ftvec2);
 
 	_SSTITLE_("'RESIZE' TEST");
-	/*_STD_TITLE_("(int)"); resizeTest(stdvec);
+	_STD_TITLE_("(int)"); resizeTest(stdvec);
 	_FT_TITLE_("(int)"); resizeTest(ftvec);
 	_STD_TITLE_("(str)"); resizeTest(stdvec2);
-	_FT_TITLE_("(str)"); resizeTest(ftvec2);*/
+	_FT_TITLE_("(str)"); resizeTest(ftvec2);
 
 	_SSTITLE_("'CAPACITY' TEST");
 	_STD_TITLE_("(int)"); capacityTest(stdvec);
