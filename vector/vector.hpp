@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <exception>
+#include <limits>
 #include "randomAccessIterator.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
