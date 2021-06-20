@@ -27,7 +27,7 @@ void	_STD_BOX_(void);
 
 //PRINT OBJECTS
 template <typename T>
-void	printVec(const T & vec)
+void	_PRINT_VEC_(const T & vec)
 {
 	std::cout << std::setfill (' ') << "size:" << std::setw(5) << vec.size()
 	<< "   " << "capacity:" << std::setw(5) << vec.capacity() << "  ";
@@ -35,22 +35,6 @@ void	printVec(const T & vec)
 		std::cout << "front:" << std::setw(5) << vec.front() << "  "
 		<< "back:" << std::setw(5) << vec.back();
 	std::cout << std::endl;
-}
-
-template <typename T>
-void	_PRINT_VEC_(const T & vec)
-{
-	/*_FT_BOX_();
-	std::cout << YELLOW_B << BLACK_C << "P->" << RESET;*/
-	printVec(vec);
-}
-
-template <typename T>
-void	_PRINT_VEC_(const std::vector<T> & vec)
-{
-	/*_STD_BOX_();
-	std::cout << YELLOW_B << BLACK_C << "P->" << RESET;*/
-	printVec(vec);
 }
 
 template <template <typename, typename> class Container,

@@ -14,10 +14,13 @@ LIBSD = -lbsd
 PATH_INCLUDE = .
 PATH_INCLUDE2 = ../iterators
 PATH_INCLUDE3 = ../test_resources
+PATH_INCLUDE4 = ../enable_if
 HEADERS = $(PATH_INCLUDE)/*.hpp
 HEADERS += $(PATH_INCLUDE2)/*.hpp
 HEADERS += $(PATH_INCLUDE3)/*.hpp
-INC = $(addprefix -I , $(PATH_INCLUDE) $(PATH_INCLUDE2) $(PATH_INCLUDE3))
+HEADERS += $(PATH_INCLUDE4)/*.hpp
+INC = $(addprefix -I , $(PATH_INCLUDE) $(PATH_INCLUDE2) $(PATH_INCLUDE3)\
+	  $(PATH_INCLUDE4))
 
 
 ##### COMPILER #####

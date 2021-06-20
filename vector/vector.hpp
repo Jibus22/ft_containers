@@ -7,6 +7,7 @@
 #include <cmath>
 #include "randomAccessIterator.hpp"
 #include "reverseIterator.hpp"
+#include "enable_if.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -15,12 +16,6 @@
 #endif
 
 namespace ft {
-
-//Thanks to these template struct definitions, type is only defined when bool
-//is true because of this is only defined into the specialized
-//struct with Cond = true
-template<bool Cond, class T = void> struct enable_if {};
-template<class T> struct enable_if<true, T> {typedef T type;};
 
 template <typename T, typename Allocator = std::allocator<T> >
 class vector
@@ -304,5 +299,4 @@ public:
 /*
     typedef typename allocator_type::pointer			pointer;
     typedef typename allocator_type::const_pointer		const_pointer;
-    typedef implementation-defined                   const_iterator;
 */

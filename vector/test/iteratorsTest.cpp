@@ -91,7 +91,22 @@ void	rbeginTest(Container vec)
 template <typename Container>
 void	rendTest(Container vec)
 {
-	(void)vec;
+	typedef typename Container::reverse_iterator	reverse_iterator;
+	reverse_iterator		it;
+
+	_THISTESTIS_("print rbegin to rend:", NOENDL);
+	fillContainer(vec, 10);
+	for (reverse_iterator i = vec.rbegin(); i != vec.rend(); i++)
+		std::cout << " " << *i << " ";
+	std::cout << std::endl;
+	_THISTESTIS_("print rend(), --    :", NOENDL);
+	it = vec.rend();
+	it--;
+	std::cout << " " << *it << " " << std::endl;
+
+	_THISTESTIS_("print rend() -5     :", NOENDL);
+	it = vec.rend() - 5;
+	std::cout << " " << *it << " " << std::endl;
 }
 
 void	iteratorsTest()
@@ -122,10 +137,10 @@ void	iteratorsTest()
 	_FT_TITLE_("(str)"); rbeginTest(ftvec2);
 
 	_SSTITLE_("'REND' TEST");
-	/*_STD_TITLE_("(int)"); rendTest(stdvec);
+	_STD_TITLE_("(int)"); rendTest(stdvec);
 	_FT_TITLE_("(int)"); rendTest(ftvec);
 	_STD_TITLE_("(str)"); rendTest(stdvec2);
-	_FT_TITLE_("(str)"); rendTest(ftvec2);*/
+	_FT_TITLE_("(str)"); rendTest(ftvec2);
 }
 
 /*
