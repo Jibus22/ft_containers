@@ -21,6 +21,7 @@ void	_THISTESTIS_(const std::string & title, int isendl);
 void	_FT_TITLE_(const std::string & type);
 void	_STD_TITLE_(const std::string & type);
 
+void	_SPLIT_LINE_(void);
 void	_FT_BOX_(void);
 void	_STD_BOX_(void);
 

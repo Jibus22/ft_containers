@@ -34,22 +34,20 @@ void	maxsizeTest(Container vec)
 template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
 void	tResize(Container<Element, Allocator> & vec, size_t n)
-{
-	vec.resize(n, 42);
-}
+{vec.resize(n, 42);}
 
 template <template <typename, typename> class Container,
 		typename Allocator>
 void	tResize(Container<std::string, Allocator> & vec, size_t n)
-{
-	vec.resize(n, "blo");
-}
+{vec.resize(n, "blo");}
 
 template <typename Container>
 void	resizeTest(Container vec)
 {
-	_THISTESTIS_("resize from x5 to x25:  ", NOENDL);
+	_THISTESTIS_("Container state before: ", NOENDL);
 	fillContainer(vec, 5);
+	_PRINT_VEC_(vec);
+	_THISTESTIS_("resize from x5 to x25:  ", NOENDL);
 	vec.resize(25);
 	_PRINT_VEC_(vec);
 

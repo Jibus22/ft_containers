@@ -17,8 +17,8 @@ void	_STITLE_(const std::string & title)
 
 void	_SSTITLE_(const std::string & title)
 {
-	std::cout << RED_C << std::setfill ('*') << std::setw(20) << title <<
-	std::setw(20) << RESET << std::endl;
+	std::cout << std::endl << "\t\t" << RED_C << std::setfill ('*')
+	<< std::setw(30) << title << std::setw(30) << RESET << std::endl;
 }
 
 void	_THISTESTIS_(const std::string & title, int isendl)
@@ -39,6 +39,12 @@ void	_STD_TITLE_(const std::string & type)
 {
 	std::cout << BLACK_C << GREEN_B << BOLD << "STD " << ITALIC << type
 	<< RESET << std::endl;
+}
+
+void	_SPLIT_LINE_(void)
+{
+	std::cout << std::endl << WHITE_C
+	<< "\t\t\t------------------------------- " << RESET << std::endl;
 }
 
 //_______________________________STD & FT BOXS________________________________//

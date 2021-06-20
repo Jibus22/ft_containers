@@ -7,10 +7,10 @@ template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
 void	atTest(Container<Element, Allocator> vec)
 {
-	_THISTESTIS_("wrong 'at': try to reach 30th in empty vector:", NOENDL);
+	_THISTESTIS_("wrong 'at': try to reach 30th in empty vector:   ", NOENDL);
 	try {vec.at(30);}
 	catch (std::out_of_range & e) {std::cout << e.what() << std::endl;}
-	_THISTESTIS_("wrong 'at': try to reach 0th in empty vector: ", NOENDL);
+	_THISTESTIS_("wrong 'at': try to reach 0th in empty vector:    ", NOENDL);
 	try {vec.at(30);}
 	catch (std::out_of_range & e) {std::cout << e.what() << std::endl;}
 

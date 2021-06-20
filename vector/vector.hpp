@@ -4,7 +4,9 @@
 #include <iostream>
 #include <exception>
 #include <limits>
+#include <cmath>
 #include "randomAccessIterator.hpp"
+#include "reverseIterator.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -34,6 +36,8 @@ public:
     typedef typename allocator_type::size_type			size_type;
     typedef ft::randomAccessIterator<T>					iterator;
     typedef ft::randomAccessIterator<const T>			const_iterator;
+    typedef ft::reverseIterator<iterator>				reverse_iterator;
+    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 private:
 protected:
 	pointer												_array;
@@ -69,6 +73,15 @@ public:
 	iterator			end() {return iterator(_array + _size);};
 	const_iterator		end() const {return const_iterator(_array + _size);};
 
+	reverse_iterator		rbegin()
+							{return reverse_iterator(_array + _size - 1);};
+	const_reverse_iterator	rbegin() const
+							{return const_reverse_iterator(_array + _size - 1);};
+	reverse_iterator		rend()
+							{return reverse_iterator(_array - 1);};
+	const_reverse_iterator	rend() const
+							{return const_reverse_iterator(_array - 1);};
+
 	//___________Capacity_____________________________________________________//
 	size_type			size() const {return _size;};
 	size_type			max_size() const {return _allocator.max_size();};
@@ -76,6 +89,8 @@ public:
 	{
 		for (size_type s = _size; s > n; s--)
 			pop_back();
+		if (n > 2 * _capacity)
+			reserve(n);
 		for (size_type s = _size; s < n; s++)
 			push_back(val);
 	};
@@ -105,25 +120,21 @@ public:
 	const_reference		operator[](size_type n) const {return _array[n];};
 	reference			at(size_type n)
 	{
-		if (n >= _size)
-		{
-			if (__APPLE__)
-				throw std::out_of_range("vector apple");
-			else
-				throw std::out_of_range("vector linux");
-		}
-		return _array[n];
+		if (n < _size)
+			return _array[n];
+		if (__APPLE__)
+			throw std::out_of_range("vector apple");
+		else
+			throw std::out_of_range("vector linux");
 	};
 	const_reference		at(size_type n) const
 	{
-		if (n >= _size)
-		{
-			if (__APPLE__)
-				throw std::out_of_range("vector const apple");
-			else
-				throw std::out_of_range("vector const linux");
-		}
-		return _array[n];
+		if (n < _size)
+			return _array[n];
+		if (__APPLE__)
+			throw std::out_of_range("vector const apple");
+		else
+			throw std::out_of_range("vector const linux");
 	};
 	reference			front() {return _array[0];};
 	const_reference		front() const {return _array[0];};
@@ -188,8 +199,10 @@ public:
 
 		if (diff < 0 || n == 0)
 			return ;
-		if (i > _capacity)
+		if (i > 2 * _capacity)
 			reserve(i);
+		else if (i > _capacity)
+			reserve(_capacity > 0 ? _capacity * 2 : 1);
 		while (diff-- > 0)
 		{
 			_allocator.construct(_array + --i, _array[--j]);
@@ -198,26 +211,85 @@ public:
 		}
 		diff = n;
 		while (diff-- > 0)
-		{
 			_allocator.construct(_array + --i, val);
-		}
 		_size += n;
 	};
-	/*template <typename InputIterator>
+	template <typename InputIterator>
 	void				insert(iterator position, InputIterator first,
 						InputIterator last)
 	{
-		(void)position;
-		(void)first;
-		(void)last;
+		typename iterator::difference_type	diff = end() - position;
+		size_type							j = _size;
+		size_type							len = 0;
+		size_type							i;
+
+		for (InputIterator it = first; it != last; it++)
+			len++;
+		if (diff < 0 || len == 0)
+			return ;
+		i = _size + len;
+		if (i > 2 * _capacity)
+			reserve(i);
+		else if (i > _capacity)
+			reserve(_capacity > 0 ? _capacity * 2 : 1);
+		while (diff-- > 0)
+		{
+			_allocator.construct(_array + --i, _array[--j]);
+			if (diff)
+				_allocator.destroy(_array + j);
+		}
+		diff = len;
+		while (diff-- > 0)
+			_allocator.construct(_array + j++, *first++);
+		_size += len;
 	};
-	iterator			erase(iterator position) {(void)position;};
+	iterator			erase(iterator position)
+	{
+		for (size_type i = position - begin(); i < _size; i++)
+		{
+			_allocator.destroy(_array + i);
+			if (i + 1 < _size)
+				_allocator.construct(_array + i, _array[i + 1]);
+		}
+		_size--;
+		return position;
+	};
 	iterator			erase(iterator first, iterator last)
 	{
-		(void)first;
-		(void)last;
+		size_type		start = first - begin();
+		size_type		stop = last - begin();
+
+		while (start < stop)
+		{
+			_allocator.destroy(_array + start);
+			if (start + stop < _size)
+				_allocator.construct(_array + start, _array[start + stop]);
+			start++;
+		}
+		_size -= (last - first);
+		while (start < _size)
+		{
+			_allocator.construct(_array + start, _array[start + stop]);
+			start++;
+		}
+		return first;
 	};
-	void				swap(vector& x) {(void)x;};*/
+	void				swap(vector& x)
+	{
+		pointer		tmp_array;
+		size_type	tmp_capacity;
+		size_type	tmp_size;
+
+		tmp_array = x._array;
+		tmp_size = x._size;
+		tmp_capacity = x._capacity;
+		x._array = _array;
+		x._size = _size;
+		x._capacity = _capacity;
+		_array = tmp_array;
+		_size = tmp_size;
+		_capacity = tmp_capacity;
+	};
 	void				clear()
 	{
 		while (_size > 0)
@@ -233,6 +305,4 @@ public:
     typedef typename allocator_type::pointer			pointer;
     typedef typename allocator_type::const_pointer		const_pointer;
     typedef implementation-defined                   const_iterator;
-    typedef std::reverse_iterator<iterator>          reverse_iterator;
-    typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 */
