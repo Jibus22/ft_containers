@@ -37,6 +37,17 @@ void	_PRINT_VEC_(const T & vec)
 	std::cout << std::endl;
 }
 
+template <typename T>
+void	_PRINT_LST_(const T & vec)
+{
+	std::cout << std::setfill (' ') << "size:" << std::setw(5) << vec.size()
+	<< "   ";
+	if (vec.size())
+		std::cout << "front:" << std::setw(5) << vec.front() << "  "
+		<< "back:" << std::setw(5) << vec.back();
+	std::cout << std::endl;
+}
+
 template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
 void	_PRINT_CONTENT_(Container<Element, Allocator> & vec)
