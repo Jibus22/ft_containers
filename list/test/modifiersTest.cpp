@@ -5,7 +5,7 @@
 ///////ASSIGN
 template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
-void	testAssignSFINAE(Container<Element, Allocator> lst)
+void	testAssignSFINAE(Container<Element, Allocator> & lst)
 {
 	_THISTESTIS_("testing sfinae__", ENDL);
 	_THISTESTIS_("assign 50x21             ", NOENDL);
@@ -15,7 +15,7 @@ void	testAssignSFINAE(Container<Element, Allocator> lst)
 
 template <template <typename, typename> class Container,
 		typename Allocator>
-void	testAssignSFINAE(Container<std::string, Allocator> lst)
+void	testAssignSFINAE(Container<std::string, Allocator> & lst)
 {
 	_THISTESTIS_("testing sfinae__", ENDL);
 	_THISTESTIS_("assign 50x\"blo\"          ", NOENDL);
@@ -24,7 +24,7 @@ void	testAssignSFINAE(Container<std::string, Allocator> lst)
 }
 
 template <typename Container>
-void	assignTest(Container lst)
+void	assignTest(Container & lst)
 {
 	Container								lst2;
 	Container								lst3;
@@ -35,19 +35,25 @@ void	assignTest(Container lst)
 	_THISTESTIS_("assign from begin to b+5:", NOENDL);
 	fillContainer(lst, 42);
 	it1 = lst.begin();
-	it2 = lst.begin() + 5;
+	it2 = lst.begin();
+	for (size_t i = 0; i < 5; i++)
+		it2++;
 	lst2.assign(it1, it2);
 	_PRINT_LST_(lst2);
 
 	_THISTESTIS_("assign from b+10 to b+25:", NOENDL);
-	it1 += 10;
-	it2 += 20;
+	for (size_t i = 0; i < 10; i++)
+		it1++;
+	for (size_t i = 0; i < 20; i++)
+		it2++;
 	lst2.assign(it1, it2);
 	_PRINT_LST_(lst2);
 
 	_THISTESTIS_("assign from b+40 to b+42:", NOENDL);
-	it1 += 30;
-	it2 += 17;
+	for (size_t i = 0; i < 30; i++)
+		it1++;
+	for (size_t i = 0; i < 17; i++)
+		it2++;
 	lst2.assign(it1, it2);
 	_PRINT_LST_(lst2);
 
@@ -277,7 +283,7 @@ void	swapTest(Container lst)
 
 ///////CLEAR
 template <typename Container>
-void	clearTest(Container lst)
+void	clearTest(Container & lst)
 {
 	fillContainer(lst, 2000);
 	_THISTESTIS_("clear container x2000", ENDL);
@@ -302,10 +308,10 @@ void	modifiersTest()
 	ft::list<std::string>	ftlst2;
 
 	_SSTITLE_("'ASSIGN' TEST");
-	/*_STD_TITLE_("(int)"); assignTest(stdlst);
+	_STD_TITLE_("(int)"); assignTest(stdlst);
 	_FT_TITLE_("(int)"); assignTest(ftlst);
 	_STD_TITLE_("(str)"); assignTest(stdlst2);
-	_FT_TITLE_("(str)"); assignTest(ftlst2);*/
+	_FT_TITLE_("(str)"); assignTest(ftlst2);
 
 	_SSTITLE_("'PUSH_BACK' TEST");
 	_STD_TITLE_("(int)"); pushbackTest(stdlst);
@@ -338,10 +344,10 @@ void	modifiersTest()
 	_FT_TITLE_("(str)"); swapTest(ftlst2);*/
 
 	_SSTITLE_("'CLEAR' TEST");
-	/*_STD_TITLE_("(int)"); clearTest(stdlst);
+	_STD_TITLE_("(int)"); clearTest(stdlst);
 	_FT_TITLE_("(int)"); clearTest(ftlst);
 	_STD_TITLE_("(str)"); clearTest(stdlst2);
-	_FT_TITLE_("(str)"); clearTest(ftlst2);*/
+	_FT_TITLE_("(str)"); clearTest(ftlst2);
 
 	(void)stdlst;
 	(void)stdlst2;

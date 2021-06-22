@@ -8,6 +8,7 @@
 #include "biDirectionalIterator.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
+#include "ftnode.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -57,33 +58,23 @@ public:
     typedef ft::biDirectionalIterator<const T>			const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
-protected:
 private:
-	class												node
-	{
-		public:
-		value_type	value;
-		node*		prev;
-		node*		next;
-		//node(): next(this), prev(this) {};
-		node(const value_type & val = value_type()): value(val),
-		prev(this), next(this) {};
-		node(node* p, node* n, const value_type & val = value_type()):
-		value(val), prev(p), next(n) {};
-	};
+protected:
+	typedef ft::node<value_type>						node;
 	node												*_head;
 	allocator_type										_allocator;
 	size_type											_size;
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	list() : _size(0) {_head = new node;};
-	list(const list& src) : _head(nullptr), _size(0)
+	list() :  _head(new node), _size(0) {};
+	list(const list& src) : _head(new node), _size(0)
 	{*this = src;};
 
 	//___________Destructor___________________________________________________//
 	virtual	~list()
 	{
+		clear();
 		delete _head;
 	};
 
@@ -96,22 +87,22 @@ public:
 	};
 
 	//___________Iterators____________________________________________________//
-	/*iterator			begin() {return iterator(_array);};
-	const_iterator		begin() const {return const_iterator(_array);};
-	iterator			end() {return iterator(_array + _size);};
-	const_iterator		end() const {return const_iterator(_array + _size);};
+	iterator			begin() {return iterator(_head->prev);};
+	const_iterator		begin() const {return const_iterator(_head->prev);};
+	iterator			end() {return iterator(_head);};
+	const_iterator		end() const {return const_iterator(_head);};
 
 	reverse_iterator		rbegin()
-							{return reverse_iterator(_array + _size - 1);};
+							{return reverse_iterator(_head->next);};
 	const_reverse_iterator	rbegin() const
-							{return const_reverse_iterator(_array + _size - 1);};
+							{return const_reverse_iterator(_head->next);};
 	reverse_iterator		rend()
-							{return reverse_iterator(_array - 1);};
+							{return reverse_iterator(_head);};
 	const_reverse_iterator	rend() const
-							{return const_reverse_iterator(_array - 1);};
+							{return const_reverse_iterator(_head);};
 
 	//___________Capacity_____________________________________________________//
-	*/bool				empty() const {return (!(_size));};
+	bool				empty() const {return (!(_size));};
 	size_type			size() const {return _size;};
 	size_type			max_size() const {return _allocator.max_size();};
 
@@ -122,7 +113,7 @@ public:
 	const_reference		back() const {return _head->next->value;};
 
 	//___________Modifiers____________________________________________________//
-	/*template <typename InputIterator>
+	template <typename InputIterator>
 	void				assign(typename
 			ft::enable_if<!std::numeric_limits<InputIterator>::is_integer,
 			InputIterator>::type first, InputIterator last)
@@ -132,17 +123,15 @@ public:
 		for (InputIterator it = first; it != last; it++)
 			size++;
 		clear();
-		reserve(size);
 		for (InputIterator i = first; i != last; i++)
 			push_back(*i);
 	};
 	void				assign(size_type n, const value_type& val)
 	{
 		clear();
-		reserve(n);
 		for (size_type i = 0; i < n; i++)
 			push_back(val);
-	};*/
+	};
 	void				push_back(const value_type& val)
 	{
 		node*			newnode;
@@ -292,12 +281,12 @@ public:
 			reserve(n);
 		for (size_type s = _size; s < n; s++)
 			push_back(val);
-	};
+	};*/
 	void				clear()
 	{
 		while (_size > 0)
 			pop_back();
-	};*/
+	};
 }; //end class list
 
 } //end ft
