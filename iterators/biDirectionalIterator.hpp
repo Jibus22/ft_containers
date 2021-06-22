@@ -74,6 +74,8 @@ public:
 		_ptr = _ptr->next;
 		return tmp;
 	};
+
+	node*		getNode() const {return _ptr;};
 };//end biDirectionalIterator
 
 } //end ft

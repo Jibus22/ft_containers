@@ -70,6 +70,54 @@ void	assignTest(Container lst)
 	testAssignSFINAE(lst3);
 }
 
+///////PUSH_FRONT
+template <typename Container>
+void	pushfrontTest(Container lst)
+{
+	_THISTESTIS_("10 push_front:      ", NOENDL);
+	fillfrontContainer(lst, 10);
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("50 more push_front: ", NOENDL);
+	fillfrontContainer(lst, 50);
+	_PRINT_LST_(lst);
+
+	//_THISTESTIS_("print of content:  ", ENDL);
+	//_PRINT_LST_CONTENT_(lst);
+
+	_THISTESTIS_("500 more push_front:", NOENDL);
+	fillfrontContainer(lst, 500);
+	_PRINT_LST_(lst);
+}
+
+///////POP_FRONT
+template <typename Container>
+void	popfrontTest(Container lst)
+{
+	_THISTESTIS_("State of current container", ENDL);
+	_THISTESTIS_("with 500 elem:   ", NOENDL);
+	fillfrontContainer(lst, 500);
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("pop 10 elements: ", NOENDL);
+	for (size_t i = 0; i < 10; i++)
+		lst.pop_front();
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("pop 200 elements:", NOENDL);
+	for (size_t i = 0; i < 200; i++)
+		lst.pop_front();
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("pop 290 elements:", NOENDL);
+	for (size_t i = 0; i < 290; i++)
+		lst.pop_front();
+	_PRINT_LST_(lst);
+
+	//_THISTESTIS_("print of content:  ", ENDL);
+	//_PRINT_LST_CONTENT_(lst);
+}
+
 ///////PUSH_BACK
 template <typename Container>
 void	pushbackTest(Container lst)
@@ -83,7 +131,7 @@ void	pushbackTest(Container lst)
 	_PRINT_LST_(lst);
 
 	//_THISTESTIS_("print of content:  ", ENDL);
-	//_PRINT_CONTENT_(lst);
+	//_PRINT_LST_CONTENT_(lst);
 
 	_THISTESTIS_("500 more push_back:", NOENDL);
 	fillContainer(lst, 500);
@@ -115,7 +163,7 @@ void	popbackTest(Container lst)
 	_PRINT_LST_(lst);
 
 	//_THISTESTIS_("print of content:  ", ENDL);
-	//_PRINT_CONTENT_(lst);
+	//_PRINT_LST_CONTENT_(lst);
 }
 
 ///////INSERT
@@ -149,22 +197,25 @@ void	insertTest(Container lst)
 	Container						lst2;
 	typename Container::iterator	it1;
 	typename Container::iterator	it2;
+	typename Container::iterator	it3;
 
 	_THISTESTIS_("insert one value at it pos in a x16 container__", ENDL);
 	_THISTESTIS_("value at pos=5:     ", NOENDL);
 	fillContainer(lst, 16);
-	it1 = lst.begin() + 5;
+	it1 = lst.begin();
+	for (size_t i = 0; i < 5; i++)
+		it1++;
 	insertOne(lst, it1);
 	_PRINT_LST_(lst);
 	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 
 	_THISTESTIS_("value at the end:   ", NOENDL);
 	it1 = lst.end();
 	insertOne(lst, it1);
 	_PRINT_LST_(lst);
 	_THISTESTIS_("print of content:   ", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 
 	lst.clear();
 
@@ -172,18 +223,20 @@ void	insertTest(Container lst)
 	_THISTESTIS_("insert many values at it pos 5 in a x16 container__", ENDL);
 	_THISTESTIS_("5 values from pos 5:", NOENDL);
 	fillContainer(lst, 16);
-	it1 = lst.begin() + 5;
+	it1 = lst.begin();
+	for (size_t i = 0; i < 5; i++)
+		it1++;
 	insertTwo(lst, 5, it1);
 	_PRINT_LST_(lst);
 	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 
 	_THISTESTIS_("12 values from end: ", NOENDL);
 	it1 = lst.end();
 	insertTwo(lst, 12, it1);
 	_PRINT_LST_(lst);
 	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 
 	_THISTESTIS_("194 values from end:", NOENDL);
 	it1 = lst.end();
@@ -195,20 +248,32 @@ void	insertTest(Container lst)
 	_SPLIT_LINE_();
 	_THISTESTIS_("third insert: from container it range, at a pos___", ENDL);
 	fillContainer(lst2, 20);
-	it1 = lst2.begin() + 5;
-	it2 = it1 + 10;
+	it1 = lst2.begin();
+	for (size_t i = 0; i < 5; i++)
+		it1++;
+	it2 = it1;
+	for (size_t i = 0; i < 10; i++)
+		it2++;
 	fillContainer(lst, 10);
 	_THISTESTIS_("10 values at end-2 of cont(10):", NOENDL);
-	lst.insert(lst.end() - 2, it1, it2);
+	it3 = lst.end();
+	for (size_t i = 0; i < 2; i++)
+		it3--;
+	lst.insert(it3, it1, it2);
 	_PRINT_LST_(lst);
-	it1 += 5;
-	it2 += 3;
+	for (size_t i = 0; i < 5; i++)
+		it1++;
+	for (size_t i = 0; i < 3; i++)
+		it2++;
 	_THISTESTIS_("8 values at end-8 of cont(20): ", NOENDL);
-	lst.insert(lst.end() - 8, it1, it2);
+	it3 = lst.end();
+	for (size_t i = 0; i < 2; i++)
+		it3--;
+	lst.insert(it3, it1, it2);
 	_PRINT_LST_(lst);
 
 	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 }
 
 ///////ERASE
@@ -216,25 +281,32 @@ template <typename Container>
 void	eraseTest(Container lst)
 {
 	typename Container::iterator	it;
+	typename Container::iterator	it2;
 
 	_THISTESTIS_("erase value pos 5 in a x10 container", ENDL);
 	_THISTESTIS_("content displayed as : before, after", ENDL);
 	fillContainer(lst, 10);
-	_PRINT_CONTENT_(lst);
-	it = lst.erase(lst.begin() + 5);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
+	it2 = lst.begin();
+	for (size_t i = 0; i < 5; i++)
+		it2++;
+	it = lst.erase(it2);
+	_PRINT_LST_CONTENT_(lst);
 
 	_THISTESTIS_("print erase iterator return: ", NOENDL);
 	std::cout << *it << std::endl;
 
 	_THISTESTIS_("erase first value, display content & return:", ENDL);
 	it = lst.erase(lst.begin());
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 	std::cout << *it << std::endl;
 
-	_THISTESTIS_("erase last value, display content & return:", ENDL);
-	it = lst.erase(lst.end() - 1);
-	_PRINT_CONTENT_(lst);
+	_THISTESTIS_("erase end-1, display content & return-1:", ENDL);
+	it2 = lst.end();
+	it2--;
+	it = lst.erase(it2);
+	it--;
+	_PRINT_LST_CONTENT_(lst);
 	std::cout << *it << std::endl;
 
 	_THISTESTIS_("finally print state:", NOENDL);
@@ -243,13 +315,19 @@ void	eraseTest(Container lst)
 	_SPLIT_LINE_();
 	_THISTESTIS_("second erase test: from it range", ENDL);
 	_THISTESTIS_("erase begin to begin + 3, print content & return:", ENDL);
-	it = lst.erase(lst.begin(), lst.begin() + 3);
-	_PRINT_CONTENT_(lst);
+	it2 = lst.begin();
+	for (size_t i = 0; i < 3; i++)
+		it2++;
+	it = lst.erase(lst.begin(), it2);
+	_PRINT_LST_CONTENT_(lst);
 	std::cout << *it << std::endl;
 
-	_THISTESTIS_("erase begin+1 to end, print content & return:", ENDL);
-	it = lst.erase(lst.begin() + 1, lst.end());
-	_PRINT_CONTENT_(lst);
+	_THISTESTIS_("erase begin+1 to end, print content & return-1:", ENDL);
+	it2 = lst.begin();
+	it2++;
+	it = lst.erase(it2, lst.end());
+	_PRINT_LST_CONTENT_(lst);
+	it--;
 	std::cout << *it << std::endl;
 }
 
@@ -279,6 +357,41 @@ void	swapTest(Container lst)
 	_PRINT_LST_(lst2);
 	_THISTESTIS_("iterator 1 & 2 after: ", NOENDL);
 	std::cout << "   " << *it << "  " << *it2 << std::endl;
+}
+
+//RESIZE TEST
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator>
+void	tResize(Container<Element, Allocator> & lst, size_t n)
+{lst.resize(n, 42);}
+
+template <template <typename, typename> class Container,
+		typename Allocator>
+void	tResize(Container<std::string, Allocator> & lst, size_t n)
+{lst.resize(n, "blo");}
+
+template <typename Container>
+void	resizeTest(Container lst)
+{
+	_THISTESTIS_("Container state before: ", NOENDL);
+	fillContainer(lst, 5);
+	_PRINT_LST_(lst);
+	_THISTESTIS_("resize from x5 to x25:  ", NOENDL);
+	lst.resize(25);
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("resize from x25 to x33: ", NOENDL);
+	lst.resize(33);
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("resize from x33 to x5:  ", NOENDL);
+	lst.resize(5);
+	_PRINT_LST_(lst);
+
+	_THISTESTIS_("resize from x5 to x10", ENDL);
+	_THISTESTIS_("with value:             ", NOENDL);
+	tResize(lst, 10);
+	_PRINT_LST_(lst);
 }
 
 ///////CLEAR
@@ -313,6 +426,18 @@ void	modifiersTest()
 	_STD_TITLE_("(str)"); assignTest(stdlst2);
 	_FT_TITLE_("(str)"); assignTest(ftlst2);
 
+	_SSTITLE_("'PUSH_FRONT' TEST");
+	_STD_TITLE_("(int)"); pushfrontTest(stdlst);
+	_FT_TITLE_("(int)"); pushfrontTest(ftlst);
+	_STD_TITLE_("(str)"); pushfrontTest(stdlst2);
+	_FT_TITLE_("(str)"); pushfrontTest(ftlst2);
+
+	_SSTITLE_("'POP_FRONT' TEST");
+	_STD_TITLE_("(int)"); popfrontTest(stdlst);
+	_FT_TITLE_("(int)"); popfrontTest(ftlst);
+	_STD_TITLE_("(str)"); popfrontTest(stdlst2);
+	_FT_TITLE_("(str)"); popfrontTest(ftlst2);
+
 	_SSTITLE_("'PUSH_BACK' TEST");
 	_STD_TITLE_("(int)"); pushbackTest(stdlst);
 	_FT_TITLE_("(int)"); pushbackTest(ftlst);
@@ -326,22 +451,28 @@ void	modifiersTest()
 	_FT_TITLE_("(str)"); popbackTest(ftlst2);
 
 	_SSTITLE_("'INSERT' TEST");
-	/*_STD_TITLE_("(int)"); insertTest(stdlst);
+	_STD_TITLE_("(int)"); insertTest(stdlst);
 	_FT_TITLE_("(int)"); insertTest(ftlst);
 	_STD_TITLE_("(str)"); insertTest(stdlst2);
-	_FT_TITLE_("(str)"); insertTest(ftlst2);*/
+	_FT_TITLE_("(str)"); insertTest(ftlst2);
 
 	_SSTITLE_("'ERASE' TEST");
-	/*_STD_TITLE_("(int)"); eraseTest(stdlst);
+	_STD_TITLE_("(int)"); eraseTest(stdlst);
 	_FT_TITLE_("(int)"); eraseTest(ftlst);
 	_STD_TITLE_("(str)"); eraseTest(stdlst2);
-	_FT_TITLE_("(str)"); eraseTest(ftlst2);*/
+	_FT_TITLE_("(str)"); eraseTest(ftlst2);
 
 	_SSTITLE_("'SWAP' TEST");
-	/*_STD_TITLE_("(int)"); swapTest(stdlst);
+	_STD_TITLE_("(int)"); swapTest(stdlst);
 	_FT_TITLE_("(int)"); swapTest(ftlst);
 	_STD_TITLE_("(str)"); swapTest(stdlst2);
-	_FT_TITLE_("(str)"); swapTest(ftlst2);*/
+	_FT_TITLE_("(str)"); swapTest(ftlst2);
+
+	_SSTITLE_("'RESIZE' TEST");
+	_STD_TITLE_("(int)"); resizeTest(stdlst);
+	_FT_TITLE_("(int)"); resizeTest(ftlst);
+	_STD_TITLE_("(str)"); resizeTest(stdlst2);
+	_FT_TITLE_("(str)"); resizeTest(ftlst2);
 
 	_SSTITLE_("'CLEAR' TEST");
 	_STD_TITLE_("(int)"); clearTest(stdlst);
@@ -352,6 +483,8 @@ void	modifiersTest()
 
 /*
  * assign()
+ * push_front()
+ * pop_front()
  * push_back()
  * pop_back()
  * insert()

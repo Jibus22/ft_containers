@@ -58,6 +58,17 @@ void	_PRINT_CONTENT_(Container<Element, Allocator> & vec)
 	std::cout << RED_C << "|" << RESET << std::endl;
 }
 
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator>
+void	_PRINT_LST_CONTENT_(Container<Element, Allocator> & lst)
+{
+	typedef typename Container<Element, Allocator>::iterator	iterator;
+	std::cout << YELLOW_B;
+	for (iterator i = lst.begin(); i != lst.end(); i++)
+		std::cout << WHITE_C << "| " << BLACK_C << *i << " ";
+	std::cout << RED_C << "|" << RESET << std::endl;
+}
+
 //MOD OBJECTS
 //FILLCONTAINER
 template <template <typename, typename> class Container,
@@ -85,6 +96,34 @@ void	fillContainer(Container<Element, Allocator> & vec, size_t n)
 
 	for (size_t i = 0; i < n; i++)
 		vec.push_back(j++);
+}
+
+//FILLFRONTCONTAINER
+template <template <typename, typename> class Container,
+		typename Allocator>
+void	fillfrontContainer(Container<std::string, Allocator> & vec, size_t n)
+{
+	char	buf[1];
+
+	buf[0] = '`';
+	for (size_t i = 0; i < n; i++)
+	{
+		if (buf[0] == 'z')
+			buf[0] = 'a';
+		else
+			buf[0] += 1;
+		vec.push_front(std::string(buf, 1));
+	}
+}
+
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator>
+void	fillfrontContainer(Container<Element, Allocator> & vec, size_t n)
+{
+	int		j = 0;
+
+	for (size_t i = 0; i < n; i++)
+		vec.push_front(j++);
 }
 
 //SIZEASSIGN

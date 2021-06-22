@@ -30,41 +30,6 @@ void	maxsizeTest(Container lst)
 	std::cout << lst.max_size() << std::endl;
 }
 
-//RESIZE TEST
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	tResize(Container<Element, Allocator> & lst, size_t n)
-{lst.resize(n, 42);}
-
-template <template <typename, typename> class Container,
-		typename Allocator>
-void	tResize(Container<std::string, Allocator> & lst, size_t n)
-{lst.resize(n, "blo");}
-
-template <typename Container>
-void	resizeTest(Container lst)
-{
-	_THISTESTIS_("Container state before: ", NOENDL);
-	fillContainer(lst, 5);
-	_PRINT_VEC_(lst);
-	_THISTESTIS_("resize from x5 to x25:  ", NOENDL);
-	lst.resize(25);
-	_PRINT_VEC_(lst);
-
-	_THISTESTIS_("resize from x25 to x33: ", NOENDL);
-	lst.resize(33);
-	_PRINT_VEC_(lst);
-
-	_THISTESTIS_("resize from x33 to x5:  ", NOENDL);
-	lst.resize(5);
-	_PRINT_VEC_(lst);
-
-	_THISTESTIS_("resize from x5 to x10", ENDL);
-	_THISTESTIS_("with value:             ", NOENDL);
-	tResize(lst, 10);
-	_PRINT_VEC_(lst);
-}
-
 //EMPTY TEST
 template <typename Container>
 void	emptyTest(Container lst)
@@ -109,7 +74,7 @@ void	reserveTest(Container lst)
 	catch (std::length_error & e) {std::cout << e.what() << std::endl;}
 
 	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_CONTENT_(lst);
+	_PRINT_LST_CONTENT_(lst);
 }
 
 void	capacityTest()
@@ -133,29 +98,11 @@ void	capacityTest()
 	_STD_TITLE_("(str)"); maxsizeTest(stdlst2);
 	_FT_TITLE_("(str)"); maxsizeTest(ftlst2);
 
-	_SSTITLE_("'RESIZE' TEST");
-	/*_STD_TITLE_("(int)"); resizeTest(stdlst);
-	_FT_TITLE_("(int)"); resizeTest(ftlst);
-	_STD_TITLE_("(str)"); resizeTest(stdlst2);
-	_FT_TITLE_("(str)"); resizeTest(ftlst2);*/
-
-	_SSTITLE_("'CAPACITY' TEST");
-	/*_STD_TITLE_("(int)"); capacityTest(stdlst);
-	_FT_TITLE_("(int)"); capacityTest(ftlst);
-	_STD_TITLE_("(str)"); capacityTest(stdlst2);
-	_FT_TITLE_("(str)"); capacityTest(ftlst2);*/
-
 	_SSTITLE_("'EMPTY' TEST");
 	_STD_TITLE_("(int)"); emptyTest(stdlst);
 	_FT_TITLE_("(int)"); emptyTest(ftlst);
 	_STD_TITLE_("(str)"); emptyTest(stdlst2);
 	_FT_TITLE_("(str)"); emptyTest(ftlst2);
-
-	_SSTITLE_("'RESERVE' TEST");
-	/*_STD_TITLE_("(int)"); reserveTest(stdlst);
-	_FT_TITLE_("(int)"); reserveTest(ftlst);
-	_STD_TITLE_("(str)"); reserveTest(stdlst2);
-	_FT_TITLE_("(str)"); reserveTest(ftlst2);*/
 }
 
 /*
