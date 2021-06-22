@@ -4,7 +4,7 @@
 
 /////////FRONT
 template <typename Container>
-void	frontTest(Container & lst)
+void	frontTest(Container lst)
 {
 	_THISTESTIS_("print of 5 front after 5 != push:", NOENDL);
 	for (size_t i = 0; i < 5; i++)
@@ -17,7 +17,7 @@ void	frontTest(Container & lst)
 
 //////////BACK
 template <typename Container>
-void	backTest(Container & lst)
+void	backTest(Container lst)
 {
 	_THISTESTIS_("print of 5 back after 5 != push:", NOENDL);
 	for (size_t i = 0; i < 5; i++)
@@ -49,11 +49,6 @@ void	elementAccessTest()
 	_FT_TITLE_("(int)"); backTest(ftlst);
 	_STD_TITLE_("(str)"); backTest(stdlst2);
 	_FT_TITLE_("(str)"); backTest(ftlst2);
-
-	(void)stdlst;
-	(void)stdlst2;
-	(void)ftlst;
-	(void)ftlst2;
 }
 
 /*

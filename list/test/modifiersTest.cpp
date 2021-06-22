@@ -5,7 +5,7 @@
 ///////ASSIGN
 template <template <typename, typename> class Container,
 		typename Element, typename Allocator>
-void	testAssignSFINAE(Container<Element, Allocator> & lst)
+void	testAssignSFINAE(Container<Element, Allocator> lst)
 {
 	_THISTESTIS_("testing sfinae__", ENDL);
 	_THISTESTIS_("assign 50x21             ", NOENDL);
@@ -15,7 +15,7 @@ void	testAssignSFINAE(Container<Element, Allocator> & lst)
 
 template <template <typename, typename> class Container,
 		typename Allocator>
-void	testAssignSFINAE(Container<std::string, Allocator> & lst)
+void	testAssignSFINAE(Container<std::string, Allocator> lst)
 {
 	_THISTESTIS_("testing sfinae__", ENDL);
 	_THISTESTIS_("assign 50x\"blo\"          ", NOENDL);
@@ -24,7 +24,7 @@ void	testAssignSFINAE(Container<std::string, Allocator> & lst)
 }
 
 template <typename Container>
-void	assignTest(Container & lst)
+void	assignTest(Container lst)
 {
 	Container								lst2;
 	Container								lst3;
@@ -72,7 +72,7 @@ void	assignTest(Container & lst)
 
 ///////PUSH_BACK
 template <typename Container>
-void	pushbackTest(Container & lst)
+void	pushbackTest(Container lst)
 {
 	_THISTESTIS_("10 push_back:      ", NOENDL);
 	fillContainer(lst, 10);
@@ -92,7 +92,7 @@ void	pushbackTest(Container & lst)
 
 ///////POP_BACK
 template <typename Container>
-void	popbackTest(Container & lst)
+void	popbackTest(Container lst)
 {
 	_THISTESTIS_("State of current container", ENDL);
 	_THISTESTIS_("with 500 elem:   ", NOENDL);
@@ -283,7 +283,7 @@ void	swapTest(Container lst)
 
 ///////CLEAR
 template <typename Container>
-void	clearTest(Container & lst)
+void	clearTest(Container lst)
 {
 	fillContainer(lst, 2000);
 	_THISTESTIS_("clear container x2000", ENDL);
@@ -348,11 +348,6 @@ void	modifiersTest()
 	_FT_TITLE_("(int)"); clearTest(ftlst);
 	_STD_TITLE_("(str)"); clearTest(stdlst2);
 	_FT_TITLE_("(str)"); clearTest(ftlst2);
-
-	(void)stdlst;
-	(void)stdlst2;
-	(void)ftlst;
-	(void)ftlst2;
 }
 
 /*

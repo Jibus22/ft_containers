@@ -4,7 +4,7 @@
 
 //SIZE TEST
 template <typename Container>
-void	sizeTest(Container & lst)
+void	sizeTest(Container lst)
 {
 	_THISTESTIS_("size of empty container:             ", NOENDL);
 	std::cout << lst.size() << std::endl;
@@ -24,7 +24,7 @@ void	sizeTest(Container & lst)
 
 //MAX_SIZE TEST
 template <typename Container>
-void	maxsizeTest(Container & lst)
+void	maxsizeTest(Container lst)
 {
 	_THISTESTIS_("max_size of container:", NOENDL);
 	std::cout << lst.max_size() << std::endl;
@@ -67,7 +67,7 @@ void	resizeTest(Container lst)
 
 //EMPTY TEST
 template <typename Container>
-void	emptyTest(Container & lst)
+void	emptyTest(Container lst)
 {
 	_THISTESTIS_("empty of empty container:    ", NOENDL);
 	std::cout << lst.empty() << std::endl;
@@ -156,11 +156,6 @@ void	capacityTest()
 	_FT_TITLE_("(int)"); reserveTest(ftlst);
 	_STD_TITLE_("(str)"); reserveTest(stdlst2);
 	_FT_TITLE_("(str)"); reserveTest(ftlst2);*/
-
-	(void)stdlst;
-	(void)stdlst2;
-	(void)ftlst;
-	(void)ftlst2;
 }
 
 /*

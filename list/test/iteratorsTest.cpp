@@ -4,7 +4,7 @@
 
 ///////BEGIN
 template <typename Container>
-void	beginTest(Container & lst)
+void	beginTest(Container lst)
 {
 	fillContainer(lst, 20);
 	_THISTESTIS_("begin of x20:  ", NOENDL);
@@ -16,7 +16,7 @@ void	beginTest(Container & lst)
 
 ///////END
 template <typename Container>
-void	endTest(Container & lst)
+void	endTest(Container lst)
 {
 	typedef typename Container::iterator			iterator;
 	iterator		it;
@@ -35,7 +35,7 @@ void	endTest(Container & lst)
 
 ///////RBEGIN
 template <typename Container>
-void	rbeginTest(Container & lst)
+void	rbeginTest(Container lst)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
 	typedef typename Container::iterator			iterator;
@@ -75,7 +75,7 @@ void	rbeginTest(Container & lst)
 
 ///////REND
 template <typename Container>
-void	rendTest(Container & lst)
+void	rendTest(Container lst)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
 	reverse_iterator		it;

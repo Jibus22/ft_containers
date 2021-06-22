@@ -55,7 +55,7 @@ public:
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
     typedef ft::biDirectionalIterator<T>				iterator;
-    typedef ft::biDirectionalIterator<const T>			const_iterator;
+    typedef const ft::biDirectionalIterator<T>			const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 private:
@@ -83,6 +83,7 @@ public:
 	{
 		if (this == &src)
 			return *this;
+		assign(src.begin(), src.end());
 		return *this;
 	};
 
