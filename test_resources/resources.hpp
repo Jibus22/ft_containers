@@ -12,6 +12,7 @@ void	iteratorsTest(void);
 void	capacityTest(void);
 void	elementAccessTest(void);
 void	modifiersTest(void);
+void	operationTest(void);
 
 //PRINT PRESENTATION
 void	_TITLE_(const std::string & title);

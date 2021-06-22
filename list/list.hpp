@@ -230,6 +230,33 @@ public:
 		while (_size > 0)
 			pop_back();
 	};
+
+	//___________Operations___________________________________________________//
+	void				reverse()
+	{
+		node*			it = _head;
+		node*			n_tmp = it->next;
+
+		for (size_type i = 0; i <= _size; i++)
+		{
+			it->next = it->prev;
+			it->prev = n_tmp;
+			it = n_tmp;
+			n_tmp = it->next;
+		}
+	};
+	void				remove(const value_type& val)
+	{
+		iterator		i = begin();
+
+		while (i != end())
+		{
+			if (*i == val)
+				i = erase(i);
+			else
+				i++;
+		}
+	};
 }; //end class list
 
 } //end ft

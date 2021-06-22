@@ -40,7 +40,7 @@ endif
 
 ##### SRCS #####
 SRCS = $(addprefix $(SRCPATH)/, main.cpp iteratorsTest.cpp capacityTest.cpp\
-	   elementAccessTest.cpp modifiersTest.cpp)
+	   elementAccessTest.cpp modifiersTest.cpp operationTest.cpp)
 SRCS2 = $(addprefix $(SRCPATH2)/, print.cpp)
 
 OBJ = $(SRCS:$(SRCPATH)/%.cpp=$(OBJPATH)/%.o)
