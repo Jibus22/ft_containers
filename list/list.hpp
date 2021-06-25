@@ -232,18 +232,29 @@ public:
 	};
 
 	//___________Operations___________________________________________________//
-	void				reverse()
+	void				splice(iterator position, list& x)
+	{splice(position, x, x.begin(), x.end());};
+	void				splice(iterator position, list& x, iterator i)
+	{splice(position, x, i, ++i);};
+	void				splice(iterator position, list& x,
+								iterator first, iterator last)
 	{
-		node*			it = _head;
-		node*			n_tmp = it->next;
+		node*			pos = position.getNode();
+		node*			f = first.getNode();
+		node*			l = last.getNode();
+		node*			e = l->next;
 
-		for (size_type i = 0; i <= _size; i++)
+		for (iterator i = first; i != last; i++)
 		{
-			it->next = it->prev;
-			it->prev = n_tmp;
-			it = n_tmp;
-			n_tmp = it->next;
+			_size++;
+			x._size--;
 		}
+		f->next->prev = l;
+		l->next = f->next;
+		f->next = pos->next;
+		f->next->prev = f;
+		pos->next = e;
+		pos->next->prev = pos;
 	};
 	void				remove(const value_type& val)
 	{
@@ -255,6 +266,137 @@ public:
 				i = erase(i);
 			else
 				i++;
+		}
+	};
+	template <class Predicate>
+	void				remove_if(Predicate pred)
+	{
+		iterator		i = begin();
+
+		while (i != end())
+		{
+			if (pred(*i))
+				i = erase(i);
+			else
+				i++;
+		}
+	};
+	void				unique()
+	{
+		iterator		i = begin();
+		iterator		ipo = i;
+
+		ipo++;
+		while (ipo != end())
+		{
+			if (*ipo == *i)
+				ipo = erase(ipo);
+			else
+			{
+				i++;
+				ipo++;
+			}
+		}
+	};
+	template <class BinaryPredicate>
+	void				unique(BinaryPredicate binary_pred)
+	{
+		iterator		i = begin();
+		iterator		ipo = i;
+
+		ipo++;
+		while (ipo != end())
+		{
+			if (binary_pred(*i, *ipo) == true)
+				ipo = erase(ipo);
+			else
+			{
+				i++;
+				ipo++;
+			}
+		}
+	};
+	void				merge(list& x)
+	{
+		iterator		i = begin();
+		iterator		ix = x.begin();
+
+		if (&x == this)
+			return ;
+		while (i != end() && ix != x.end())
+		{
+			if (*ix < *i)
+				splice(i, x, ix, ++ix);
+			else
+				i++;
+		}
+		if (!x.empty())
+			splice(i, x);
+	};
+	template <class Compare>
+	void				merge(list& x, Compare comp)
+	{
+		iterator		i = begin();
+		iterator		ix = x.begin();
+
+		if (&x == this)
+			return ;
+		while (i != end() && ix != x.end())
+		{
+			if (comp(*ix, *i))
+				splice(i, x, ix, ++ix);
+			else
+				i++;
+		}
+		if (!x.empty())
+			splice(i, x);
+	};
+	void				sort()
+	{
+		iterator		i = begin();
+		iterator		ipo = i;
+
+		while (++ipo != end())
+		{
+			if (*ipo < *i)
+			{
+				splice(i, *this, ipo, ++ipo);
+				i = begin();
+				ipo = i;
+			}
+			else
+				i++;
+		}
+	};
+	template <class Compare>
+	void				sort(Compare comp)
+	{
+		iterator		i = begin();
+		iterator		ipo = i;
+
+		while (++ipo != end())
+		{
+			if (comp(*ipo, *i))
+			{
+				splice(i, *this, ipo, ++ipo);
+				i = begin();
+				ipo = i;
+			}
+			else
+				i++;
+		}
+	};
+	void				reverse()
+	{
+		node*			it = _head;
+		node*			n_tmp = it->next;
+
+		for (size_type i = 0; i <= _size; i++)
+		{
+			it->next = it->prev;
+			it->prev = n_tmp;
+			it = n_tmp;
+			n_tmp = it->next;
 		}
 	};
 }; //end class list
