@@ -40,6 +40,16 @@ void	_PRINT_VEC_(const T & vec)
 }
 
 template <typename T>
+void	_PRINT_STK_(const T & vec)
+{
+	std::cout << std::setfill (' ') << "size:" << std::setw(5) << vec.size()
+	<< "   ";
+	if (vec.size())
+		std::cout << "top:" << std::setw(5) << vec.top();
+	std::cout << std::endl;
+}
+
+template <typename T>
 void	_PRINT_LST_(const T & vec)
 {
 	std::cout << std::setfill (' ') << "size:" << std::setw(5) << vec.size()
@@ -97,7 +107,34 @@ void	fillContainer(Container<Element, Allocator> & vec, size_t n)
 	int		j = 0;
 
 	for (size_t i = 0; i < n; i++)
-		vec.push_back(j++);
+		vec.push(j++);
+}
+
+template <template <typename, typename> class Container,
+		typename Containr>
+void	fillContainr(Container<std::string, Containr> & vec, size_t n)
+{
+	char	buf[1];
+
+	buf[0] = '`';
+	for (size_t i = 0; i < n; i++)
+	{
+		if (buf[0] == 'z')
+			buf[0] = 'a';
+		else
+			buf[0] += 1;
+		vec.push(std::string(buf, 1));
+	}
+}
+
+template <template <typename, typename> class Container,
+		typename Element, typename Containr>
+void	fillContainr(Container<Element, Containr> & vec, size_t n)
+{
+	int		j = 0;
+
+	for (size_t i = 0; i < n; i++)
+		vec.push(j++);
 }
 
 //FILLFRONTCONTAINER
