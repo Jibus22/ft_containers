@@ -12,8 +12,8 @@ int	main(int ac, char *av[])
 		if (ac > 2)
 			std::cout << av[0] << " error: too many args" << std::endl;
 		else if (arg != "1" && arg != "2" && arg != "3"
-				&& arg != "4" && arg != "5")
-			std::cout << av[0] << " usage: none, 1, 2, 3, 4 or 5" << std::endl;
+				&& arg != "4" && arg != "5" && arg != "6")
+			std::cout << av[0] << " usage: none, 1, 2, 3, 4, 5 or 6" << std::endl;
 		else
 			break ;
 		return (1);
@@ -29,6 +29,8 @@ int	main(int ac, char *av[])
 		modifiersTest();
 	if (ac == 1 || arg == "5")
 		operationTest();
+	if (ac == 1 || arg == "6")
+		otherTest();
 
 	ft::list<ft::test>	pouet;
 	ft::test			t("daaang");

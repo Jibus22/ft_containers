@@ -8,6 +8,8 @@
 #include "randomAccessIterator.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
+#include "ftequal.hpp"
+#include "ftlexicographical_compare.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -43,6 +45,21 @@ public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	vector() : _array(nullptr), _capacity(0), _size(0) {};
+	explicit	vector(size_type n, const value_type& val = value_type(),
+                 const allocator_type& alloc = allocator_type()) :
+		_array(nullptr), _capacity(0), _size(0)
+	{
+		(void)alloc;
+		assign(n, val);
+	};
+	template <class InputIterator>
+    vector(InputIterator first, InputIterator last,
+			const allocator_type& alloc = allocator_type()) :
+		_array(nullptr), _capacity(0), _size(0)
+	{
+		(void)alloc;
+		assign(first, last);
+	};
 	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0)
 	{*this = src;};
 
@@ -291,6 +308,44 @@ public:
 			pop_back();
 	};
 }; //end class vector
+
+
+//___________Relational operators_________________________________________//
+template <class T, class Alloc>
+bool	operator==(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (lhs.size() == rhs.size()
+		&& ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+};
+
+template <class T, class Alloc>
+bool	operator!=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{return !(lhs == rhs);};
+
+template <class T, class Alloc>
+bool	operator<(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return ft::lexicographical_compare(lhs.begin(),
+				lhs.end(), rhs.begin(), rhs.end());
+};
+
+template <class T, class Alloc>
+bool	operator<=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{return !(rhs < lhs);};
+
+template <class T, class Alloc>
+bool	operator>(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{return rhs < lhs;};
+
+template <class T, class Alloc>
+bool	operator>=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{return !(rhs < lhs);};
+
+
+//___________Swap Overload________________________________________________//
+template <template <typename, typename> class Container,
+		class T, class Alloc>
+void	swap(Container<T,Alloc>& x, Container<T,Alloc>& y) {x.swap(y);};
 
 } //end ft
 

@@ -161,9 +161,6 @@ void	popbackTest(Container lst)
 	for (size_t i = 0; i < 290; i++)
 		lst.pop_back();
 	_PRINT_LST_(lst);
-
-	//_THISTESTIS_("print of content:  ", ENDL);
-	//_PRINT_LST_CONTENT_(lst);
 }
 
 ///////INSERT
