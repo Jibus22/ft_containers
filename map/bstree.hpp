@@ -22,7 +22,20 @@ struct bstNode
 	bstNode&	operator=(const bstNode& rhs) {
 		if (this == &rhs)
 			return *this;
-		val = rhs.val;
+		lft = rhs.lft;
+		rgt = rhs.rgt;
+		prt = rhs.prt;
+		if (prt)
+		{
+			if (prt->lft == &rhs)
+				prt->lft = this;
+			else
+				prt->rgt = this;
+		}
+		if (lft)
+			lft->prt = this;
+		if (rgt)
+			rgt->prt = this;
 		return *this;
 	}
 	virtual ~bstNode() {};
@@ -31,32 +44,13 @@ struct bstNode
 template <typename T, typename Compare>
 struct bstree
 {
-	typedef T						node;
-	typedef node::value_type		value_type;
-	typedef node::pointer			pointer;
-    typedef Compare					key_compare;
-	typedef value_type::first_type	key_type;
+	typedef T								node;
+	typedef typename node::value_type		value_type;
+	typedef typename node::pointer			pointer;
+    typedef Compare							key_compare;
+	typedef typename value_type::first_type	key_type;
 
-	key_compare						_comp;
-
-	int	delNode(const pointer p, const key_type& key) const
-	{
-		const pointer	todel = findKey(p, key);
-		pointer			substitute;
-
-		if (!todel)
-			return (1);
-		if (todel->rgt)
-			substitute = getMin(todel->rgt);
-		else if (todel->lft)
-			substitute = getMax(todel->lft);
-		else
-			substitute = todel;
-		sendToParent(substitute);
-		todel->val = substitute->val;
-		delete substitute;
-		return (0);
-	};
+	key_compare								_comp;
 
 	void	postOrderDelete(const pointer p) const
 	{
@@ -152,26 +146,32 @@ struct bstree
 		preOrderCpy(rt->rgt, newNode);
 	};
 
-	private:
-	pointer	insert(pointer p, value_type v) const
+	int	delNode(const pointer p, const key_type& key, pointer *p2) const
 	{
-		if (!p)
-			return new node(v);
-		if (v < p->val)
-		{
-			p->lft = insert(p->lft, v);
-			p->lft->prt = p;
-		}
+		const pointer	todel = findKey(p, key);
+		pointer			substitute;
+
+		if (!todel)
+			return (1);
+		if (todel->rgt)
+			substitute = getMin(todel->rgt);
+		else if (todel->lft)
+			substitute = getMax(todel->lft);
 		else
-		{
-			p->rgt = insert(p->rgt, v);
-			p->rgt->prt = p;
-		}
-		return p;
+			substitute = todel;
+		sendToParent(substitute, todel);
+		//todel->val = substitute->val;
+		*substitute = *todel;
+		if (!substitute->prt)//means root changed
+			*p2 = substitute;
+		delete todel;
+		return (0);
 	};
 
-	void	sendToParent(const pointer tosend) const//works only with node which
-	{//has at most 1 child bc the purpose is to be used with inorder suc or pred
+	private:
+	void	sendToParent(const pointer tosend, const pointer todel) const
+	{//works only with node which has at most 1 child bc the purpose is to
+	//be used with inorder suc or pred
 		pointer	*relay;
 
 		if (!tosend->prt)
@@ -188,10 +188,27 @@ struct bstree
 			*relay = tosend->rgt;
 		else
 			*relay = nullptr;
-		if (*relay)
+		if (*relay && tosend->prt != todel)
 			(*relay)->prt = tosend->prt;
 		//parent of tosend points now to lft or rgt tosend child, & this child
 		//has now parent of tosend as parent.
+	};
+
+	pointer	insert(pointer p, value_type v) const
+	{
+		if (!p)
+			return new node(v);
+		if (v < p->val)
+		{
+			p->lft = insert(p->lft, v);
+			p->lft->prt = p;
+		}
+		else
+		{
+			p->rgt = insert(p->rgt, v);
+			p->rgt->prt = p;
+		}
+		return p;
 	};
 };
 

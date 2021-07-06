@@ -25,8 +25,8 @@ namespace ft {
 
 template < class Key,
            class T,
-           class Compare = ft::less<Key>,
-           class Allocator = std::allocator<ft::pair<const Key,T> >
+           class Compare = std::less<Key>,
+           class Allocator = std::allocator<std::pair<const Key,T> >
            >
 class map
 {
@@ -34,7 +34,7 @@ public:
 	//___________MEMBER TYPES_________________________________________________//
     typedef Key											key_type;
     typedef T											mapped_type;
-    typedef ft::pair<const key_type, mapped_type>		value_type;
+    typedef std::pair<const key_type, mapped_type>		value_type;
     typedef Compare										key_compare;
     typedef Allocator									allocator_type;
     typedef typename allocator_type::reference			reference;
@@ -72,8 +72,8 @@ protected:
 	tree												_tree;
 	ptr													_root;
 	size_type											_size;
-	allocator_type										_allocator;
 	key_compare											_comp;
+	allocator_type										_allocator;
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
@@ -81,21 +81,21 @@ public:
 			const allocator_type& alloc = allocator_type()): _root(nullptr),
 	_size(0), _comp(comp), _allocator(alloc) {};
 
-	map(const map& x): _root(nullptr), _size(0), _comp(comp), _allocator(alloc)
+	map(const map& x): _root(nullptr), _size(0)
 	{
 		_root = x.copy();
 		_size = x._size;
 	};
 	//___________Destructor___________________________________________________//
-	virtual	~map() {clear()};
+	virtual	~map() {clear();};
 
 	//___________Operator =___________________________________________________//
 	map&	operator=(const map& src)
 	{
 		if (this == &src)
 			return *this;
-		if (!*this.empty())
-			*this.clear();
+		if (!empty())
+			clear();
 		this->_root = src.copy();
 		this->_size = src._size;
 		return *this;
@@ -125,7 +125,7 @@ public:
 	//___________Element access_______________________________________________//
 	mapped_type&		operator[](const key_type& k)
 	{
-		return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
+		return (*((this->insert(std::make_pair(k,mapped_type()))).first)).second;
 	};
 	//___________Modifiers____________________________________________________//
 	pair<iterator,bool>	insert(const value_type& val)
@@ -176,13 +176,13 @@ public:
 	};
 	void			erase(iterator position)
 	{
-		if (!_tree.delNode(p, position->first))
+		if (!_tree.delNode(position.getNode(), position->first, &_root))
 			if (!--_size)
 				_root = nullptr;
 	};
 	size_type		erase(const key_type& k)
 	{
-		if (_tree.delNode(_root, k))
+		if (_tree.delNode(_root, k, &_root))
 			return 0;
 		if (!--_size)
 			_root = nullptr;
@@ -214,7 +214,7 @@ public:
 
 
 	private:
-	pointer			copy() const
+	ptr				copy() const
 	{
 		ptr		newNode = nullptr;
 

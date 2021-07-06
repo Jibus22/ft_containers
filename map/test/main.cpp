@@ -18,10 +18,10 @@ int	main(int ac, char *av[])
 			break ;
 		return (1);
 	}
-	_TITLE_("LIST TEST");
-	/*if (ac == 1 || arg == "1")
+	_TITLE_("MAP TEST");
+	if (ac == 1 || arg == "1")
 		iteratorsTest();
-	if (ac == 1 || arg == "2")
+	/*if (ac == 1 || arg == "2")
 		capacityTest();
 	if (ac == 1 || arg == "3")
 		elementAccessTest();

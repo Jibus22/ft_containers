@@ -1,53 +1,96 @@
 #include "map.hpp"
 #include "resources.hpp"
 #include <map>
+#include <utility>
 
 ///////BEGIN
 template <typename Container>
-void	beginTest(Container lst)
+void	beginTest(Container mapp)
 {
-	fillContainer(lst, 20);
+	typedef typename Container::iterator	iterator;
+	iterator				i;
+
+	mapp.insert(std::make_pair(50, "a"));
+	mapp.insert(std::make_pair(25, "b"));
+	mapp.insert(std::make_pair(75, "c"));
+	mapp.insert(std::make_pair(10, "d"));
+	mapp.insert(std::make_pair(40, "e"));
+	mapp.insert(std::make_pair(65, "f"));
+	mapp.insert(std::make_pair(90, "g"));
+	mapp.insert(std::make_pair(5, "h"));
+	mapp.insert(std::make_pair(18, "i"));
+	mapp.insert(std::make_pair(32, "j"));
+	mapp.insert(std::make_pair(45, "k"));
+	mapp.insert(std::make_pair(58, "l"));
+	mapp.insert(std::make_pair(70, "m"));
+	mapp.insert(std::make_pair(82, "n"));
+	mapp.insert(std::make_pair(100, "o"));
+	mapp.insert(std::make_pair(22, "p"));
+	mapp.insert(std::make_pair(42, "q"));
+	mapp.insert(std::make_pair(62, "r"));
+	mapp.insert(std::make_pair(78, "s"));
+	mapp.insert(std::make_pair(120, "t"));
+
+	std::cout << "size: " << mapp.size() << "\tempty: "
+		<< mapp.empty() << std::endl;
+
+	for (iterator j = mapp.begin(); j != mapp.end(); j++)
+		std::cout << "key: " << j->first << "\t\tvalue: " << j->second << std::endl;
+
+	std::cout << "bracket 41, then 78: " << mapp[41] << ", " << mapp[78] << std::endl;
+
+
+	_THISTESTIS_("erase begin:  ", ENDL);
+	for (int n = 0; n < 21; n++)
+		mapp.erase(mapp.begin());
+
+	for (iterator j = mapp.begin(); j != mapp.end(); j++)
+		std::cout << "key: " << j->first << "\t\tvalue: " << j->second << std::endl;
+
+	/*
+	fillContainer(mapp, 20);
 	_THISTESTIS_("begin of x20:  ", NOENDL);
-	std::cout << " " << *(lst.begin()) << std::endl;
-	fillContainer(lst, 20);
+	std::cout << " " << *(mapp.begin()) << std::endl;
+	fillContainer(mapp, 20);
 	_THISTESTIS_("begin of x40:  ", NOENDL);
-	std::cout << " " << *(lst.begin()) << std::endl;
+	std::cout << " " << *(mapp.begin()) << std::endl;
+	*/
 }
 
 ///////END
 template <typename Container>
-void	endTest(Container lst)
+void	endTest(Container mapp)
 {
 	typedef typename Container::iterator			iterator;
 	iterator		it;
 
-	fillContainer(lst, 20);
-	it = lst.end();
+	fillContainer(mapp, 20);
+	it = mapp.end();
 	it--;
 	_THISTESTIS_("end-1 of x20:  ", NOENDL);
 	std::cout << " " << *it << std::endl;
-	fillContainer(lst, 10);
+	fillContainer(mapp, 10);
 	_THISTESTIS_("end-1 of x30:  ", NOENDL);
-	it = lst.end();
+	it = mapp.end();
 	it--;
 	std::cout << " " << *it << std::endl;
 }
 
 ///////RBEGIN
 template <typename Container>
-void	rbeginTest(Container lst)
+void	rbeginTest(Container mapp)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
 	typedef typename Container::iterator			iterator;
 	reverse_iterator		it;
 	reverse_iterator		it2;
 
-	fillContainer(lst, 20);
+	fillContainer(mapp, 20);
 	_THISTESTIS_("rbegin of x20:  ", NOENDL);
-	it = lst.rbegin();
+	it = mapp.rbegin();
 	std::cout << " " << *it << std::endl;
-	fillContainer(lst, 10);
-	it2 = lst.rbegin();
+	fillContainer(mapp, 10);
+	it2 = mapp.rbegin();
 	_THISTESTIS_("begin of x30:   ", NOENDL);
 	std::cout << " " << *it2 << std::endl;
 
@@ -59,34 +102,34 @@ void	rbeginTest(Container lst)
 	else
 		std::cout << " it == it2" << std::endl;
 
-	//lst.clear();
-	fillContainer(lst, 10);
+	//mapp.clear();
+	fillContainer(mapp, 10);
 	_THISTESTIS_("reverse print : ", NOENDL);
-	for (reverse_iterator i = lst.rbegin(); i != lst.rend(); i++)
+	for (reverse_iterator i = mapp.rbegin(); i != mapp.rend(); i++)
 		std::cout << " " << *i << ", ";
 	std::cout << std::endl;
 
 	_THISTESTIS_("iterator construction:", NOENDL);
 	iterator	itt;
-	itt = lst.begin();
+	itt = mapp.begin();
 	reverse_iterator	bla(itt);
 	std::cout << " " << *itt << std::endl;
 }
 
 ///////REND
 template <typename Container>
-void	rendTest(Container lst)
+void	rendTest(Container mapp)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
 	reverse_iterator		it;
 
 	_THISTESTIS_("print rbegin to rend:", NOENDL);
-	fillContainer(lst, 10);
-	for (reverse_iterator i = lst.rbegin(); i != lst.rend(); i++)
+	fillContainer(mapp, 10);
+	for (reverse_iterator i = mapp.rbegin(); i != mapp.rend(); i++)
 		std::cout << " " << *i << " ";
 	std::cout << std::endl;
 	_THISTESTIS_("print rend(), --    :", NOENDL);
-	it = lst.rend();
+	it = mapp.rend();
 	it--;
 	std::cout << " " << *it << " " << std::endl;
 }
@@ -95,34 +138,34 @@ void	iteratorsTest()
 {
 	_STITLE_("ITERATORS TEST");
 
-	std::map<int>			stdlst;
-	ft::map<int>			ftlst;
-	std::map<std::string>	stdlst2;
-	ft::map<std::string>	ftlst2;
+	//std::map<int, char>			stdmapp;
+	//ft::map<int, char>			ftmapp;
+	std::map<int, std::string>	stdmapp2;
+	ft::map<int, std::string>	ftmapp2;
 
 	_SSTITLE_("'BEGIN' TEST");
-	/*_STD_TITLE_("(int)"); beginTest(stdlst);
-	_FT_TITLE_("(int)"); beginTest(ftlst);
-	_STD_TITLE_("(str)"); beginTest(stdlst2);
-	_FT_TITLE_("(str)"); beginTest(ftlst2);*/
+	_STD_TITLE_("(int, str)"); beginTest(stdmapp2);
+	_FT_TITLE_("(int, str)"); beginTest(ftmapp2);
+	/*_STD_TITLE_("(int)"); beginTest(stdmapp);
+	_FT_TITLE_("(int)"); beginTest(ftmapp);*/
 
 	_SSTITLE_("'END' TEST");
-	/*_STD_TITLE_("(int)"); endTest(stdlst);
-	_FT_TITLE_("(int)"); endTest(ftlst);
-	_STD_TITLE_("(str)"); endTest(stdlst2);
-	_FT_TITLE_("(str)"); endTest(ftlst2);*/
+	/*_STD_TITLE_("(int)"); endTest(stdmapp);
+	_FT_TITLE_("(int)"); endTest(ftmapp);
+	_STD_TITLE_("(str)"); endTest(stdmapp2);
+	_FT_TITLE_("(str)"); endTest(ftmapp2);*/
 
 	_SSTITLE_("'RBEGIN' TEST");
-	/*_STD_TITLE_("(int)"); rbeginTest(stdlst);
-	_FT_TITLE_("(int)"); rbeginTest(ftlst);
-	_STD_TITLE_("(str)"); rbeginTest(stdlst2);
-	_FT_TITLE_("(str)"); rbeginTest(ftlst2);*/
+	/*_STD_TITLE_("(int)"); rbeginTest(stdmapp);
+	_FT_TITLE_("(int)"); rbeginTest(ftmapp);
+	_STD_TITLE_("(str)"); rbeginTest(stdmapp2);
+	_FT_TITLE_("(str)"); rbeginTest(ftmapp2);*/
 
 	_SSTITLE_("'REND' TEST");
-	/*_STD_TITLE_("(int)"); rendTest(stdlst);
-	_FT_TITLE_("(int)"); rendTest(ftlst);
-	_STD_TITLE_("(str)"); rendTest(stdlst2);
-	_FT_TITLE_("(str)"); rendTest(ftlst2);*/
+	/*_STD_TITLE_("(int)"); rendTest(stdmapp);
+	_FT_TITLE_("(int)"); rendTest(ftmapp);
+	_STD_TITLE_("(str)"); rendTest(stdmapp2);
+	_FT_TITLE_("(str)"); rendTest(ftmapp2);*/
 }
 
 /*
