@@ -13,6 +13,7 @@ class bstree
 	typedef ft::bstnode<value_type>				node;
 	typedef node*								pointer;
 	typedef ft::mapBiDirIterator<value_type>	iterator;
+	typedef const iterator						const_iterator;
 
 	private:
 	node						_nd;
@@ -20,10 +21,15 @@ class bstree
 	size_t						_size;
 
 	public:
+	//___________MEMBER FUNCTIONS_____________________________________________//
+	//___________Constructors_________________________________________________//
 	bstree(): _root(nullptr), _size(0) {};
 	bstree(const bstree& src): _root(nullptr), _size(0) {*this = src;};
+
+	//___________Destructor___________________________________________________//
 	virtual ~bstree() {clear();};
 
+	//___________Operator =___________________________________________________//
 	bstree&	operator=(const bstree& src)
 	{
 		if (this == &src)
@@ -35,9 +41,28 @@ class bstree
 		return *this;
 	};
 
+	//___________Iterators____________________________________________________//
 	iterator		begin() {return(iterator(findMin()));};
+	const_iterator	begin() const {return(const_iterator(findMin()));};
 	iterator		end() {return(iterator(nullptr));};
+	const_iterator	end() const {return(const_iterator(nullptr));};
 
+	//___________Capacity_____________________________________________________//
+	bool			empty() const {return !_size;};
+	size_t			size() const {return _size;};
+
+	//___________Element access_______________________________________________//
+	value_type		operator[](const value_type& k)
+	{
+		pointer		find = findKey(k);
+
+		if (!find)
+			insert(k);
+		else
+			return find->val;
+		return k;
+	};
+	//___________Modifiers____________________________________________________//
 	void			insert(value_type v)
 	{
 		_root = _nd.insert(_root, v);
@@ -50,8 +75,6 @@ class bstree
 				_root = nullptr;
 	};
 
-	size_t			size() const {return _size;};
-	bool			empty() const {return !_size;};
 
 	void			clear()
 	{

@@ -41,32 +41,6 @@ struct bstnode
 		return p;
 	};
 
-	void	inorderPrint(pointer p)
-	{
-		if (!p)
-			return ;
-		inorderPrint(p->lft);
-		std::cout << p->val << std::endl;
-		inorderPrint(p->rgt);
-	};
-
-	void	preorderPrint(pointer p)
-	{
-		if (!p)
-			return ;
-		std::cout << p->val << std::endl;
-		preorderPrint(p->lft);
-		preorderPrint(p->rgt);
-	};
-
-	void	postorderPrint(pointer p)
-	{
-		if (!p)
-			return ;
-		postorderPrint(p->lft);
-		postorderPrint(p->rgt);
-		std::cout << p->val << std::endl;
-	};
 
 	pointer	findMax(pointer p) const
 	{
@@ -200,6 +174,32 @@ struct bstnode
 			(*relay)->prt = tosend->prt;
 		//parent of tosend points now to lft or rgt tosend child, & this child
 		//has now parent of tosend as parent.
+	};
+
+	public:
+	void	inorderPrint(pointer p)
+	{
+		if (!p)
+			return ;
+		inorderPrint(p->lft);
+		std::cout << p->val << std::endl;
+		inorderPrint(p->rgt);
+	};
+	void	preorderPrint(pointer p)
+	{
+		if (!p)
+			return ;
+		std::cout << p->val << std::endl;
+		preorderPrint(p->lft);
+		preorderPrint(p->rgt);
+	};
+	void	postorderPrint(pointer p)
+	{
+		if (!p)
+			return ;
+		postorderPrint(p->lft);
+		postorderPrint(p->rgt);
+		std::cout << p->val << std::endl;
 	};
 };
 

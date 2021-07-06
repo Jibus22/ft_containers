@@ -1,11 +1,11 @@
 #ifndef MAPBIDIRITERATOR_HPP
 # define MAPBIDIRITERATOR_HPP
 
-#include "ftbstnode.hpp"
+#include "bstree.hpp"
 
 namespace ft {
 
-template <typename T, typename Distance = ptrdiff_t,
+template <typename T, typename Compare, typename Distance = ptrdiff_t,
 		 typename Pointer = T*, typename Reference = T&>
 class mapBiDirIterator
 {
@@ -17,18 +17,20 @@ public:
     typedef Reference				reference;
 
 private:
-    typedef mapBiDirIterator		iterator;
-	typedef ft::bstnode<value_type>	node;
+    typedef Compare								key_compare;
+    typedef mapBiDirIterator					iterator;
+	typedef ft::bstNode<value_type>				node;
+	typedef ft::bstree<node, key_compare>		tree;
 
-	node							_nd;
-	node							*_ptr;
+	tree							_tree;
+	node*							_ptr;
 
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	mapBiDirIterator() : _ptr(nullptr) {};
 	mapBiDirIterator(mapBiDirIterator const & src) : _ptr(src._ptr) {};
-	//mapBiDirIterator(node *ptr) : _ptr(ptr) {};
+	mapBiDirIterator(node *ptr) : _ptr(ptr) {};
 
 	//___________Destructor___________________________________________________//
 	virtual	~mapBiDirIterator() {};
@@ -54,46 +56,26 @@ public:
 	//___________Incrementation_______________________________________________//
 	iterator				&operator++()
 	{
-		node*			nxt = _nd.nextNode(_ptr);
-
-		if (_ptr == nxt)
-			_ptr = nullptr;
-		else
-			_ptr = nxt;
+		_ptr = _tree.successor(_ptr);
 		return *this;
 	};
 	iterator				operator++(int)
 	{
 		iterator		tmp(*this);
-		node*			nxt = _nd.nextNode(_ptr);
-
-		if (_ptr == nxt)
-			_ptr == nullptr;
-		else
-			_ptr = nxt;
+		_ptr = _tree.successor(_ptr);
 		return tmp;
 	};
 
 	//___________Decrementation_______________________________________________//
 	iterator				&operator--()
 	{
-		node*			nxt = _nd.prevNode(_ptr);
-
-		if (_ptr == nxt)
-			_ptr = nullptr;
-		else
-			_ptr = nxt;
+		_ptr = _tree.predecessor(_ptr);
 		return *this;
 	};
 	iterator				operator--(int)
 	{
 		iterator		tmp(*this);
-		node*			nxt = _nd.prevNode(_ptr);
-
-		if (_ptr == nxt)
-			_ptr == nullptr;
-		else
-			_ptr = nxt;
+		_ptr = _tree.predecessor(_ptr);
 		return tmp;
 	};
 
