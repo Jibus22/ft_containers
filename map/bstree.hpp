@@ -160,7 +160,6 @@ struct bstree
 		else
 			substitute = todel;
 		sendToParent(substitute, todel);
-		//todel->val = substitute->val;
 		*substitute = *todel;
 		if (!substitute->prt)//means root changed
 			*p2 = substitute;
@@ -188,8 +187,8 @@ struct bstree
 			*relay = tosend->rgt;
 		else
 			*relay = nullptr;
-		if (*relay && tosend->prt != todel)
-			(*relay)->prt = tosend->prt;
+		if (*relay && tosend->prt != todel)//if succ don't take place of parent
+			(*relay)->prt = tosend->prt;//child of succ take parent succ as prt
 		//parent of tosend points now to lft or rgt tosend child, & this child
 		//has now parent of tosend as parent.
 	};

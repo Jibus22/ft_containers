@@ -25,8 +25,8 @@ namespace ft {
 
 template < class Key,
            class T,
-           class Compare = std::less<Key>,
-           class Allocator = std::allocator<std::pair<const Key,T> >
+           class Compare = ft::less<Key>,
+           class Allocator = std::allocator<ft::pair<const Key,T> >
            >
 class map
 {
@@ -34,7 +34,7 @@ public:
 	//___________MEMBER TYPES_________________________________________________//
     typedef Key											key_type;
     typedef T											mapped_type;
-    typedef std::pair<const key_type, mapped_type>		value_type;
+    typedef ft::pair<const key_type, mapped_type>		value_type;
     typedef Compare										key_compare;
     typedef Allocator									allocator_type;
     typedef typename allocator_type::reference			reference;
@@ -125,7 +125,7 @@ public:
 	//___________Element access_______________________________________________//
 	mapped_type&		operator[](const key_type& k)
 	{
-		return (*((this->insert(std::make_pair(k,mapped_type()))).first)).second;
+		return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
 	};
 	//___________Modifiers____________________________________________________//
 	pair<iterator,bool>	insert(const value_type& val)

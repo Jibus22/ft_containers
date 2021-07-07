@@ -7,54 +7,9 @@
 template <typename Container>
 void	beginTest(Container mapp)
 {
-	typedef typename Container::iterator	iterator;
-	iterator				i;
-
-	mapp.insert(std::make_pair(50, "a"));
-	mapp.insert(std::make_pair(25, "b"));
-	mapp.insert(std::make_pair(75, "c"));
-	mapp.insert(std::make_pair(10, "d"));
-	mapp.insert(std::make_pair(40, "e"));
-	mapp.insert(std::make_pair(65, "f"));
-	mapp.insert(std::make_pair(90, "g"));
-	mapp.insert(std::make_pair(5, "h"));
-	mapp.insert(std::make_pair(18, "i"));
-	mapp.insert(std::make_pair(32, "j"));
-	mapp.insert(std::make_pair(45, "k"));
-	mapp.insert(std::make_pair(58, "l"));
-	mapp.insert(std::make_pair(70, "m"));
-	mapp.insert(std::make_pair(82, "n"));
-	mapp.insert(std::make_pair(100, "o"));
-	mapp.insert(std::make_pair(22, "p"));
-	mapp.insert(std::make_pair(42, "q"));
-	mapp.insert(std::make_pair(62, "r"));
-	mapp.insert(std::make_pair(78, "s"));
-	mapp.insert(std::make_pair(120, "t"));
-
-	std::cout << "size: " << mapp.size() << "\tempty: "
-		<< mapp.empty() << std::endl;
-
-	for (iterator j = mapp.begin(); j != mapp.end(); j++)
-		std::cout << "key: " << j->first << "\t\tvalue: " << j->second << std::endl;
-
-	std::cout << "bracket 41, then 78: " << mapp[41] << ", " << mapp[78] << std::endl;
-
-
-	_THISTESTIS_("erase begin:  ", ENDL);
-	for (int n = 0; n < 21; n++)
-		mapp.erase(mapp.begin());
-
-	for (iterator j = mapp.begin(); j != mapp.end(); j++)
-		std::cout << "key: " << j->first << "\t\tvalue: " << j->second << std::endl;
-
-	/*
-	fillContainer(mapp, 20);
-	_THISTESTIS_("begin of x20:  ", NOENDL);
-	std::cout << " " << *(mapp.begin()) << std::endl;
-	fillContainer(mapp, 20);
-	_THISTESTIS_("begin of x40:  ", NOENDL);
-	std::cout << " " << *(mapp.begin()) << std::endl;
-	*/
+	_THISTESTIS_("iterate begin to end thru a map of ~200 elements", ENDL);
+	fillmap(mapp, 10);
+	_PRINT_MAP_CONTENT_(mapp);
 }
 
 ///////END
@@ -62,18 +17,20 @@ template <typename Container>
 void	endTest(Container mapp)
 {
 	typedef typename Container::iterator			iterator;
+
+	Container		mapp2;
 	iterator		it;
 
-	fillContainer(mapp, 20);
+	fillmap(mapp, 1);
 	it = mapp.end();
 	it--;
-	_THISTESTIS_("end-1 of x20:  ", NOENDL);
-	std::cout << " " << *it << std::endl;
-	fillContainer(mapp, 10);
-	_THISTESTIS_("end-1 of x30:  ", NOENDL);
-	it = mapp.end();
+	_THISTESTIS_("end-1 of x20:   ", NOENDL);
+	_DISPLAY_MAP_NODE_(it);
+	fillmap(mapp2, 10);
+	_THISTESTIS_("end-1 of x180:  ", NOENDL);
+	it = mapp2.end();
 	it--;
-	std::cout << " " << *it << std::endl;
+	_DISPLAY_MAP_NODE_(it);
 }
 
 ///////RBEGIN
@@ -85,11 +42,11 @@ void	rbeginTest(Container mapp)
 	reverse_iterator		it;
 	reverse_iterator		it2;
 
-	fillContainer(mapp, 20);
+	fillmap(mapp, 20);
 	_THISTESTIS_("rbegin of x20:  ", NOENDL);
 	it = mapp.rbegin();
 	std::cout << " " << *it << std::endl;
-	fillContainer(mapp, 10);
+	fillmap(mapp, 10);
 	it2 = mapp.rbegin();
 	_THISTESTIS_("begin of x30:   ", NOENDL);
 	std::cout << " " << *it2 << std::endl;
@@ -103,7 +60,7 @@ void	rbeginTest(Container mapp)
 		std::cout << " it == it2" << std::endl;
 
 	//mapp.clear();
-	fillContainer(mapp, 10);
+	fillmap(mapp, 10);
 	_THISTESTIS_("reverse print : ", NOENDL);
 	for (reverse_iterator i = mapp.rbegin(); i != mapp.rend(); i++)
 		std::cout << " " << *i << ", ";
@@ -124,7 +81,7 @@ void	rendTest(Container mapp)
 	reverse_iterator		it;
 
 	_THISTESTIS_("print rbegin to rend:", NOENDL);
-	fillContainer(mapp, 10);
+	fillmap(mapp, 10);
 	for (reverse_iterator i = mapp.rbegin(); i != mapp.rend(); i++)
 		std::cout << " " << *i << " ";
 	std::cout << std::endl;
@@ -150,10 +107,8 @@ void	iteratorsTest()
 	_FT_TITLE_("(int)"); beginTest(ftmapp);*/
 
 	_SSTITLE_("'END' TEST");
-	/*_STD_TITLE_("(int)"); endTest(stdmapp);
-	_FT_TITLE_("(int)"); endTest(ftmapp);
 	_STD_TITLE_("(str)"); endTest(stdmapp2);
-	_FT_TITLE_("(str)"); endTest(ftmapp2);*/
+	//_FT_TITLE_("(str)"); endTest(ftmapp2);
 
 	_SSTITLE_("'RBEGIN' TEST");
 	/*_STD_TITLE_("(int)"); rbeginTest(stdmapp);
