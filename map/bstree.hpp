@@ -13,11 +13,11 @@ struct bstNode
 	typedef bstNode				node;
 	typedef node*				pointer;
 
-	pointer		lft, rgt, prt;
+	pointer		lft, rgt, prt, head;
 	value_type	val;
 
 	bstNode(const value_type& v = value_type()):
-		lft(nullptr), rgt(nullptr), prt(nullptr), val(v) {};
+		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(v) {};
 	bstNode(const bstNode& src) : val(src.val) {};
 	bstNode&	operator=(const bstNode& rhs) {
 		if (this == &rhs)
@@ -25,6 +25,8 @@ struct bstNode
 		lft = rhs.lft;
 		rgt = rhs.rgt;
 		prt = rhs.prt;
+		if (rhs.head)
+			head = rhs.head;
 		if (prt)
 		{
 			if (prt->lft == &rhs)
@@ -36,6 +38,13 @@ struct bstNode
 			lft->prt = this;
 		if (rgt)
 			rgt->prt = this;
+		if (head)
+		{
+			if (head->lft == &rhs)
+				head->lft = this;
+			if (head->rgt == &rhs)
+				head->rgt = this;
+		}
 		return *this;
 	}
 	virtual ~bstNode() {};
@@ -61,34 +70,35 @@ struct bstree
 		delete p;
 	};
 
-	pointer	giveChild(const pointer p, const value_type& val) const
+	pointer	giveChild(const pointer p, const value_type& val,
+				const bool min, const bool max) const
 	{
 		if (_comp(p->val.first, val.first))
 		{
 			p->rgt = new node(val);
 			p->rgt->prt = p;
+			if (max)
+			{
+				p->rgt->head = p->head;
+				p->rgt->head->rgt = p->rgt;
+				if (p->head->lft != p )
+					p->head = nullptr;
+			}
 			return p->rgt;
 		}
 		else
 		{
 			p->lft = new node(val);
 			p->lft->prt = p;
+			if (min)
+			{
+				p->lft->head = p->head;
+				p->lft->head->lft = p->lft;
+				if (p->head->rgt != p )
+					p->head = nullptr;
+			}
 			return p->lft;
 		}
-	};
-
-	pointer	findKey(pointer p, const key_type& key) const
-	{
-		while (p)
-		{
-			if (_comp(p->val.first, key))
-				p = p->rgt;
-			else if (_comp(key, p->val.first))
-				p = p->lft;
-			else
-				return p;
-		}
-		return p;//Here it must be nullptr in any case
 	};
 
 	pointer	successor(const pointer p) const
@@ -146,6 +156,20 @@ struct bstree
 		preOrderCpy(rt->rgt, newNode);
 	};
 
+	pointer	findKey(pointer p, const key_type& key) const
+	{
+		while (p)
+		{
+			if (_comp(p->val.first, key))
+				p = p->rgt;
+			else if (_comp(key, p->val.first))
+				p = p->lft;
+			else
+				return p;
+		}
+		return p;//Here it must be nullptr in any case
+	};
+
 	int	delNode(const pointer p, const key_type& key, pointer *p2) const
 	{
 		const pointer	todel = findKey(p, key);
@@ -189,6 +213,14 @@ struct bstree
 			*relay = nullptr;
 		if (*relay && tosend->prt != todel)//if succ don't take place of parent
 			(*relay)->prt = tosend->prt;//child of succ take parent succ as prt
+		if (tosend == todel && tosend->head)//if this is leaf node & min/max node
+		{
+			tosend->prt->head = tosend->head;
+			if (tosend->head->lft == tosend)
+				tosend->head->lft = tosend->prt;
+			else
+				tosend->head->rgt = tosend->prt;
+		}
 		//parent of tosend points now to lft or rgt tosend child, & this child
 		//has now parent of tosend as parent.
 	};

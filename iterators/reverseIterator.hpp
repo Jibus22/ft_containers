@@ -49,7 +49,7 @@ public:
 	reference				operator[](const difference_type i) const
 							{return _iter[i];};
 	reference				operator*() const {return *_iter;};
-	pointer					operator->() const {return _iter;};
+	pointer					operator->() const {return _iter.operator->();};
 
 	//___________Incrementation_______________________________________________//
 	reverse_iterator		&operator++()

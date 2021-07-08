@@ -21,9 +21,9 @@ int	main(int ac, char *av[])
 	_TITLE_("MAP TEST");
 	if (ac == 1 || arg == "1")
 		iteratorsTest();
-	/*if (ac == 1 || arg == "2")
+	if (ac == 1 || arg == "2")
 		capacityTest();
-	if (ac == 1 || arg == "3")
+	/*if (ac == 1 || arg == "3")
 		elementAccessTest();
 	if (ac == 1 || arg == "4")
 		modifiersTest();

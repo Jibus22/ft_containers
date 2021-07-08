@@ -56,26 +56,42 @@ public:
 	//___________Incrementation_______________________________________________//
 	iterator				&operator++()
 	{
-		_ptr = _tree.successor(_ptr);
+		node*		tmp = _ptr;
+
+		if (_ptr->head == _ptr)//means we are currently the head node
+				_ptr = _ptr->lft;
+		else {
+			_ptr = _tree.successor(_ptr);
+			if (!_ptr)
+				_ptr = tmp->head;
+		}
 		return *this;
 	};
 	iterator				operator++(int)
 	{
 		iterator		tmp(*this);
-		_ptr = _tree.successor(_ptr);
+		operator++();
 		return tmp;
 	};
 
 	//___________Decrementation_______________________________________________//
 	iterator				&operator--()
 	{
-		_ptr = _tree.predecessor(_ptr);
+		node*		tmp = _ptr;
+
+		if (_ptr->head == _ptr)//means we are currently the head node
+			_ptr = _ptr->rgt;
+		else {
+			_ptr = _tree.predecessor(_ptr);
+			if (!_ptr)
+				_ptr = tmp->head;
+		}
 		return *this;
 	};
 	iterator				operator--(int)
 	{
 		iterator		tmp(*this);
-		_ptr = _tree.predecessor(_ptr);
+		operator--();
 		return tmp;
 	};
 

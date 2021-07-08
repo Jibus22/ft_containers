@@ -39,7 +39,7 @@ else
 endif
 
 ##### SRCS #####
-SRCS = $(addprefix $(SRCPATH)/, main.cpp iteratorsTest.cpp)# capacityTest.cpp\
+SRCS = $(addprefix $(SRCPATH)/, main.cpp iteratorsTest.cpp capacityTest.cpp)#\
 	   #elementAccessTest.cpp modifiersTest.cpp operationTest.cpp otherTest.cpp)
 SRCS2 = $(addprefix $(SRCPATH2)/, print.cpp)
 
