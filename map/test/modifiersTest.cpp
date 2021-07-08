@@ -134,8 +134,6 @@ void	eraseTest(Container mapp)
 	it = mapp.erase(it2);
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
-	_THISTESTIS_("return:", NOENDL);
-	_DISPLAY_MAP_NODE_(it);
 
 	_SPLIT_LINE_();
 
@@ -166,8 +164,6 @@ void	eraseTest(Container mapp)
 	itret = mapp.erase(mapp.begin(), mapp.end());
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
-	_THISTESTIS_("return:", NOENDL);
-	_DISPLAY_MAP_NODE_(itret);
 }
 
 ///////SWAP
