@@ -3,212 +3,218 @@
 #include <map>
 
 ///////INSERT
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	insertOne(Container<Element, Allocator> & lst,
-				typename Container<Element, Allocator>::iterator it)
-{lst.insert(it, 42);}
+template <template <typename, typename, typename, typename> class Container,
+		typename Key, typename T, typename Compare, typename Allocator>
+std::pair<Key, T>	mkpair(Container<Key, T, Compare, Allocator> & mapp,
+							int n, std::string s)
+{
+	(void)mapp;
+	return std::make_pair(n, s);
+}
 
-template <template <typename, typename> class Container,
-		typename Allocator>
-void	insertOne(Container<std::string, Allocator> & lst,
-				typename Container<std::string, Allocator>::iterator it)
-{lst.insert(it, "blo");}
+template <template <typename, typename, typename, typename> class Container,
+		typename Key, typename T, typename Allocator>
+ft::pair<Key, T>	mkpair(Container<Key, T, ft::less<Key>, Allocator> & mapp,
+							int n, std::string s)
+{
+	(void)mapp;
+	return ft::make_pair(n, s);
+}
 
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	insertTwo(Container<Element, Allocator> & lst, size_t n,
-				typename Container<Element, Allocator>::iterator it)
-{lst.insert(it, n, 42);}
+template <template <typename, typename, typename, typename> class Container,
+		typename Key, typename T, typename Compare, typename Allocator>
+void	printreturn(Container<Key, T, Compare, Allocator> & mapp,
+							int n, std::string s)
+{
+	typedef typename Container<Key, T, Compare, Allocator>::iterator iterator;
+	std::pair<iterator, bool>		ret = mapp.insert(mkpair(mapp, n, s));
+	_THISTESTIS_("return of insert(value). iterator:", NOENDL);
+	_DISPLAY_MAP_NODE_(ret.first);
+	_THISTESTIS_("bolean:  ", NOENDL);
+	std::cout << ret.second << std::endl;
+}
 
-template <template <typename, typename> class Container,
-		typename Allocator>
-void	insertTwo(Container<std::string, Allocator> & lst, size_t n,
-				typename Container<std::string, Allocator>::iterator it)
-{lst.insert(it, n, "blo");}
+template <template <typename, typename, typename, typename> class Container,
+		typename Key, typename T, typename Allocator>
+void	printreturn(Container<Key, T, ft::less<Key>, Allocator> & mapp,
+							int n, std::string s)
+{
+	typedef typename
+		Container<Key, T, ft::less<Key>, Allocator>::iterator iterator;
+	ft::pair<iterator, bool>		ret = mapp.insert(mkpair(mapp, n, s));
+	_THISTESTIS_("return of insert(value). iterator:", NOENDL);
+	_DISPLAY_MAP_NODE_(ret.first);
+	_THISTESTIS_("bolean:  ", NOENDL);
+	std::cout << ret.second << std::endl;
+}
 
 template <typename Container>
-void	insertTest(Container lst)
+void	insertTest(Container mapp)
 {
-	Container						lst2;
-	typename Container::iterator	it1;
-	typename Container::iterator	it2;
-	typename Container::iterator	it3;
+	typedef typename Container::iterator iterator;
+	
+	Container		mapp2;
+	iterator		it1, ret;
 
-	_THISTESTIS_("insert one value at it pos in a x16 container__", ENDL);
-	_THISTESTIS_("value at pos=5:     ", NOENDL);
-	fillContainer(lst, 16);
-	it1 = lst.begin();
+	_THISTESTIS_("MAP1. test of insert(iterator, value_type): ", ENDL);
+	fillmap(mapp, 1);
+	_THISTESTIS_("before: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("", ENDL);
+	_THISTESTIS_("insert one value (26, \"Z\") at it pos (beg+5) in a x20\
+container__", ENDL);
+	it1 = mapp.begin();
 	for (size_t i = 0; i < 5; i++)
 		it1++;
-	insertOne(lst, it1);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_LST_CONTENT_(lst);
+	ret = mapp.insert(it1, mkpair(mapp, 26, "Z"));
+	_THISTESTIS_("print of content after:", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return of insert(iterator, value):", NOENDL);
+	_DISPLAY_MAP_NODE_(ret);
+	_THISTESTIS_("", ENDL);
 
-	_THISTESTIS_("value at the end:   ", NOENDL);
-	it1 = lst.end();
-	insertOne(lst, it1);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("print of content:   ", ENDL);
-	_PRINT_LST_CONTENT_(lst);
+	_THISTESTIS_("insert value with wrong it position (beg+5) & existing key\
+(78, \"X\"): ", ENDL);
+	ret = mapp.insert(it1, mkpair(mapp, 78, "X"));
+	_THISTESTIS_("print of content after:", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return of insert(iterator, value):", NOENDL);
+	_DISPLAY_MAP_NODE_(ret);
+	_THISTESTIS_("", ENDL);
 
-	lst.clear();
+	_THISTESTIS_("insert value (79, \"X\") with wrong it position \
+(beg+5): ", ENDL);
+	ret = mapp.insert(it1, mkpair(mapp, 79, "X"));
+	_THISTESTIS_("print of content after:", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return of insert(iterator, value):", NOENDL);
+	_DISPLAY_MAP_NODE_(ret);
 
 	_SPLIT_LINE_();
-	_THISTESTIS_("insert many values at it pos 5 in a x16 container__", ENDL);
-	_THISTESTIS_("5 values from pos 5:", NOENDL);
-	fillContainer(lst, 16);
-	it1 = lst.begin();
-	for (size_t i = 0; i < 5; i++)
-		it1++;
-	insertTwo(lst, 5, it1);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_LST_CONTENT_(lst);
-
-	_THISTESTIS_("12 values from end: ", NOENDL);
-	it1 = lst.end();
-	insertTwo(lst, 12, it1);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_LST_CONTENT_(lst);
-
-	_THISTESTIS_("194 values from end:", NOENDL);
-	it1 = lst.end();
-	insertTwo(lst, 194, it1);
-	_PRINT_LST_(lst);
-
-	lst.clear();
+	_THISTESTIS_("MAP2. test of insert(value_type). insert 3 new values \
+then a duplicate: ", ENDL);
+	_THISTESTIS_("", ENDL);
+	printreturn(mapp2, 52, "BLA");
+	printreturn(mapp2, 22, "ZOU");
+	printreturn(mapp2, 69, "PAF");
+	printreturn(mapp2, 22, "TCHIN!");
+	_THISTESTIS_("print of content after:", ENDL);
+	_PRINT_MAP_CONTENT_(mapp2);
 
 	_SPLIT_LINE_();
-	_THISTESTIS_("third insert: from container it range, at a pos___", ENDL);
-	fillContainer(lst2, 20);
-	it1 = lst2.begin();
-	for (size_t i = 0; i < 5; i++)
-		it1++;
-	it2 = it1;
-	for (size_t i = 0; i < 10; i++)
-		it2++;
-	fillContainer(lst, 10);
-	_THISTESTIS_("10 values at end-2 of cont(10):", NOENDL);
-	it3 = lst.end();
-	for (size_t i = 0; i < 2; i++)
-		it3--;
-	lst.insert(it3, it1, it2);
-	_PRINT_LST_(lst);
-	for (size_t i = 0; i < 5; i++)
-		it1++;
-	for (size_t i = 0; i < 3; i++)
-		it2++;
-	_THISTESTIS_("8 values at end-8 of cont(20): ", NOENDL);
-	it3 = lst.end();
-	for (size_t i = 0; i < 2; i++)
-		it3--;
-	lst.insert(it3, it1, it2);
-	_PRINT_LST_(lst);
-
-	_THISTESTIS_("print of content:", ENDL);
-	_PRINT_LST_CONTENT_(lst);
+	_THISTESTIS_("test of insert(it first, it last). \
+MAP1 into MAP2", ENDL);
+	mapp2.insert(mapp.begin(), mapp.end());
+	_THISTESTIS_("print of content after:", ENDL);
+	_PRINT_MAP_CONTENT_(mapp2);
 }
 
 ///////ERASE
 template <typename Container>
-void	eraseTest(Container lst)
+void	eraseTest(Container mapp)
 {
-	typename Container::iterator	it;
-	typename Container::iterator	it2;
+	typename Container::iterator	it, it2, itret;
+	typename Container::size_type	ret;
 
-	_THISTESTIS_("erase value pos 5 in a x10 container", ENDL);
-	_THISTESTIS_("content displayed as : before, after", ENDL);
-	fillContainer(lst, 10);
-	_PRINT_LST_CONTENT_(lst);
-	it2 = lst.begin();
-	for (size_t i = 0; i < 5; i++)
-		it2++;
-	it = lst.erase(it2);
-	_PRINT_LST_CONTENT_(lst);
+	fillmap(mapp, 1);
+	_THISTESTIS_("test of erase(iterator): ", ENDL);
+	_THISTESTIS_("before: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("", ENDL);
+	_THISTESTIS_("erase begin: ", ENDL);
+	it = mapp.erase(mapp.begin());
+	_THISTESTIS_("after: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return:", NOENDL);
+	_DISPLAY_MAP_NODE_(it);
 
-	_THISTESTIS_("print erase iterator return: ", NOENDL);
-	std::cout << *it << std::endl;
-
-	_THISTESTIS_("erase first value, display content & return:", ENDL);
-	it = lst.erase(lst.begin());
-	_PRINT_LST_CONTENT_(lst);
-	std::cout << *it << std::endl;
-
-	_THISTESTIS_("erase end-1, display content & return-1:", ENDL);
-	it2 = lst.end();
+	_THISTESTIS_("erase end-1: ", ENDL);
+	it2 = mapp.end();
 	it2--;
-	it = lst.erase(it2);
-	it--;
-	_PRINT_LST_CONTENT_(lst);
-	std::cout << *it << std::endl;
-
-	_THISTESTIS_("finally print state:", NOENDL);
-	_PRINT_LST_(lst);
+	it = mapp.erase(it2);
+	_THISTESTIS_("after: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return:", NOENDL);
+	_DISPLAY_MAP_NODE_(it);
 
 	_SPLIT_LINE_();
-	_THISTESTIS_("second erase test: from it range", ENDL);
-	_THISTESTIS_("erase begin to begin + 3, print content & return:", ENDL);
-	it2 = lst.begin();
-	for (size_t i = 0; i < 3; i++)
-		it2++;
-	it = lst.erase(lst.begin(), it2);
-	_PRINT_LST_CONTENT_(lst);
-	std::cout << *it << std::endl;
 
-	_THISTESTIS_("erase begin+1 to end, print content & return-1:", ENDL);
-	it2 = lst.begin();
-	it2++;
-	it = lst.erase(it2, lst.end());
-	_PRINT_LST_CONTENT_(lst);
-	it--;
-	std::cout << *it << std::endl;
+	_THISTESTIS_("test of erase(value). 22, 75, 100, 75: ", ENDL);
+	_THISTESTIS_("return: ", NOENDL);
+	ret = mapp.erase(22);
+	std::cout << ret << ", ";
+	ret = mapp.erase(75);
+	std::cout << ret << ", ";
+	ret = mapp.erase(100);
+	std::cout << ret << ", ";
+	ret = mapp.erase(75);
+	std::cout << ret << std::endl;
+	_THISTESTIS_("after: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+
+	_THISTESTIS_("test of erase(it first, it last). begin+3 to end-3: ", ENDL);
+	it = mapp.begin();
+	it2 = mapp.end();
+	for (int i = 0; i < 3; i++, ++it, --it2);
+	itret = mapp.erase(it, it2);
+	_THISTESTIS_("after: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return:", NOENDL);
+	_DISPLAY_MAP_NODE_(itret);
+
+	_THISTESTIS_("test of erase(it first, it last). begin to end: ", ENDL);
+	itret = mapp.erase(mapp.begin(), mapp.end());
+	_THISTESTIS_("after: ", ENDL);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("return:", NOENDL);
+	_DISPLAY_MAP_NODE_(itret);
 }
 
 ///////SWAP
 template <typename Container>
-void	swapTest(Container lst)
+void	swapTest(Container mapp)
 {
-	Container			lst2;
+	Container			mapp2;
 	typename Container::iterator	it;
 	typename Container::iterator	it2;
 
-	_THISTESTIS_("swap const lstx10 with var lstx20", ENDL);
-	fillContainer(lst, 20);
-	sizeAssign(lst2, 10);
-	it = lst.begin();
-	it2 = lst2.begin();
-	_THISTESTIS_("lst state before:     ", NOENDL);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("lst2 state before:    ", NOENDL);
-	_PRINT_LST_(lst2);
-	_THISTESTIS_("iterator 1 & 2 before:", NOENDL);
-	std::cout << "   " << *it << "  " << *it2 << std::endl;
-	lst.swap(lst2);
-	_THISTESTIS_("lst state after:      ", NOENDL);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("lst2 state after:     ", NOENDL);
-	_PRINT_LST_(lst2);
-	_THISTESTIS_("iterator 1 & 2 after: ", NOENDL);
-	std::cout << "   " << *it << "  " << *it2 << std::endl;
+	_THISTESTIS_("swap const mappx20 with var mappx53", ENDL);
+	fillmap(mapp, 1);
+	fillmap(mapp2, 3);
+	it = mapp.begin();
+	it++;
+	it2 = mapp2.begin();
+	_THISTESTIS_("mapp state before:     ", NOENDL);
+	_PRINT_MAP_(mapp);
+	_THISTESTIS_("mapp2 state before:    ", NOENDL);
+	_PRINT_MAP_(mapp2);
+	_THISTESTIS_("iterator 1 & 2 before:", ENDL);
+	_DISPLAY_MAP_NODE_(it);
+	_DISPLAY_MAP_NODE_(it2);
+	mapp.swap(mapp2);
+	_THISTESTIS_("mapp state after:      ", NOENDL);
+	_PRINT_MAP_(mapp);
+	_THISTESTIS_("mapp2 state after:     ", NOENDL);
+	_PRINT_MAP_(mapp2);
+	_THISTESTIS_("iterator 1 & 2 after: ", ENDL);
+	_DISPLAY_MAP_NODE_(it);
+	_DISPLAY_MAP_NODE_(it2);
 }
 
 ///////CLEAR
 template <typename Container>
-void	clearTest(Container lst)
+void	clearTest(Container mapp)
 {
-	fillContainer(lst, 2000);
-	_THISTESTIS_("clear container x2000", ENDL);
-	_THISTESTIS_("lst state before:     ", NOENDL);
-	_PRINT_LST_(lst);
-	lst.clear();
-	_THISTESTIS_("lst state after:      ", NOENDL);
-	_PRINT_LST_(lst);
-	_THISTESTIS_("clear empty container:", NOENDL);
-	lst.clear();
-	_PRINT_LST_(lst);
+	fillmap(mapp, 2000);
+	_THISTESTIS_("clear container x25400", ENDL);
+	_THISTESTIS_("mapp state before:     ", NOENDL);
+	_PRINT_MAP_(mapp);
+	mapp.clear();
+	_THISTESTIS_("mapp state after:      ", NOENDL);
+	_PRINT_MAP_(mapp);
+	_THISTESTIS_("clear empty container: ", NOENDL);
+	mapp.clear();
+	_PRINT_MAP_(mapp);
 }
 
 ////////MAIN
@@ -216,34 +222,24 @@ void	modifiersTest()
 {
 	_STITLE_("MODIFIERS TEST");
 
-	std::map<int>			stdlst;
-	ft::map<int>			ftlst;
-	std::map<std::string>	stdlst2;
-	ft::map<std::string>	ftlst2;
+	std::map<int, std::string>			stdmapp;
+	ft::map<int, std::string>			ftmapp;
 
 	_SSTITLE_("'INSERT' TEST");
-	/*_STD_TITLE_("(int)"); insertTest(stdlst);
-	_FT_TITLE_("(int)"); insertTest(ftlst);
-	_STD_TITLE_("(str)"); insertTest(stdlst2);
-	_FT_TITLE_("(str)"); insertTest(ftlst2);*/
+	_STD_TITLE_("(int, std::string)"); insertTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); insertTest(ftmapp);
 
 	_SSTITLE_("'ERASE' TEST");
-	/*_STD_TITLE_("(int)"); eraseTest(stdlst);
-	_FT_TITLE_("(int)"); eraseTest(ftlst);
-	_STD_TITLE_("(str)"); eraseTest(stdlst2);
-	_FT_TITLE_("(str)"); eraseTest(ftlst2);*/
+	_STD_TITLE_("(int, std::string)"); eraseTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); eraseTest(ftmapp);
 
 	_SSTITLE_("'SWAP' TEST");
-	/*_STD_TITLE_("(int)"); swapTest(stdlst);
-	_FT_TITLE_("(int)"); swapTest(ftlst);
-	_STD_TITLE_("(str)"); swapTest(stdlst2);
-	_FT_TITLE_("(str)"); swapTest(ftlst2);*/
+	_STD_TITLE_("(int, std::string)"); swapTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); swapTest(ftmapp);
 
 	_SSTITLE_("'CLEAR' TEST");
-	/*_STD_TITLE_("(int)"); clearTest(stdlst);
-	_FT_TITLE_("(int)"); clearTest(ftlst);
-	_STD_TITLE_("(str)"); clearTest(stdlst2);
-	_FT_TITLE_("(str)"); clearTest(ftlst2);*/
+	_STD_TITLE_("(int, std::string)"); clearTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); clearTest(ftmapp);
 }
 
 /*

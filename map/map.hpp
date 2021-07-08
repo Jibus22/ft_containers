@@ -195,7 +195,7 @@ public:
 		ptr			p = position.getNode();
 		ptr			p2;
 
-		if (*++i == end())
+		if (++i == end())
 		{
 			if (_comp((*position).first, val.first))
 			{
@@ -226,11 +226,15 @@ public:
 		for (InputIterator i = first; i != last; i++)
 			insert(*i);
 	};
-	void			erase(iterator position)
+	iterator		erase(const_iterator position)
 	{
+		iterator	it(position);
+
+		it++;
 		if (!_tree.delNode(position.getNode(), position->first, &_root))
 			if (!--_size)
 				initMe();
+		return it;
 	};
 	size_type		erase(const key_type& k)
 	{
@@ -240,15 +244,18 @@ public:
 			initMe();
 		return 1;
 	};
-	void			erase(iterator first, iterator last)
+	iterator		erase(const_iterator first, const_iterator last)
 	{
+		iterator	l(last);
+		iterator	j(first);
 		iterator	i(first);
 
-		while (first != last) {
-			++first;
+		while (j != last) {
+			++j;
 			erase(i);
-			i = first;
+			i = j;
 		}
+		return l;
 	};
 	void				swap(map& x)
 	{
