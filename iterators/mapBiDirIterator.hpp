@@ -11,10 +11,10 @@ class mapBiDirIterator
 {
 public:
 	//___________MEMBER TYPES_________________________________________________//
-	typedef T						value_type;
-	typedef Distance				difference_type;
-    typedef Pointer					pointer;
-    typedef Reference				reference;
+	typedef T									value_type;
+	typedef Distance							difference_type;
+    typedef Pointer								pointer;
+    typedef Reference							reference;
 
 private:
     typedef Compare								key_compare;

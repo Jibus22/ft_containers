@@ -27,10 +27,10 @@ int	main(int ac, char *av[])
 		elementAccessTest();
 	if (ac == 1 || arg == "4")
 		modifiersTest();
-	/*if (ac == 1 || arg == "5")
+	if (ac == 1 || arg == "5")
 		operationTest();
 	if (ac == 1 || arg == "6")
-		otherTest();*/
+		otherTest();
 
 	return (0);
 }

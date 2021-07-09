@@ -20,9 +20,6 @@
 
 namespace ft {
 
-//template <template <typename, typename> class Container,
-		//typename Element, typename Allocator>
-
 template < class Key,
            class T,
            class Compare = ft::less<Key>,
@@ -52,7 +49,7 @@ protected:
 
 public:
     typedef ft::mapBiDirIterator<value_type, key_compare>		iterator;
-    typedef const ft::mapBiDirIterator<value_type, key_compare>	const_iterator;
+    typedef ft::mapBiDirIterator<const value_type, key_compare>	const_iterator;
 
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
@@ -60,13 +57,17 @@ public:
 	//___________NESTED CLASS_________________________________________________//
 	class value_compare: ft::binary_function <value_type, value_type, bool>
 	{
+		friend class map;
 		protected:
-		key_compare comp;
+		key_compare							comp;
+
 		value_compare(key_compare c): comp(c) {};
+
 		public:
-		typedef bool result_type;
-		typedef value_type first_argument_type;
-		typedef value_type second_argument_type;
+		typedef bool						result_type;
+		typedef value_type					first_argument_type;
+		typedef value_type					second_argument_type;
+
 		bool operator()(const value_type& x, const value_type& y) const
 		{return comp(x.first, y.first);}
 	};
@@ -90,7 +91,18 @@ public:
 		initMe();
 	};
 
-	map(const map& x): _root(nullptr), _head(new node), _size(0)
+	template <class InputIterator>
+	map(InputIterator first, InputIterator last,
+				const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type()): _root(nullptr),
+	_head(new node), _size(0), _comp(comp), _allocator(alloc)
+	{
+		initMe();
+		insert(first, last);
+	};
+
+	map(const map& x): _root(nullptr), _head(new node), _size(0),
+	_comp(x._comp), _allocator(x._allocator)
 	{
 		initMe();
 		_root = x.copy();
@@ -128,11 +140,11 @@ public:
 	};
 
 	//___________Iterators____________________________________________________//
-	iterator			begin() {return iterator(_head->lft);};
-	const_iterator		begin() const
-						{return const_iterator(_head->lft);};
-	iterator			end() {return iterator(_head);};
-	const_iterator		end() const {return const_iterator(_head);};
+	iterator				begin() {return iterator(_head->lft);};
+	const_iterator			begin() const
+							{return const_iterator(_head->lft);};
+	iterator				end() {return iterator(_head);};
+	const_iterator			end() const {return const_iterator(_head);};
 	reverse_iterator		rbegin()
 							{return reverse_iterator(_head->rgt);};
 	const_reverse_iterator	rbegin() const
@@ -274,9 +286,79 @@ public:
 		_size = 0;
 	};
 
+	//___________Observers____________________________________________________//
+	key_compare			key_comp() const {return _comp;};
+	value_compare		value_comp() const {return value_compare(_comp);};
+
 	//___________Operations___________________________________________________//
+	iterator			find(const key_type& k)
+	{
+		ptr	find = _tree.findKey(_root, k);
+		if (!find)
+			return end();
+		return iterator(find);
+	};
+	const_iterator		find(const key_type& k) const
+	{
+		ptr	find = _tree.findKey(_root, k);
+		if (!find)
+			return end();
+		return const_iterator(find);
+	};
+	size_type			count(const key_type& k) const
+	{
+		if (_tree.findKey(_root, k))
+			return 1;
+		return 0;
+	};
+	iterator			lower_bound(const key_type& k)
+	{
+		ptr			p = _root;
+		ptr			last = p;
+		iterator	i;
 
+		while (p)
+		{
+			last = p;
+			if (_comp(p->val.first, k))
+				p = p->rgt;
+			else if (_comp(k, p->val.first))
+				p = p->lft;
+			else
+				return iterator(p);
+		}
+		return bound(last, k);
+	};
+	const_iterator		lower_bound(const key_type& k) const
+	{return const_iterator(lower_bound(k));};
+	iterator			upper_bound(const key_type& k)
+	{
+		ptr			p = _root;
+		ptr			last = p;
+		iterator	i;
 
+		while (p)
+		{
+			last = p;
+			if (_comp(p->val.first, k))
+				p = p->rgt;
+			else if (_comp(k, p->val.first))
+				p = p->lft;
+			else
+				return ++iterator(p);
+		}
+		return bound(last, k);
+	};
+	const_iterator		upper_bound(const key_type& k) const
+	{return const_iterator(upper_bound(k));};
+
+	ft::pair<iterator,iterator>				equal_range(const key_type& k)
+	{return ft::make_pair(lower_bound(k), upper_bound(k));};
+	ft::pair<const_iterator,const_iterator>	equal_range(const key_type& k) const
+	{return ft::make_pair(const_iterator(lower_bound(k)),
+			const_iterator(upper_bound(k)));};
+
+	//___________Internal utilities___________________________________________//
 	private:
 	ptr				copy() const
 	{
@@ -293,6 +375,18 @@ public:
 		_head->rgt = _head;
 		_head->head = _head;
 	}
+
+	iterator			bound(ptr last, const key_type& k)
+	{
+		if (!last)
+			return end();
+		if (_comp(last->val.first, k))
+			return ++iterator(last);
+		else if (_comp(k, last->val.first))
+			return iterator(last);
+		else
+			return end();
+	};
 }; //end class map
 
 } //end ft

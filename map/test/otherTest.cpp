@@ -3,35 +3,46 @@
 #include <map>
 
 ///////CONSTRUCTORS
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	constructorsTest(Container<Element, Allocator> lst)
+template <typename Container>
+void	constructorsTest(Container mapp)
 {
-	typedef Container<Element, Allocator>	container;
+	Container				mapp2(mapp.begin(), mapp.end());
+	typename Container::iterator		it1;
 
-	container		l1(200, 42);
-	fillContainer(lst, 500);
-	container		l2(lst.begin(), lst.end());
-
-	_THISTESTIS_("show fill constructor l(200,42):", NOENDL);
-	_PRINT_LST_(l1);
-	_THISTESTIS_("show iterator constructor      :", NOENDL);
-	_PRINT_LST_(l2);
+	_THISTESTIS_("mapp1. copy constructor mapp (x20):    ", NOENDL);
+	_PRINT_MAP_(mapp);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("mapp2. fill iterator constructor (x20):", NOENDL);
+	_PRINT_MAP_(mapp2);
+	_PRINT_MAP_CONTENT_(mapp2);
+	it1 = mapp2.begin();
+	for (size_t i = 0; i < 10; i++, it1++);
+	mapp2.erase(it1, mapp2.end());
+	_THISTESTIS_("mapp1 then mapp2 after deleting half of mapp2:", ENDL);
+	_PRINT_MAP_(mapp);
+	_PRINT_MAP_(mapp2);
 }
-template <template <typename, typename> class Container,
-		typename Allocator>
-void	constructorsTest(Container<std::string, Allocator> lst)
+
+///////OBERVERS
+template <typename Container>
+void	observersTest(Container mapp)
 {
-	typedef Container<std::string, Allocator>	container;
+	typename Container::key_compare	mycomp = mapp.key_comp();
+	typename Container::iterator	it1, it2;
 
-	container		l1(200, "bla");
-	fillContainer(lst, 500);
-	container		l2(lst.begin(), lst.end());
+	it1 = mapp.end();
+	it2 = mapp.begin();
+	for (size_t i = 0; i < 5; i++, it1--);
+	while (mycomp(it2->first, it1->first))
+		it2++;
+	_THISTESTIS_("testing to stop iteration to end-5 with key_comp():", ENDL);
+	_DISPLAY_MAP_NODE_(it2);
 
-	_THISTESTIS_("show fill constructor l(200,bla):", NOENDL);
-	_PRINT_LST_(l1);
-	_THISTESTIS_("show iterator constructor       :", NOENDL);
-	_PRINT_LST_(l2);
+	_THISTESTIS_("same but with value_comp():", ENDL);
+	it2 = mapp.begin();
+	while (mapp.value_comp()(*it2, *it1))
+		it2++;
+	_DISPLAY_MAP_NODE_(it2);
 }
 
 ////////MAIN
@@ -39,25 +50,21 @@ void	otherTest()
 {
 	_STITLE_("MODIFIERS TEST");
 
-	std::map<int>			stdlst;
-	ft::map<int>			ftlst;
-	std::map<std::string>	stdlst2;
-	ft::map<std::string>	ftlst2;
+	std::map<int, std::string>			stdmapp;
+	ft::map<int, std::string>			ftmapp;
+
+	fillmap(stdmapp, 1);
+	fillmap(ftmapp, 1);
 
 	_SSTITLE_("'CONSTRUCTORS' TEST");
-	/*_STD_TITLE_("(int)"); constructorsTest(stdlst);
-	_FT_TITLE_("(int)"); constructorsTest(ftlst);
-	_STD_TITLE_("(str)"); constructorsTest(stdlst2);
-	_FT_TITLE_("(str)"); constructorsTest(ftlst2);
+	_STD_TITLE_("(int, std::string)"); constructorsTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); constructorsTest(ftmapp);
 
-	_THISTESTIS_("", ENDL);
-	_THISTESTIS_("Note: copy constructor and basic constructor are used ", ENDL);
-	_THISTESTIS_("all along the tests", ENDL);
-	_THISTESTIS_("", ENDL);*/
+	_SSTITLE_("'OBSERVERS' TEST");
+	_STD_TITLE_("(int, std::string)"); observersTest(stdmapp);
+	_FT_TITLE_("(int, std::string)"); observersTest(ftmapp);
 }
 
 /*
  * constructors
- * relational operators
- * swap
 */

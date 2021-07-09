@@ -8,8 +8,10 @@ template <typename Container>
 void	beginTest(Container mapp)
 {
 	typedef typename Container::iterator iterator;
+	typedef typename Container::const_iterator const_iterator;
 
 	iterator			i;
+	const_iterator		ci;
 
 	_THISTESTIS_("iterate begin to end thru a map of ~200 elements", ENDL);
 	fillmap(mapp, 10);
@@ -18,13 +20,17 @@ void	beginTest(Container mapp)
 	_THISTESTIS_("print end() -1", ENDL);
 	i = mapp.end();
 	std::cout << (--i)->first << std::endl;
+
+	_THISTESTIS_("print const_iterator begin()", ENDL);
+	ci = mapp.begin();
+	_DISPLAY_MAP_NODE_(ci);
 }
 
 ///////END
 template <typename Container>
 void	endTest(Container mapp)
 {
-	typedef typename Container::iterator			iterator;
+	typedef typename Container::iterator	iterator;
 
 	Container		mapp2;
 	iterator		it;
