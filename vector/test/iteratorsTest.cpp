@@ -107,7 +107,6 @@ template <typename Container>
 void	rbeginTest(Container vec)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
-	//typedef typename Container::iterator			iterator;
 	reverse_iterator		it;
 	reverse_iterator		it2;
 

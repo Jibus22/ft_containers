@@ -11,8 +11,9 @@
 #include "iterator_traits.hpp"
 #include "is_integral.hpp"
 
-//If the macro below isn't defined it means we aren't on a mac but
-//we have to define it to 0 to be able to use it on any platform
+//If the macro below isn't defined it means we aren't on a mac, so
+//we have to define it to 0 to be able to use it on any platform.
+//This macro is defined (on 1) by the compiler only if we are on macosx.
 #ifndef __APPLE__
 # define __APPLE__ 0
 #endif
@@ -38,29 +39,26 @@ public:
 private:
 protected:
 	pointer												_array;
-	allocator_type										_allocator;
 	size_type											_capacity;
 	size_type											_size;
+	allocator_type										_allocator;
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	vector() : _array(nullptr), _capacity(0), _size(0) {};
+	explicit vector(const allocator_type& alloc = allocator_type()):
+		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+	{};
 	explicit	vector(size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type()) :
-		_array(nullptr), _capacity(0), _size(0)
-	{
-		(void)alloc;
-		assign(n, val);
-	};
+		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+	{assign(n, val);};
 	template <class InputIterator>
     vector(InputIterator first, InputIterator last,
 			const allocator_type& alloc = allocator_type()) :
-		_array(nullptr), _capacity(0), _size(0)
-	{
-		(void)alloc;
-		assign(first, last);
-	};
-	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0)
+		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+	{assign(first, last);};
+	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0),
+	_allocator(src._allocator)
 	{*this = src;};
 
 	//___________Destructor___________________________________________________//
@@ -80,10 +78,10 @@ public:
 	};
 
 	//___________Iterators____________________________________________________//
-	iterator			begin() {return iterator(_array);};
-	const_iterator		begin() const {return const_iterator(_array);};
-	iterator			end() {return iterator(_array + _size);};
-	const_iterator		end() const {return const_iterator(_array + _size);};
+	iterator				begin() {return iterator(_array);};
+	const_iterator			begin() const {return const_iterator(_array);};
+	iterator				end() {return iterator(_array + _size);};
+	const_iterator			end() const {return const_iterator(_array + _size);};
 
 	reverse_iterator		rbegin()
 							{return reverse_iterator(_array + _size - 1);};

@@ -3,46 +3,20 @@
 
 #include <iostream>
 #include <exception>
-#include <limits>
-#include <cmath>
-#include "biDirectionalIterator.hpp"
+#include "listIter.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
 #include "ftnode.hpp"
 #include "ftequal.hpp"
 #include "ftlexicographical_compare.hpp"
+#include "iterator_traits.hpp"
+#include "is_integral.hpp"
 
-//If the macro below isn't defined it means we aren't on a mac but
-//we have to define it to 0 to be able to use it on any platform
 #ifndef __APPLE__
 # define __APPLE__ 0
 #endif
 
 namespace ft {
-
-class test
-{
-	std::string		_str;
-	public:
-	test() {std::cout << "constructor called" << std::endl;};
-	test(std::string str) : _str(str)
-	{
-		std::cout << "constructor " << _str <<  " called" << std::endl;
-	};
-	test(const test& src) : _str(src._str)
-	{
-		std::cout << "CC " << _str <<  " called" << std::endl;
-	};
-	~test() {std::cout << "destructor " << _str << " called" << std::endl;};
-	test&	operator=(const test& src)
-	{
-		std::cout << "= operator " << _str <<  " called" << std::endl;
-		if (this == &src)
-			return *this;
-		return *this;
-	};
-
-};
 
 template <typename T, typename Allocator = std::allocator<T> >
 class list
@@ -56,37 +30,35 @@ public:
     typedef typename allocator_type::const_reference	const_reference;
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
-    typedef ft::biDirectionalIterator<T>				iterator;
-    typedef const ft::biDirectionalIterator<T>			const_iterator;
+    typedef ft::listIter<value_type>					iterator;
+    typedef ft::clistIter<value_type>					const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 private:
 protected:
 	typedef ft::node<value_type>						node;
 	node												*_head;
-	allocator_type										_allocator;
 	size_type											_size;
+	allocator_type										_allocator;
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	list() :  _head(new node), _size(0) {};
+	explicit list (const allocator_type& alloc = allocator_type()):
+		_head(new node), _size(0), _allocator(alloc)
+	{};
 	explicit list (size_type n, const value_type& val = value_type(),
                 const allocator_type& alloc = allocator_type()) : 
-				_head(new node), _size(0)
+				_head(new node), _size(0), _allocator(alloc)
 	{
-		(void)alloc;
 		for ( ; n > 0; n--)
 			push_back(val);
 	};
 	template <class InputIterator>
 	list (InputIterator first, InputIterator last,
 		const allocator_type& alloc = allocator_type()) :
-		_head(new node), _size(0)
-	{
-		(void)alloc;
-		assign(first, last);
-	};
-	list(const list& src) : _head(new node), _size(0)
+		_head(new node), _size(0), _allocator(alloc)
+	{assign(first, last);};
+	list(const list& src) : _head(new node), _size(0), _allocator(src._allocator)
 	{*this = src;};
 
 	//___________Destructor___________________________________________________//
@@ -134,13 +106,9 @@ public:
 	//___________Modifiers____________________________________________________//
 	template <typename InputIterator>
 	void				assign(typename
-			ft::enable_if<!std::numeric_limits<InputIterator>::is_integer,
+			ft::enable_if<!ft::is_integral<InputIterator>::value,
 			InputIterator>::type first, InputIterator last)
 	{
-		ptrdiff_t	size = 0;
-
-		for (InputIterator it = first; it != last; it++)
-			size++;
 		clear();
 		for (InputIterator i = first; i != last; i++)
 			push_back(*i);

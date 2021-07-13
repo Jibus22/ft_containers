@@ -2,10 +2,7 @@
 # define MAP_HPP
 
 #include <iostream>
-#include <exception>
-#include <limits>
-#include <cmath>
-#include "mapBiDirIterator.hpp"
+#include "mapIter.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
 #include "ftequal.hpp"
@@ -48,10 +45,8 @@ protected:
 	typedef node*										ptr;
 
 public:
-    typedef ft::mapBiDirIterator<value_type, key_compare>		iterator;
-    typedef ft::mapBiDirIterator<value_type, key_compare>		const_iterator;
-    //typedef ft::cmapBiDirIterator<value_type, key_compare,
-			//difference_type, const_pointer, const_reference>	const_iterator;
+    typedef ft::mapIter<value_type, key_compare>		iterator;
+    typedef ft::cmapIter<value_type, key_compare>		const_iterator;
 
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
@@ -240,7 +235,7 @@ public:
 		for (InputIterator i = first; i != last; i++)
 			insert(*i);
 	};
-	iterator		erase(const_iterator position)
+	iterator		erase(iterator position)
 	{
 		iterator	it(position);
 
@@ -258,18 +253,16 @@ public:
 			initMe();
 		return 1;
 	};
-	iterator		erase(const_iterator first, const_iterator last)
+	iterator		erase(iterator first, iterator last)
 	{
-		iterator	l(last);
-		iterator	j(first);
 		iterator	i(first);
 
-		while (j != last) {
-			++j;
+		while (first != last) {
+			++first;
 			erase(i);
-			i = j;
+			i = first;
 		}
-		return l;
+		return last;
 	};
 	void				swap(map& x)
 	{
@@ -378,7 +371,7 @@ public:
 		_head->head = _head;
 	}
 
-	iterator			bound(ptr last, const key_type& k)
+	iterator		bound(ptr last, const key_type& k)
 	{
 		if (!last)
 			return end();

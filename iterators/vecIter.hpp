@@ -128,7 +128,7 @@ public:
 	//___________Constructors_________________________________________________//
 	cvecIter() : _ptr(nullptr) {};
 	cvecIter(const cvecIter& src) : _ptr(src._ptr) {};
-	cvecIter(const vecIter<T>& src) : _ptr(src._ptr) {};
+	cvecIter(const vecIter<value_type>& src) : _ptr(src._ptr) {};
 	cvecIter(pointer ptr) : _ptr(ptr) {};
 
 	//___________Destructor___________________________________________________//
@@ -140,8 +140,7 @@ public:
 		_ptr = src._ptr;
 		return (*this);
 	};
-
-	cvecIter &	operator=(const vecIter<T>& src)
+	cvecIter &	operator=(const vecIter<value_type>& src)
 	{
 		_ptr = src._ptr;
 		return (*this);

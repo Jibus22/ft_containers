@@ -3,6 +3,7 @@
 #include <list>
 
 ///////BEGIN
+/*
 template <typename Container>
 void	beginTest(Container lst)
 {
@@ -12,6 +13,79 @@ void	beginTest(Container lst)
 	fillContainer(lst, 20);
 	_THISTESTIS_("begin of x40:  ", NOENDL);
 	std::cout << " " << *(lst.begin()) << std::endl;
+}
+*/
+///////UTILS
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator, typename Iterator>
+void	itchg(Container<Element, Allocator>& vec, Iterator it)
+{
+	_THISTESTIS_("change value thru iterator:  ", NOENDL);
+	*it = 1234567890;
+	std::cout << " " << *it << std::endl;
+	(void)vec;
+}
+
+template <template <typename, typename> class Container,
+		typename Allocator, typename Iterator>
+void	itchg(Container<std::string, Allocator>& vec, Iterator it)
+{
+	_THISTESTIS_("change value thru iterator:  ", NOENDL);
+	*it = std::string("BLIBLOUBLA");
+	std::cout << " " << *it << std::endl;
+	(void)vec;
+}
+
+///////BEGIN
+template <typename Container>
+void	beginTest(Container vec)
+{
+	typedef Container								container;
+	typedef typename container::const_iterator		const_iterator;
+	typedef typename container::iterator			iterator;
+
+	const_iterator		cit;
+	iterator			it;
+	iterator			it2;
+
+	fillContainer(vec, 20);
+
+	_THISTESTIS_("begin of x20, const iterator:  ", NOENDL);
+	cit = vec.begin();
+	std::cout << " " << *(vec.begin()) << std::endl;
+
+	_THISTESTIS_("begin of x20:  ", NOENDL);
+	std::cout << " " << *(vec.begin()) << std::endl;
+	fillContainer(vec, 20);
+	_THISTESTIS_("begin of x40:  ", NOENDL);
+	std::cout << " " << *(vec.begin()) << std::endl;
+
+	itchg(vec, vec.begin());
+
+	it = vec.begin();
+	it2 = vec.begin();
+	for (int i=0; i < 3; i++, it2++);
+	_THISTESTIS_("comparison !=/== : ", NOENDL);
+	if (it != it2)
+		std::cout << " it != it2" << std::endl;
+	else
+		std::cout << " it == it2" << std::endl;
+
+	_THISTESTIS_("assignation '=' and", ENDL);
+	it = it2;
+	_THISTESTIS_("comparison !=/== : ", NOENDL);
+	if (it != it2)
+		std::cout << " it != it2" << std::endl;
+	else
+		std::cout << " it == it2" << std::endl;
+
+	_THISTESTIS_("iterator construction:", NOENDL);
+	iterator	bla(it2);
+	std::cout << " " << *bla << std::endl;
+
+	_THISTESTIS_("const_iterator constructed with iterator:   ", NOENDL);
+	const_iterator	cit2(it);
+	std::cout << " " << *cit2 << std::endl;
 }
 
 ///////END
@@ -31,6 +105,8 @@ void	endTest(Container lst)
 	it = lst.end();
 	it--;
 	std::cout << " " << *it << std::endl;
+
+	itchg(lst, it);
 }
 
 ///////RBEGIN

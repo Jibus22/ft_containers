@@ -2,23 +2,27 @@
 # define MAPBIDIRITERATOR_HPP
 
 #include "bstree.hpp"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
-template <typename T, typename Compare, typename Distance = ptrdiff_t,
-		 typename Pointer = T*, typename Reference = T&>
-class mapBiDirIterator
+template <typename T, typename Compare> class cmapIter;
+
+template <typename T, typename Compare>
+class mapIter
 {
+	friend class cmapIter<T, Compare>;
 public:
 	//___________MEMBER TYPES_________________________________________________//
-	typedef T									value_type;
-	typedef Distance							difference_type;
-    typedef Pointer								pointer;
-    typedef Reference							reference;
+	typedef T								value_type;
+    typedef T*								pointer;
+	typedef T&								reference;
+	typedef ptrdiff_t						difference_type;
+	typedef ft::bidirectional_iterator_tag	iterator_category;
 
 private:
     typedef Compare								key_compare;
-    typedef mapBiDirIterator					iterator;
+    typedef mapIter								iterator;
 	typedef ft::bstNode<value_type>				node;
 	typedef ft::bstree<node, key_compare>		tree;
 
@@ -28,15 +32,15 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	mapBiDirIterator() : _ptr(nullptr) {};
-	mapBiDirIterator(const mapBiDirIterator & src) : _ptr(src._ptr) {};
-	mapBiDirIterator(node *ptr) : _ptr(ptr) {};
+	mapIter() : _ptr(nullptr) {};
+	mapIter(const mapIter & src) : _ptr(src._ptr) {};
+	mapIter(node *ptr) : _ptr(ptr) {};
 
 	//___________Destructor___________________________________________________//
-	virtual	~mapBiDirIterator() {};
+	virtual	~mapIter() {};
 
 	//___________Operator =___________________________________________________//
-	mapBiDirIterator &	operator=(const mapBiDirIterator & src)
+	mapIter &	operator=(const mapIter & src)
 	{
 		_ptr = src._ptr;
 		return (*this);
@@ -96,22 +100,22 @@ public:
 	};
 
 	node*		getNode() const {return _ptr;};
-};//end mapBiDirIterator
+};//end mapIter
 
-template <typename T, typename Compare, typename Distance = ptrdiff_t,
-		 typename Pointer = const T*, typename Reference = const T&>
-class cmapBiDirIterator
+template <typename T, typename Compare>
+class cmapIter
 {
 public:
 	//___________MEMBER TYPES_________________________________________________//
-	typedef T									value_type;
-	typedef Distance							difference_type;
-    typedef Pointer								pointer;
-    typedef Reference							reference;
+	typedef T								value_type;
+    typedef T*								pointer;
+	typedef T&								reference;
+	typedef ptrdiff_t						difference_type;
+	typedef ft::bidirectional_iterator_tag	iterator_category;
 
 private:
     typedef Compare								key_compare;
-    typedef cmapBiDirIterator					iterator;
+    typedef cmapIter							iterator;
 	typedef ft::bstNode<value_type>				node;
 	typedef ft::bstree<node, key_compare>		tree;
 
@@ -121,15 +125,21 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	cmapBiDirIterator() : _ptr(nullptr) {};
-	cmapBiDirIterator(const cmapBiDirIterator & src) : _ptr(src._ptr) {};
-	cmapBiDirIterator(node *ptr) : _ptr(ptr) {};
+	cmapIter() : _ptr(nullptr) {};
+	cmapIter(const cmapIter & src) : _ptr(src._ptr) {};
+	cmapIter(const mapIter<value_type, key_compare> & src) : _ptr(src._ptr) {};
+	cmapIter(node *ptr) : _ptr(ptr) {};
 
 	//___________Destructor___________________________________________________//
-	virtual	~cmapBiDirIterator() {};
+	virtual	~cmapIter() {};
 
 	//___________Operator =___________________________________________________//
-	cmapBiDirIterator &	operator=(const cmapBiDirIterator & src)
+	cmapIter &	operator=(const cmapIter & src)
+	{
+		_ptr = src._ptr;
+		return (*this);
+	};
+	cmapIter &	operator=(const mapIter<value_type, key_compare> & src)
 	{
 		_ptr = src._ptr;
 		return (*this);
@@ -143,8 +153,8 @@ public:
 							{return (_ptr != rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
-	reference				operator*() const {return _ptr->val;};
-	pointer					operator->() const {return &(_ptr->val);};
+	const value_type&		operator*() const {return _ptr->val;};
+	const value_type*		operator->() const {return &(_ptr->val);};
 
 	//___________Incrementation_______________________________________________//
 	iterator				&operator++()
@@ -189,8 +199,7 @@ public:
 	};
 
 	node*		getNode() const {return _ptr;};
-};//end cmapBiDirIterator
-
+};//end cmapIter
 
 } //end ft
 

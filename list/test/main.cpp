@@ -32,14 +32,5 @@ int	main(int ac, char *av[])
 	if (ac == 1 || arg == "6")
 		otherTest();
 
-	ft::list<ft::test>	pouet;
-	ft::test			t("daaang");
-
-	std::cout << "push:" << std::endl;
-	pouet.push_back(t);
-	std::cout << "pop:" << std::endl;
-	pouet.pop_back();
-
-	std::cout << "return:" << std::endl;
 	return (0);
 }
