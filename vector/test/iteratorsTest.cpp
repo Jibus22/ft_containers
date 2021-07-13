@@ -2,15 +2,40 @@
 #include "resources.hpp"
 #include <vector>
 
+///////UTILS
+template <template <typename, typename> class Container,
+		typename Element, typename Allocator, typename Iterator>
+void	itchg(Container<Element, Allocator>& vec, Iterator it)
+{
+	_THISTESTIS_("change value thru iterator:  ", NOENDL);
+	*it = 1234567890;
+	std::cout << " " << *it << std::endl;
+	(void)vec;
+}
+
+template <template <typename, typename> class Container,
+		typename Allocator, typename Iterator>
+void	itchg(Container<std::string, Allocator>& vec, Iterator it)
+{
+	_THISTESTIS_("change value thru iterator:  ", NOENDL);
+	*it = std::string("BLIBLOUBLA");
+	std::cout << " " << *it << std::endl;
+	(void)vec;
+}
+
 ///////BEGIN
 template <typename Container>
 void	beginTest(Container vec)
 {
-	typedef typename Container::const_iterator	const_iterator;
+	typedef Container								container;
+	typedef typename container::const_iterator		const_iterator;
+	typedef typename container::iterator			iterator;
+
 	const_iterator		cit;
+	iterator			it;
+	iterator			it2;
 
 	fillContainer(vec, 20);
-
 
 	_THISTESTIS_("begin of x20, const iterator:  ", NOENDL);
 	cit = vec.begin();
@@ -21,6 +46,46 @@ void	beginTest(Container vec)
 	fillContainer(vec, 20);
 	_THISTESTIS_("begin of x40:  ", NOENDL);
 	std::cout << " " << *(vec.begin()) << std::endl;
+
+	itchg(vec, vec.begin());
+
+	it = vec.begin();
+	it2 = vec.begin() + 3;
+	_THISTESTIS_("comparison < :  ", NOENDL);
+	if (it < it2)
+		std::cout << " it < it2" << std::endl;
+	else
+		std::cout << " it > it2" << std::endl;
+	_THISTESTIS_("comparison <= : ", NOENDL);
+	if (it <= it2)
+		std::cout << " it <= it2" << std::endl;
+	else
+		std::cout << " it >= it2" << std::endl;
+
+	_THISTESTIS_("assignation '=' and", ENDL);
+	it = it2;
+	_THISTESTIS_("comparison <= : ", NOENDL);
+	if (it <= it2)
+		std::cout << " it <= it2" << std::endl;
+	else
+		std::cout << " it >= it2" << std::endl;
+
+	_THISTESTIS_("assignation '+='", NOENDL);
+	it = vec.begin();
+	it += 5;
+	std::cout << " " << *it << std::endl;
+
+	_THISTESTIS_("iterator construction:", NOENDL);
+	iterator	bla(it2);
+	std::cout << " " << *bla << std::endl;
+
+	_THISTESTIS_("const_iterator constructed with iterator:   ", NOENDL);
+	const_iterator	cit2(it);
+	std::cout << " " << *cit2 << std::endl;
+
+	_THISTESTIS_("'+' operator:   ", NOENDL);
+	it = vec.begin() + 4;
+	std::cout << " " << *it << std::endl;
 }
 
 ///////END
@@ -33,6 +98,8 @@ void	endTest(Container vec)
 	fillContainer(vec, 10);
 	_THISTESTIS_("end-1 of x30:  ", NOENDL);
 	std::cout << " " << *(vec.end() - 1) << std::endl;
+
+	itchg(vec, vec.end() - 1);
 }
 
 ///////RBEGIN
@@ -40,7 +107,7 @@ template <typename Container>
 void	rbeginTest(Container vec)
 {
 	typedef typename Container::reverse_iterator	reverse_iterator;
-	typedef typename Container::iterator			iterator;
+	//typedef typename Container::iterator			iterator;
 	reverse_iterator		it;
 	reverse_iterator		it2;
 
@@ -50,7 +117,7 @@ void	rbeginTest(Container vec)
 	std::cout << " " << *it << std::endl;
 	fillContainer(vec, 10);
 	it2 = vec.rbegin();
-	_THISTESTIS_("begin of x30:   ", NOENDL);
+	_THISTESTIS_("rbegin of x30:  ", NOENDL);
 	std::cout << " " << *it << std::endl;
 
 	_THISTESTIS_("comparison < :  ", NOENDL);
@@ -63,9 +130,9 @@ void	rbeginTest(Container vec)
 		std::cout << " it <= it2" << std::endl;
 	else
 		std::cout << " it >= it2" << std::endl;
-	it = it2;
 
 	_THISTESTIS_("assignation '=' and", ENDL);
+	it = it2;
 	_THISTESTIS_("comparison <= : ", NOENDL);
 	if (it <= it2)
 		std::cout << " it <= it2" << std::endl;
@@ -85,11 +152,11 @@ void	rbeginTest(Container vec)
 	it += 1;
 	std::cout << " " << *it << std::endl;
 
-	_THISTESTIS_("iterator construction:", NOENDL);
-	iterator	itt;
-	itt = vec.begin();
+	_THISTESTIS_("rev iterator construction:", NOENDL);
+	reverse_iterator	itt;
+	itt = vec.rbegin();
 	reverse_iterator	bla(itt);
-	std::cout << " " << *itt << std::endl;
+	std::cout << " " << *bla << std::endl;
 
 	_THISTESTIS_("'+' operator:   ", NOENDL);
 	it = vec.rbegin() + 4;

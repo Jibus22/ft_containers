@@ -26,10 +26,13 @@ void	atTest(Container<Element, Allocator> vec)
 }
 
 ///////BRACKET
-template <template <typename, typename> class Container,
-		typename Element, typename Allocator>
-void	bracketTest(Container<Element, Allocator> vec)
+
+template <typename Container>
+void	bracketTest(Container vec)
 {
+	typedef typename Container::reference		reference;
+	typedef typename Container::const_reference	const_reference;
+
 	_THISTESTIS_("reaching & printing 5 first elem of a vector(10):", NOENDL);
 	fillContainer(vec, 10);
 	std::cout << vec[0] << vec[1] << vec[2] << vec[3] << vec[4]
@@ -39,6 +42,15 @@ void	bracketTest(Container<Element, Allocator> vec)
 	fillContainer(vec, 10);
 	std::cout << vec[5] << vec[6] << vec[7] << vec[8] << vec[9]
 	<< std::endl;
+
+	_THISTESTIS_("changing value in vec[8] to 42:                  ", NOENDL);
+	reference		val = vec[8];
+	val = 42;
+	std::cout << val << std::endl;
+
+	_THISTESTIS_("fetching const_reference from vec[2]:            ", NOENDL);
+	const_reference		val2 = vec[2];
+	std::cout << val2 << std::endl;
 }
 
 /////////FRONT
@@ -53,6 +65,10 @@ void	frontTest(Container<Element, Allocator> vec)
 		std::cout << vec.front();
 	}
 	std::cout << std::endl;
+
+	_THISTESTIS_("vec.front() = 120 (using reference): ", NOENDL);
+	vec.front() = 120;
+	std::cout << vec.front() << std::endl;
 }
 
 //////////BACK
@@ -67,6 +83,10 @@ void	backTest(Container<Element, Allocator> vec)
 		std::cout << vec.back();
 	}
 	std::cout << std::endl;
+
+	_THISTESTIS_("vec.back() = 100 (using reference): ", NOENDL);
+	vec.back() = 100;
+	std::cout << vec.back() << std::endl;
 }
 
 ////////MAIN

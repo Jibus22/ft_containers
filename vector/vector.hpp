@@ -3,14 +3,13 @@
 
 #include <iostream>
 #include <exception>
-#include <limits>
-#include <cmath>
 #include "vecIter.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
 #include "ftequal.hpp"
 #include "ftlexicographical_compare.hpp"
 #include "iterator_traits.hpp"
+#include "is_integral.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -32,8 +31,8 @@ public:
     typedef typename allocator_type::const_reference	const_reference;
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
-    typedef ft::vecIter<T>								iterator;
-    typedef ft::cvecIter<T>								const_iterator;
+    typedef ft::vecIter<value_type>						iterator;
+    typedef ft::cvecIter<value_type>					const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 private:
@@ -157,13 +156,13 @@ public:
 	//___________Modifiers____________________________________________________//
 	template <typename InputIterator>
 	void				assign(typename
-			ft::enable_if<!std::numeric_limits<InputIterator>::is_integer,
+			ft::enable_if<!ft::is_integral<InputIterator>::value,
 			InputIterator>::type first, InputIterator last)
 	{
-		ptrdiff_t	size = 0;
+		typename ft::iterator_traits<InputIterator>::difference_type	size = 
+			distance(first, last, typename
+					ft::iterator_traits<InputIterator>::iterator_category());
 
-		for (InputIterator it = first; it != last; it++)
-			size++;
 		clear();
 		reserve(size);
 		for (InputIterator i = first; i != last; i++)
@@ -307,6 +306,23 @@ public:
 	{
 		while (_size > 0)
 			pop_back();
+	};
+
+private:
+	//UTILS
+	template <typename randomIterator>
+	typename ft::iterator_traits<randomIterator>::difference_type
+	distance(randomIterator first, randomIterator last,
+			ft::random_access_iterator_tag)
+	{return last - first;};
+	template <typename InputIterator>
+	typename ft::iterator_traits<InputIterator>::difference_type
+	distance(InputIterator first, InputIterator last,
+			ft::input_iterator_tag)
+	{
+		typename ft::iterator_traits<InputIterator>::difference_type	diff;
+		for (diff=0; first != last; first++, diff++);
+		return diff;
 	};
 }; //end class vector
 
