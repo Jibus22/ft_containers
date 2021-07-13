@@ -5,11 +5,12 @@
 #include <exception>
 #include <limits>
 #include <cmath>
-#include "randomAccessIterator.hpp"
+#include "vecIter.hpp"
 #include "reverseIterator.hpp"
 #include "enable_if.hpp"
 #include "ftequal.hpp"
 #include "ftlexicographical_compare.hpp"
+#include "iterator_traits.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac but
 //we have to define it to 0 to be able to use it on any platform
@@ -31,8 +32,8 @@ public:
     typedef typename allocator_type::const_reference	const_reference;
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
-    typedef ft::randomAccessIterator<T>					iterator;
-    typedef ft::randomAccessIterator<const T>			const_iterator;
+    typedef ft::vecIter<T>								iterator;
+    typedef ft::cvecIter<T>								const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 private:

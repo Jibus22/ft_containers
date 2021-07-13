@@ -49,7 +49,9 @@ protected:
 
 public:
     typedef ft::mapBiDirIterator<value_type, key_compare>		iterator;
-    typedef ft::mapBiDirIterator<const value_type, key_compare>	const_iterator;
+    typedef ft::mapBiDirIterator<value_type, key_compare>		const_iterator;
+    //typedef ft::cmapBiDirIterator<value_type, key_compare,
+			//difference_type, const_pointer, const_reference>	const_iterator;
 
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;

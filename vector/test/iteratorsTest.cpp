@@ -6,7 +6,16 @@
 template <typename Container>
 void	beginTest(Container vec)
 {
+	typedef typename Container::const_iterator	const_iterator;
+	const_iterator		cit;
+
 	fillContainer(vec, 20);
+
+
+	_THISTESTIS_("begin of x20, const iterator:  ", NOENDL);
+	cit = vec.begin();
+	std::cout << " " << *(vec.begin()) << std::endl;
+
 	_THISTESTIS_("begin of x20:  ", NOENDL);
 	std::cout << " " << *(vec.begin()) << std::endl;
 	fillContainer(vec, 20);

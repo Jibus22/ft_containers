@@ -13,17 +13,18 @@ void	beginTest(Container mapp)
 	iterator			i;
 	const_iterator		ci;
 
-	_THISTESTIS_("iterate begin to end thru a map of ~200 elements", ENDL);
 	fillmap(mapp, 10);
+
+	_THISTESTIS_("print const_iterator begin()", ENDL);
+	ci = mapp.begin();
+	_DISPLAY_MAP_NODE_(ci);
+
+	_THISTESTIS_("iterate begin to end thru a map of ~200 elements", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
 
 	_THISTESTIS_("print end() -1", ENDL);
 	i = mapp.end();
 	std::cout << (--i)->first << std::endl;
-
-	_THISTESTIS_("print const_iterator begin()", ENDL);
-	ci = mapp.begin();
-	_DISPLAY_MAP_NODE_(ci);
 }
 
 ///////END

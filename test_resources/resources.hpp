@@ -136,7 +136,7 @@ void	fillContainer(Container<Element, Allocator> & vec, size_t n)
 	int		j = 0;
 
 	for (size_t i = 0; i < n; i++)
-		vec.push(j++);
+		vec.push_back(j++);
 }
 
 template <template <typename, typename> class Container,

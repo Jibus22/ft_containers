@@ -22,7 +22,7 @@ void	emptyTest(Container mapp)
 template <typename Container>
 void	sizeTest(Container mapp)
 {
-	typedef typename Container::const_iterator	const_iterator;
+	//typedef typename Container::const_iterator	const_iterator;
 
 	_THISTESTIS_("size of empty container:             ", NOENDL);
 	_PRINT_MAP_(mapp);
@@ -36,7 +36,7 @@ void	sizeTest(Container mapp)
 	std::cout << std::endl;
 
 	_THISTESTIS_("print of size after a erase:         ", NOENDL);
-	mapp.erase(const_iterator(mapp.begin()));
+	mapp.erase(mapp.begin());
 	_PRINT_MAP_(mapp);
 
 	_THISTESTIS_("size of container after clear:       ", NOENDL);
