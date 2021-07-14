@@ -4,9 +4,8 @@
 namespace ft {
 
 template <typename T>
-class	node
+struct node
 {
-	public:
 	T			value;
 	node*		prev;
 	node*		next;
@@ -14,7 +13,7 @@ class	node
 	node(const T & val = T()): value(val), prev(this), next(this) {};
 	node(node* p, node* n, const T & val = T()): value(val), prev(p), next(n) {};
 
-	node(const node& src) : value(src.value) {};
+	node(const node& src) : value(src.value), prev(this), next(this) {};
 	node &	operator=(node const & src)
 	{
 		value = src.value;

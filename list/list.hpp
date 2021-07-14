@@ -399,7 +399,7 @@ private:
 	newNd(typename node_allocator::const_reference val)
 	{
 		typename node_allocator::pointer	p =
-		_nodealloc.allocate(sizeof(typename node_allocator::value_type));
+		_nodealloc.allocate(1);
 		_nodealloc.construct(p, val);
 		return p;
 	};
