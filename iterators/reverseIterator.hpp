@@ -1,22 +1,28 @@
 #ifndef REVERSEITERATOR_HPP
 # define REVERSEITERATOR_HPP
 
+#include "iterator_traits.hpp"
+
 namespace ft {
 
 template <class Iter>
 class reverseIterator
 {
-private:
+protected:
 	typedef Iter								iterator;
 	typedef reverseIterator						reverse_iterator;
-public:
-	typedef typename iterator::value_type		value_type;
-	typedef typename iterator::difference_type	difference_type;
-	typedef typename iterator::pointer			pointer;
-	typedef typename iterator::reference		reference;
-protected:
+
 	iterator									_iter;
+
 public:
+	//___________MEMBER TYPES_________________________________________________//
+	typedef typename ft::iterator_traits<Iter>::value_type		value_type;
+	typedef typename ft::iterator_traits<Iter>::difference_type	difference_type;
+	typedef typename ft::iterator_traits<Iter>::pointer			pointer;
+	typedef typename ft::iterator_traits<Iter>::reference		reference;
+	typedef typename ft::iterator_traits<Iter>::iterator_category
+		iterator_category;
+
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	reverseIterator() {};
@@ -96,7 +102,7 @@ public:
 		_iter += n;
 		return (*this);
 	};
-};//end randomAccessIterator
+};//end reverseIterator
 
 } //end ft
 

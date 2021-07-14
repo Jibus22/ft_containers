@@ -7,15 +7,19 @@ template <typename Container>
 void	bracketTest(Container mapp)
 {
 	fillmap(mapp, 2);
-	_THISTESTIS_("before:", ENDL);
-	_PRINT_MAP_CONTENT_(mapp);
-	_THISTESTIS_("reaching & printing keys 20 to 40:", ENDL);
+	_THISTESTIS_("before:", NOENDL);
 	_PRINT_MAP_(mapp);
+	_PRINT_MAP_CONTENT_(mapp);
+	_THISTESTIS_("reaching & printing keys 20 to 40: ", ENDL);
 	for (size_t i = 20; i < 40; i++)
 		std::cout << "key " << i <<": " << mapp[i] << ", ";
 	std::cout << std::endl;
+	_THISTESTIS_("after:", NOENDL);
 	_PRINT_MAP_(mapp);
-	_THISTESTIS_("after:", ENDL);
+
+	_THISTESTIS_("Creating a new key with a value just by saying: 'mapp[250] ="
+			" \'BLABLA\'", ENDL);
+	mapp[250] = "BLABLA";
 	_PRINT_MAP_CONTENT_(mapp);
 }
 
