@@ -6,12 +6,12 @@
 
 namespace ft {
 
-template <typename T, typename Compare> class cmapIter;
+template <typename T, typename Compare, typename Allocator> class cmapIter;
 
-template <typename T, typename Compare>
+template <typename T, typename Compare, typename Allocator>
 class mapIter
 {
-	friend class cmapIter<T, Compare>;
+	friend class cmapIter<T, Compare, Allocator>;
 public:
 	//___________MEMBER TYPES_________________________________________________//
 	typedef T								value_type;
@@ -21,10 +21,12 @@ public:
 	typedef ft::bidirectional_iterator_tag	iterator_category;
 
 private:
-    typedef Compare								key_compare;
-    typedef mapIter								iterator;
-	typedef ft::bstNode<value_type>				node;
-	typedef ft::bstree<node, key_compare>		tree;
+    typedef Compare							key_compare;
+	typedef Allocator						node_allocator;
+    typedef mapIter							iterator;
+	typedef ft::bstNode<value_type>			node;
+
+	typedef ft::bstree<node, key_compare, node_allocator>	tree;
 
 	tree							_tree;
 	node*							_ptr;
@@ -102,7 +104,7 @@ public:
 	node*		getNode() const {return _ptr;};
 };//end mapIter
 
-template <typename T, typename Compare>
+template <typename T, typename Compare, typename Allocator>
 class cmapIter
 {
 public:
@@ -114,10 +116,12 @@ public:
 	typedef ft::bidirectional_iterator_tag	iterator_category;
 
 private:
-    typedef Compare								key_compare;
-    typedef cmapIter							iterator;
-	typedef ft::bstNode<value_type>				node;
-	typedef ft::bstree<node, key_compare>		tree;
+    typedef Compare							key_compare;
+	typedef Allocator						node_allocator;
+    typedef cmapIter						iterator;
+	typedef ft::bstNode<value_type>			node;
+
+	typedef ft::bstree<node, key_compare, node_allocator>	tree;
 
 	tree							_tree;
 	node*							_ptr;
@@ -127,7 +131,8 @@ public:
 	//___________Constructors_________________________________________________//
 	cmapIter() : _ptr(nullptr) {};
 	cmapIter(const cmapIter & src) : _ptr(src._ptr) {};
-	cmapIter(const mapIter<value_type, key_compare> & src) : _ptr(src._ptr) {};
+	cmapIter(const mapIter<value_type, key_compare, node_allocator> & src):
+		_ptr(src._ptr) {};
 	cmapIter(node *ptr) : _ptr(ptr) {};
 
 	//___________Destructor___________________________________________________//
@@ -139,7 +144,8 @@ public:
 		_ptr = src._ptr;
 		return (*this);
 	};
-	cmapIter &	operator=(const mapIter<value_type, key_compare> & src)
+	cmapIter &	operator=(const
+			mapIter<value_type, key_compare, node_allocator> & src)
 	{
 		_ptr = src._ptr;
 		return (*this);

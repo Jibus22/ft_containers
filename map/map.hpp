@@ -38,11 +38,6 @@ public:
     typedef typename allocator_type::size_type			size_type;
     typedef typename allocator_type::difference_type	difference_type;
 
-    typedef ft::mapIter<value_type, key_compare>		iterator;
-    typedef ft::cmapIter<value_type, key_compare>		const_iterator;
-    typedef ft::reverseIterator<iterator>				reverse_iterator;
-    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
-
 	//___________NESTED CLASS_________________________________________________//
 	class value_compare: ft::binary_function <value_type, value_type, bool>
 	{
@@ -66,7 +61,7 @@ protected:
 	typedef typename allocator_type::template rebind<node>::other
 		node_allocator;
 
-	typedef ft::bstree<node, key_compare>				tree;
+	typedef ft::bstree<node, key_compare, node_allocator>	tree;
 	typedef node*										ptr;
 
 	tree												_tree;
@@ -78,11 +73,17 @@ protected:
 	node_allocator										_nodealloc;
 
 public:
+
+    typedef ft::mapIter<value_type, key_compare, node_allocator>	iterator;
+    typedef ft::cmapIter<value_type, key_compare, node_allocator>
+		const_iterator;
+    typedef ft::reverseIterator<iterator>				reverse_iterator;
+    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	explicit map(const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type()): _root(nullptr),
-	_head(new node), _size(0), _comp(comp), _allocator(alloc)
+	_head(newNd(node())), _size(0), _comp(comp), _allocator(alloc)
 	{
 		initMe();
 	};
@@ -91,13 +92,13 @@ public:
 	map(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()): _root(nullptr),
-	_head(new node), _size(0), _comp(comp), _allocator(alloc)
+	_head(newNd(node())), _size(0), _comp(comp), _allocator(alloc)
 	{
 		initMe();
 		insert(first, last);
 	};
 
-	map(const map& x): _root(nullptr), _head(new node), _size(0),
+	map(const map& x): _root(nullptr), _head(newNd(node())), _size(0),
 	_comp(x._comp), _allocator(x._allocator)
 	{
 		initMe();
@@ -114,7 +115,7 @@ public:
 	virtual	~map()
 	{
 		clear();
-		delete _head;
+		delNd(_head);
 	};
 
 	//___________Operator =___________________________________________________//
@@ -170,7 +171,7 @@ public:
 
 		if (!_root)
 		{
-			_root = new node(val);
+			_root = newNd(node(val));
 			_size++;
 			_head->lft = _root;
 			_head->rgt = _root;
@@ -380,6 +381,19 @@ public:
 			return iterator(last);
 		else
 			return end();
+	};
+
+	typename node_allocator::pointer
+	newNd(typename node_allocator::const_reference val)
+	{
+		typename node_allocator::pointer	p = _nodealloc.allocate(1);
+		_nodealloc.construct(p, val);
+		return p;
+	};
+	void	delNd(typename node_allocator::pointer p)
+	{
+		_nodealloc.destroy(p);
+		_nodealloc.deallocate(p, 1);
 	};
 }; //end class map
 

@@ -17,8 +17,11 @@ struct bstNode
 	value_type	val;
 
 	bstNode(const value_type& v = value_type()):
-		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(v) {};
-	bstNode(const bstNode& src) : val(src.val) {};
+		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(v)
+	{};
+	bstNode(const bstNode& src) :
+		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(src.val)
+	{};
 	bstNode&	operator=(const bstNode& rhs) {
 		if (this == &rhs)
 			return *this;
@@ -50,7 +53,7 @@ struct bstNode
 	virtual ~bstNode() {};
 };
 
-template <typename T, typename Compare>
+template <typename T, typename Compare, typename Allocator>
 struct bstree
 {
 	typedef T								node;
@@ -58,8 +61,10 @@ struct bstree
 	typedef typename node::pointer			pointer;
     typedef Compare							key_compare;
 	typedef typename value_type::first_type	key_type;
+	typedef Allocator						node_allocator;
 
 	key_compare								_comp;
+	node_allocator							_nodealloc;
 
 	void	postOrderDelete(const pointer p) const
 	{
@@ -240,6 +245,19 @@ struct bstree
 			p->rgt->prt = p;
 		}
 		return p;
+	};
+
+	typename node_allocator::pointer
+	newNd(typename node_allocator::const_reference val)
+	{
+		typename node_allocator::pointer	p = _nodealloc.allocate(1);
+		_nodealloc.construct(p, val);
+		return p;
+	};
+	void	delNd(typename node_allocator::pointer p)
+	{
+		_nodealloc.destroy(p);
+		_nodealloc.deallocate(p, 1);
 	};
 };
 
