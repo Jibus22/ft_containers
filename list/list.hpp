@@ -50,11 +50,11 @@ public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	explicit list (const allocator_type& alloc = allocator_type()):
-		_head(new node), _size(0), _allocator(alloc)
+		_head(newNd(node())), _size(0), _allocator(alloc)
 	{};
 	explicit list (size_type n, const value_type& val = value_type(),
                 const allocator_type& alloc = allocator_type()) : 
-				_head(new node), _size(0), _allocator(alloc)
+				_head(newNd(node())), _size(0), _allocator(alloc)
 	{
 		for ( ; n > 0; n--)
 			push_back(val);
@@ -62,16 +62,16 @@ public:
 	template <class InputIterator>
 	list (InputIterator first, InputIterator last,
 		const allocator_type& alloc = allocator_type()) :
-		_head(new node), _size(0), _allocator(alloc)
+		_head(newNd(node())), _size(0), _allocator(alloc)
 	{assign(first, last);};
-	list(const list& src) : _head(new node), _size(0)
+	list(const list& src) : _head(newNd(node())), _size(0)
 	{*this = src;};
 
 	//___________Destructor___________________________________________________//
 	virtual	~list()
 	{
 		clear();
-		delete _head;
+		delNd(_head);
 	};
 
 	//___________Operator =___________________________________________________//
@@ -128,7 +128,7 @@ public:
 	};
 	void				push_front(const value_type& val)
 	{
-		node*			newnode = new node(_head->prev, _head, val);
+		node*			newnode = newNd(node(_head->prev, _head, val));
 
 		_head->prev->next = newnode;
 		_head->prev = newnode;
@@ -138,14 +138,14 @@ public:
 	{
 		node*			tmp_p = _head->prev->prev;
 
-		delete _head->prev;
+		delNd(_head->prev);
 		_head->prev = tmp_p;
 		tmp_p->next = _head;
 		_size--;
 	};
 	void				push_back(const value_type& val)
 	{
-		node*			newnode = new node(_head, _head->next, val);
+		node*			newnode = newNd(node(_head, _head->next, val));
 
 		_head->next->prev = newnode;
 		_head->next = newnode;
@@ -155,7 +155,7 @@ public:
 	{
 		node*			tmp_n = _head->next->next;
 
-		delete _head->next;
+		delNd(_head->next);
 		_head->next = tmp_n;
 		tmp_n->prev = _head;
 		_size--;
@@ -163,7 +163,7 @@ public:
 	iterator			insert(iterator position, const value_type& val)
 	{
 		node*			insertpos = position.getNode();
-		node*			newnode = new node(insertpos, insertpos->next, val);
+		node*			newnode = newNd(node(insertpos, insertpos->next, val));
 
 		insertpos->next->prev = newnode;
 		insertpos->next = newnode;
@@ -191,7 +191,7 @@ public:
 		pos->prev->next = pos->next;
 		pos->next->prev = pos->prev;
 		it = pos->prev;
-		delete pos;
+		delNd(pos);
 		_size--;
 		return (it);
 	};
@@ -398,10 +398,14 @@ private:
 	typename node_allocator::pointer
 	newNd(typename node_allocator::const_reference val)
 	{
-		typename node_allocator::pointer	p =
-		_nodealloc.allocate(1);
+		typename node_allocator::pointer	p = _nodealloc.allocate(1);
 		_nodealloc.construct(p, val);
 		return p;
+	};
+	void	delNd(typename node_allocator::pointer p)
+	{
+		_nodealloc.destroy(p);
+		_nodealloc.deallocate(p, 1);
 	};
 }; //end class list
 
