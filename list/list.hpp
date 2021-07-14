@@ -30,16 +30,22 @@ public:
     typedef typename allocator_type::const_reference	const_reference;
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
+
     typedef ft::listIter<value_type>					iterator;
     typedef ft::clistIter<value_type>					const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
-private:
+
 protected:
 	typedef ft::node<value_type>						node;
+	typedef typename allocator_type::template rebind<node>::other
+		node_allocator;
+
 	node												*_head;
 	size_type											_size;
 	allocator_type										_allocator;
+	node_allocator										_nodealloc;
+
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
@@ -58,7 +64,7 @@ public:
 		const allocator_type& alloc = allocator_type()) :
 		_head(new node), _size(0), _allocator(alloc)
 	{assign(first, last);};
-	list(const list& src) : _head(new node), _size(0), _allocator(src._allocator)
+	list(const list& src) : _head(new node), _size(0)
 	{*this = src;};
 
 	//___________Destructor___________________________________________________//
@@ -73,6 +79,7 @@ public:
 	{
 		if (this == &src)
 			return *this;
+		_allocator = src._allocator;
 		assign(src.begin(), src.end());
 		return *this;
 	};
@@ -95,7 +102,7 @@ public:
 	//___________Capacity_____________________________________________________//
 	bool				empty() const {return (!(_size));};
 	size_type			size() const {return _size;};
-	size_type			max_size() const {return _allocator.max_size();};
+	size_type			max_size() const {return _nodealloc.max_size();};
 
 	//___________Element access_______________________________________________//
 	reference			front() {return _head->prev->value;};
@@ -384,6 +391,17 @@ public:
 			it = n_tmp;
 			n_tmp = it->next;
 		}
+	};
+
+	//___________Utilities____________________________________________________//
+private:
+	typename node_allocator::pointer
+	newNd(typename node_allocator::const_reference val)
+	{
+		typename node_allocator::pointer	p =
+		_nodealloc.allocate(sizeof(typename node_allocator::value_type));
+		_nodealloc.construct(p, val);
+		return p;
 	};
 }; //end class list
 

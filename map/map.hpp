@@ -38,16 +38,8 @@ public:
     typedef typename allocator_type::size_type			size_type;
     typedef typename allocator_type::difference_type	difference_type;
 
-protected:
-	typedef ft::bstNode<value_type>						node;
-	typedef std::allocator<node>						node_allocator;
-	typedef ft::bstree<node, key_compare>				tree;
-	typedef node*										ptr;
-
-public:
     typedef ft::mapIter<value_type, key_compare>		iterator;
     typedef ft::cmapIter<value_type, key_compare>		const_iterator;
-
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 
@@ -70,6 +62,13 @@ public:
 	};
 
 protected:
+	typedef ft::bstNode<value_type>						node;
+	typedef typename allocator_type::template rebind<node>::other
+		node_allocator;
+
+	typedef ft::bstree<node, key_compare>				tree;
+	typedef node*										ptr;
+
 	tree												_tree;
 	ptr													_root;
 	ptr													_head;

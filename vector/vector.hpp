@@ -32,16 +32,18 @@ public:
     typedef typename allocator_type::const_reference	const_reference;
     typedef typename allocator_type::difference_type	difference_type;
     typedef typename allocator_type::size_type			size_type;
+
     typedef ft::vecIter<value_type>						iterator;
     typedef ft::cvecIter<value_type>					const_iterator;
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
-private:
+
 protected:
 	pointer												_array;
 	size_type											_capacity;
 	size_type											_size;
 	allocator_type										_allocator;
+
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
