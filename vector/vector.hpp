@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 #include <iostream>
+#include <sstream>
 #include <exception>
 #include "vecIter.hpp"
 #include "reverseIterator.hpp"
@@ -119,8 +120,13 @@ public:
 		if (n <= _capacity)
 			return ;
 		if (n > max_size())
-			throw std::length_error("allocator<T>::allocate(size_t n) 'n' "
-					"exceeds maximum supported size");
+		{
+			if (__APPLE__)
+				throw std::length_error("allocator<T>::allocate(size_t n) 'n' "
+						"exceeds maximum supported size");
+			else
+				throw std::length_error("vector::reserve");
+		}
 		tmp = _allocator.allocate(n);
 		for (size_type i = 0; i < _size; i++)
 			_allocator.construct(tmp + i, _array[i]);
@@ -141,7 +147,12 @@ public:
 		if (__APPLE__)
 			throw std::out_of_range("vector");
 		else
-			throw std::out_of_range("vector linux");
+		{
+			std::stringstream ss;
+			ss << "vector::_M_range_check: __n (which is " << n
+				<< ") >= this->size() (which is " << this->_size << ")";
+			throw std::out_of_range(ss.str());
+		}
 	};
 	const_reference		at(size_type n) const
 	{
@@ -150,7 +161,12 @@ public:
 		if (__APPLE__)
 			throw std::out_of_range("vector");
 		else
-			throw std::out_of_range("vector const linux");
+		{
+			std::stringstream ss;
+			ss << "vector::_M_range_check: __n (which is " << n
+				<< ") >= this->size() (which is " << this->_size << ")";
+			throw std::out_of_range(ss.str());
+		}
 	};
 	reference			front() {return _array[0];};
 	const_reference		front() const {return _array[0];};
