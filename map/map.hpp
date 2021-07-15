@@ -73,10 +73,10 @@ protected:
 	node_allocator										_nodealloc;
 
 public:
-
     typedef ft::mapIter<value_type, key_compare, node_allocator>	iterator;
     typedef ft::cmapIter<value_type, key_compare, node_allocator>
 		const_iterator;
+
     typedef ft::reverseIterator<iterator>				reverse_iterator;
     typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
 	//___________MEMBER FUNCTIONS_____________________________________________//

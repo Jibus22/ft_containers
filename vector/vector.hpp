@@ -50,15 +50,18 @@ public:
 	explicit vector(const allocator_type& alloc = allocator_type()):
 		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
 	{};
-	explicit	vector(size_type n, const value_type& val = value_type(),
+
+	explicit vector(size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type()) :
 		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
 	{assign(n, val);};
+
 	template <class InputIterator>
     vector(InputIterator first, InputIterator last,
 			const allocator_type& alloc = allocator_type()) :
 		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
 	{assign(first, last);};
+
 	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0),
 	_allocator(src._allocator)
 	{*this = src;};
@@ -116,7 +119,8 @@ public:
 		if (n <= _capacity)
 			return ;
 		if (n > max_size())
-			throw std::length_error("apple lenght error");
+			throw std::length_error("allocator<T>::allocate(size_t n) 'n' "
+					"exceeds maximum supported size");
 		tmp = _allocator.allocate(n);
 		for (size_type i = 0; i < _size; i++)
 			_allocator.construct(tmp + i, _array[i]);
@@ -135,7 +139,7 @@ public:
 		if (n < _size)
 			return _array[n];
 		if (__APPLE__)
-			throw std::out_of_range("vector apple");
+			throw std::out_of_range("vector");
 		else
 			throw std::out_of_range("vector linux");
 	};
@@ -144,7 +148,7 @@ public:
 		if (n < _size)
 			return _array[n];
 		if (__APPLE__)
-			throw std::out_of_range("vector const apple");
+			throw std::out_of_range("vector");
 		else
 			throw std::out_of_range("vector const linux");
 	};
