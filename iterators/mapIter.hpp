@@ -1,8 +1,8 @@
 #ifndef MAPBIDIRITERATOR_HPP
 # define MAPBIDIRITERATOR_HPP
 
-#include "bstree.hpp"
-#include "iterator_traits.hpp"
+#include "../map/bstree.hpp"
+#include "../utils/iterator_traits.hpp"
 
 namespace ft {
 
@@ -110,8 +110,8 @@ class cmapIter
 public:
 	//___________MEMBER TYPES_________________________________________________//
 	typedef T								value_type;
-    typedef T*								pointer;
-	typedef T&								reference;
+    typedef const T*						pointer;
+	typedef const T&						reference;
 	typedef ptrdiff_t						difference_type;
 	typedef ft::bidirectional_iterator_tag	iterator_category;
 

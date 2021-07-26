@@ -4,13 +4,13 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
-#include "vecIter.hpp"
-#include "reverseIterator.hpp"
-#include "enable_if.hpp"
-#include "ftequal.hpp"
-#include "ftlexicographical_compare.hpp"
-#include "iterator_traits.hpp"
-#include "is_integral.hpp"
+#include "../iterators/vecIter.hpp"
+#include "../iterators/reverseIterator.hpp"
+#include "../utils/enable_if.hpp"
+#include "../utils/ftequal.hpp"
+#include "../utils/ftlexicographical_compare.hpp"
+#include "../utils/iterator_traits.hpp"
+#include "../utils/is_integral.hpp"
 
 //If the macro below isn't defined it means we aren't on a mac, so
 //we have to define it to 0 to be able to use it on any platform.
@@ -36,8 +36,8 @@ public:
 
     typedef ft::vecIter<value_type>						iterator;
     typedef ft::cvecIter<value_type>					const_iterator;
-    typedef ft::reverseIterator<iterator>				reverse_iterator;
-    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
+    typedef ft::reverse_iterator<iterator>				reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 protected:
 	pointer												_array;
@@ -90,13 +90,13 @@ public:
 	const_iterator			end() const {return const_iterator(_array + _size);};
 
 	reverse_iterator		rbegin()
-							{return reverse_iterator(_array + _size - 1);};
+							{return reverse_iterator(end());};
 	const_reverse_iterator	rbegin() const
-							{return const_reverse_iterator(_array + _size - 1);};
+							{return const_reverse_iterator(end());};
 	reverse_iterator		rend()
-							{return reverse_iterator(_array - 1);};
+							{return reverse_iterator(begin());};
 	const_reverse_iterator	rend() const
-							{return const_reverse_iterator(_array - 1);};
+							{return const_reverse_iterator(begin());};
 
 	//___________Capacity_____________________________________________________//
 	size_type			size() const {return _size;};
@@ -246,9 +246,11 @@ public:
 			_allocator.construct(_array + --i, val);
 		_size += n;
 	};
+
 	template <typename InputIterator>
-	void				insert(iterator position, InputIterator first,
-						InputIterator last)
+	void				insert(iterator position, typename
+			ft::enable_if<!ft::is_integral<InputIterator>::value,
+			InputIterator>::type first, InputIterator last)
 	{
 		typename iterator::difference_type	diff = end() - position;
 		size_type							j = _size;
@@ -288,23 +290,17 @@ public:
 	};
 	iterator			erase(iterator first, iterator last)
 	{
-		size_type		start = first - begin();
-		size_type		stop = last - begin();
+		iterator	ret(first);
+		iterator	endCpy(end());
 
-		while (start < stop)
+		while (last < endCpy)
+			*first++ = *last++;
+		while (first < endCpy)
 		{
-			_allocator.destroy(_array + start);
-			if (start + stop < _size)
-				_allocator.construct(_array + start, _array[start + stop]);
-			start++;
+			this->_allocator.destroy(&*(first++));
+			this->_size--;
 		}
-		_size -= (last - first);
-		while (start < _size)
-		{
-			_allocator.construct(_array + start, _array[start + stop]);
-			start++;
-		}
-		return first;
+		return (ret);
 	};
 	void				swap(vector& x)
 	{
@@ -376,13 +372,12 @@ bool	operator>(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 
 template <class T, class Alloc>
 bool	operator>=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
-{return !(rhs < lhs);};
+{return !(lhs < rhs);};
 
 
 //___________Swap Overload________________________________________________//
-template <template <typename, typename> class Container,
-		class T, class Alloc>
-void	swap(Container<T,Alloc>& x, Container<T,Alloc>& y) {x.swap(y);};
+template <class T, class Alloc>
+void	swap(ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) {x.swap(y);};
 
 } //end ft
 

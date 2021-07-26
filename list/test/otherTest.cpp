@@ -69,7 +69,7 @@ void	swapOverloadTest(Container lst)
 	_THISTESTIS_("lst2 before:", NOENDL);
 	_PRINT_LST_(lst2);
 
-	ft::swap(lst, lst2);
+	swap(lst, lst2);
 
 	_THISTESTIS_("lst after  :", NOENDL);
 	_PRINT_LST_(lst);

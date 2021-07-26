@@ -1,7 +1,7 @@
 #ifndef QUEUE_HPP
 # define QUEUE_HPP
 
-#include "list.hpp"
+#include "../list/list.hpp"
 
 #ifndef __APPLE__
 # define __APPLE__ 0

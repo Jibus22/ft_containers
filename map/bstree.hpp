@@ -1,8 +1,8 @@
 #ifndef BSTREE_HPP
 #define BSTREE_HPP
 
-#include "ftless.hpp"
-#include "ftpair.hpp"
+#include "../utils/ftless.hpp"
+#include "../utils/ftpair.hpp"
 
 namespace ft {
 

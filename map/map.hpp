@@ -2,14 +2,14 @@
 # define MAP_HPP
 
 #include <iostream>
-#include "mapIter.hpp"
-#include "reverseIterator.hpp"
-#include "enable_if.hpp"
-#include "ftequal.hpp"
-#include "ftless.hpp"
-#include "ftpair.hpp"
+#include "../iterators/mapIter.hpp"
+#include "../iterators/reverseIterator.hpp"
+#include "../utils/enable_if.hpp"
+#include "../utils/ftequal.hpp"
+#include "../utils/ftless.hpp"
+#include "../utils/ftpair.hpp"
 #include "bstree.hpp"
-#include "ftlexicographical_compare.hpp"
+#include "../utils/ftlexicographical_compare.hpp"
 
 #ifndef __APPLE__
 # define __APPLE__ 0
@@ -77,8 +77,8 @@ public:
     typedef ft::cmapIter<value_type, key_compare, node_allocator>
 		const_iterator;
 
-    typedef ft::reverseIterator<iterator>				reverse_iterator;
-    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
+    typedef ft::reverse_iterator<iterator>				reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	explicit map(const key_compare& comp = key_compare(),
@@ -143,13 +143,13 @@ public:
 	iterator				end() {return iterator(_head);};
 	const_iterator			end() const {return const_iterator(_head);};
 	reverse_iterator		rbegin()
-							{return reverse_iterator(_head->rgt);};
+							{return reverse_iterator(end());};
 	const_reverse_iterator	rbegin() const
-							{return const_reverse_iterator(_head->rgt);};
+							{return const_reverse_iterator(end());};
 	reverse_iterator		rend()
-							{return reverse_iterator(_head);};
+							{return reverse_iterator(begin());};
 	const_reverse_iterator	rend() const
-							{return const_reverse_iterator(_head);};
+							{return const_reverse_iterator(begin());};
 
 	//___________Capacity_____________________________________________________//
 	bool				empty() const {return !_size;};
@@ -325,7 +325,23 @@ public:
 		return bound(last, k);
 	};
 	const_iterator		lower_bound(const key_type& k) const
-	{return const_iterator(lower_bound(k));};
+	{
+		ptr			p = _root;
+		ptr			last = p;
+		iterator	i;
+
+		while (p)
+		{
+			last = p;
+			if (_comp(p->val.first, k))
+				p = p->rgt;
+			else if (_comp(k, p->val.first))
+				p = p->lft;
+			else
+				return const_iterator(p);
+		}
+		return bound(last, k);
+	};
 	iterator			upper_bound(const key_type& k)
 	{
 		ptr			p = _root;
@@ -345,13 +361,28 @@ public:
 		return bound(last, k);
 	};
 	const_iterator		upper_bound(const key_type& k) const
-	{return const_iterator(upper_bound(k));};
+	{
+		ptr			p = _root;
+		ptr			last = p;
+		iterator	i;
+
+		while (p)
+		{
+			last = p;
+			if (_comp(p->val.first, k))
+				p = p->rgt;
+			else if (_comp(k, p->val.first))
+				p = p->lft;
+			else
+				return ++const_iterator(p);
+		}
+		return bound(last, k);
+	};
 
 	ft::pair<iterator,iterator>				equal_range(const key_type& k)
 	{return ft::make_pair(lower_bound(k), upper_bound(k));};
 	ft::pair<const_iterator,const_iterator>	equal_range(const key_type& k) const
-	{return ft::make_pair(const_iterator(lower_bound(k)),
-			const_iterator(upper_bound(k)));};
+	{return ft::make_pair(lower_bound(k), upper_bound(k));};
 
 	//___________Internal utilities___________________________________________//
 	private:
@@ -382,6 +413,17 @@ public:
 		else
 			return end();
 	};
+	const_iterator	bound(ptr last, const key_type& k) const
+	{
+		if (!last)
+			return end();
+		if (_comp(last->val.first, k))
+			return ++const_iterator(last);
+		else if (_comp(k, last->val.first))
+			return const_iterator(last);
+		else
+			return end();
+	};
 
 	typename node_allocator::pointer
 	newNd(typename node_allocator::const_reference val)
@@ -396,6 +438,70 @@ public:
 		_nodealloc.deallocate(p, 1);
 	};
 }; //end class map
+
+template <class Key, class T, class Compare, class Alloc>
+void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y)
+{
+	x.swap(y);
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator==(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename ft::map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
+	typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
+	while (it != lhs.end() && it2 != rhs.end())
+	{
+		if (it->first != it2->first || it->second != it2->second)
+			return (false);
+		--it;
+		--it2;
+	}
+	return (true);
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator!=(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	return (!(lhs == rhs));
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator>(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	if (lhs.size() > rhs.size())
+		return (true);
+	typename ft::map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
+	typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
+	while (it != lhs.end() && it2 != rhs.end())
+	{
+		if (*it > *it2)
+			return (true);
+		++it2;
+		++it;
+	}
+	return (false);
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator<(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	return (!(lhs > rhs) && !(lhs == rhs));
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator>=(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	return (!(lhs < rhs));
+};
+template <class Key, class T, class Compare, class Alloc>
+bool operator<=(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs)
+{
+	return (!(lhs > rhs));
+};
 
 } //end ft
 

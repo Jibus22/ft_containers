@@ -3,14 +3,14 @@
 
 #include <iostream>
 #include <exception>
-#include "listIter.hpp"
-#include "reverseIterator.hpp"
-#include "enable_if.hpp"
+#include "../iterators/listIter.hpp"
+#include "../iterators/reverseIterator.hpp"
+#include "../utils/enable_if.hpp"
 #include "ftnode.hpp"
-#include "ftequal.hpp"
-#include "ftlexicographical_compare.hpp"
-#include "iterator_traits.hpp"
-#include "is_integral.hpp"
+#include "../utils/ftequal.hpp"
+#include "../utils/ftlexicographical_compare.hpp"
+#include "../utils/iterator_traits.hpp"
+#include "../utils/is_integral.hpp"
 
 #ifndef __APPLE__
 # define __APPLE__ 0
@@ -33,8 +33,8 @@ public:
 
     typedef ft::listIter<value_type>					iterator;
     typedef ft::clistIter<value_type>					const_iterator;
-    typedef ft::reverseIterator<iterator>				reverse_iterator;
-    typedef ft::reverseIterator<const_iterator>			const_reverse_iterator;
+    typedef ft::reverse_iterator<iterator>				reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 protected:
 	typedef ft::node<value_type>						node;
@@ -91,13 +91,13 @@ public:
 	const_iterator		end() const {return const_iterator(_head);};
 
 	reverse_iterator		rbegin()
-							{return reverse_iterator(_head->next);};
+							{return reverse_iterator(end());};
 	const_reverse_iterator	rbegin() const
-							{return const_reverse_iterator(_head->next);};
+							{return const_reverse_iterator(end());};
 	reverse_iterator		rend()
-							{return reverse_iterator(_head);};
+							{return reverse_iterator(begin());};
 	const_reverse_iterator	rend() const
-							{return const_reverse_iterator(_head);};
+							{return const_reverse_iterator(begin());};
 
 	//___________Capacity_____________________________________________________//
 	bool				empty() const {return (!(_size));};
@@ -177,8 +177,9 @@ public:
 			insert(position, val);
 	};
 	template <typename InputIterator>
-	void				insert(iterator position, InputIterator first,
-						InputIterator last)
+	void				insert(iterator position, typename
+			ft::enable_if<!ft::is_integral<InputIterator>::value,
+			InputIterator>::type first, InputIterator last)
 	{
 		while (first != last)
 			insert(position, *first++);
@@ -439,13 +440,12 @@ bool	operator>(const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 
 template <class T, class Alloc>
 bool	operator>=(const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
-{return !(rhs < lhs);};
+{return !(lhs < rhs);};
 
 
 //___________Swap Overload________________________________________________//
-template <template <typename, typename> class Container,
-		class T, class Alloc>
-void	swap(Container<T,Alloc>& x, Container<T,Alloc>& y) {x.swap(y);};
+template <class T, class Alloc>
+void	swap(ft::list<T,Alloc>& x, ft::list<T,Alloc>& y) {x.swap(y);};
 
 } //end ft
 

@@ -1,7 +1,7 @@
 #ifndef VECITER_HPP
 # define VECITER_HPP
 
-#include "iterator_traits.hpp"
+#include "../utils/iterator_traits.hpp"
 
 namespace ft {
 
@@ -42,17 +42,30 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
+	bool					operator==(const vecIter<T> & rhs) const
 							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
+	bool					operator!=(const vecIter<T> & rhs) const
 							{return (_ptr != rhs._ptr);};
-	bool					operator<(const iterator & rhs) const
+	bool					operator<(const vecIter<T> & rhs) const
 							{return (_ptr < rhs._ptr);};
-	bool					operator>(const iterator & rhs) const
+	bool					operator>(const vecIter<T> & rhs) const
 							{return (_ptr > rhs._ptr);};
-	bool					operator<=(const iterator & rhs) const
+	bool					operator<=(const vecIter<T> & rhs) const
 							{return (_ptr <= rhs._ptr);};
-	bool					operator>=(const iterator & rhs) const
+	bool					operator>=(const vecIter<T> & rhs) const
+							{return (_ptr >= rhs._ptr);};
+
+	bool					operator==(const cvecIter<T> & rhs) const
+							{return (_ptr == rhs._ptr);};
+	bool					operator!=(const cvecIter<T> & rhs) const
+							{return (_ptr != rhs._ptr);};
+	bool					operator<(const cvecIter<T> & rhs) const
+							{return (_ptr < rhs._ptr);};
+	bool					operator>(const cvecIter<T> & rhs) const
+							{return (_ptr > rhs._ptr);};
+	bool					operator<=(const cvecIter<T> & rhs) const
+							{return (_ptr <= rhs._ptr);};
+	bool					operator>=(const cvecIter<T> & rhs) const
 							{return (_ptr >= rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
@@ -90,9 +103,14 @@ public:
 	//___________Arithmetic Operations________________________________________//
 	iterator				operator+(const difference_type n) const
 							{return (iterator(_ptr + n));};
+	friend iterator			operator+(difference_type n, const iterator &rhs)
+							{return rhs.operator+(n);};
+
 	iterator				operator-(const difference_type n) const
 							{return (iterator(_ptr - n));};
-	difference_type			operator-(const iterator rhs) const
+	difference_type			operator-(const vecIter<T> rhs) const
+							{return (_ptr - rhs._ptr);};
+	difference_type			operator-(const cvecIter<T> rhs) const
 							{return (_ptr - rhs._ptr);};
 
 	//___________Assignment Operations________________________________________//
@@ -111,11 +129,12 @@ public:
 template <typename T>
 class cvecIter
 {
+	friend class vecIter<T>;
 public:
 	//___________MEMBER TYPES_________________________________________________//
 	typedef T								value_type;
-    typedef T*								pointer;
-	typedef T&								reference;
+    typedef const T*						pointer;
+	typedef const T&						reference;
 	typedef ptrdiff_t						difference_type;
 	typedef ft::random_access_iterator_tag	iterator_category;
 
@@ -148,17 +167,30 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
+	bool					operator==(const cvecIter<T> & rhs) const
 							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
+	bool					operator!=(const cvecIter<T> & rhs) const
 							{return (_ptr != rhs._ptr);};
-	bool					operator<(const iterator & rhs) const
+	bool					operator<(const cvecIter<T> & rhs) const
 							{return (_ptr < rhs._ptr);};
-	bool					operator>(const iterator & rhs) const
+	bool					operator>(const cvecIter<T> & rhs) const
 							{return (_ptr > rhs._ptr);};
-	bool					operator<=(const iterator & rhs) const
+	bool					operator<=(const cvecIter<T> & rhs) const
 							{return (_ptr <= rhs._ptr);};
-	bool					operator>=(const iterator & rhs) const
+	bool					operator>=(const cvecIter<T> & rhs) const
+							{return (_ptr >= rhs._ptr);};
+
+	bool					operator==(const vecIter<T> & rhs) const
+							{return (_ptr == rhs._ptr);};
+	bool					operator!=(const vecIter<T> & rhs) const
+							{return (_ptr != rhs._ptr);};
+	bool					operator<(const vecIter<T> & rhs) const
+							{return (_ptr < rhs._ptr);};
+	bool					operator>(const vecIter<T> & rhs) const
+							{return (_ptr > rhs._ptr);};
+	bool					operator<=(const vecIter<T> & rhs) const
+							{return (_ptr <= rhs._ptr);};
+	bool					operator>=(const vecIter<T> & rhs) const
 							{return (_ptr >= rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
@@ -196,9 +228,13 @@ public:
 	//___________Arithmetic Operations________________________________________//
 	iterator				operator+(const difference_type n) const
 							{return (iterator(_ptr + n));};
+	friend iterator			operator+(difference_type n, const iterator &rhs)
+							{return rhs.operator+(n);};
 	iterator				operator-(const difference_type n) const
 							{return (iterator(_ptr - n));};
-	difference_type			operator-(const iterator rhs) const
+	difference_type			operator-(const vecIter<T> rhs) const
+							{return (_ptr - rhs._ptr);};
+	difference_type			operator-(const cvecIter<T> rhs) const
 							{return (_ptr - rhs._ptr);};
 
 	//___________Assignment Operations________________________________________//

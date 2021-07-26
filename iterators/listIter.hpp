@@ -1,8 +1,8 @@
 #ifndef LISTITER_HPP
 # define LISTITER_HPP
 
-#include "ftnode.hpp"
-#include "iterator_traits.hpp"
+#include "../list/ftnode.hpp"
+#include "../utils/iterator_traits.hpp"
 
 namespace ft {
 
@@ -45,9 +45,14 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
+	bool					operator==(const clistIter<T> & rhs) const
 							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
+	bool					operator!=(const clistIter<T> & rhs) const
+							{return (_ptr != rhs._ptr);};
+
+	bool					operator==(const listIter<T> & rhs) const
+							{return (_ptr == rhs._ptr);};
+	bool					operator!=(const listIter<T> & rhs) const
 							{return (_ptr != rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
@@ -86,11 +91,12 @@ public:
 template <typename T>
 class clistIter
 {
+	friend class listIter<T>;
 public:
 	//___________MEMBER TYPES_________________________________________________//
 	typedef T								value_type;
-    typedef T*								pointer;
-	typedef T&								reference;
+    typedef const T*						pointer;
+	typedef const T&						reference;
 	typedef ptrdiff_t						difference_type;
 	typedef ft::bidirectional_iterator_tag	iterator_category;
 
@@ -124,9 +130,14 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
+	bool					operator==(const clistIter<T> & rhs) const
 							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
+	bool					operator!=(const clistIter<T> & rhs) const
+							{return (_ptr != rhs._ptr);};
+
+	bool					operator==(const listIter<T> & rhs) const
+							{return (_ptr == rhs._ptr);};
+	bool					operator!=(const listIter<T> & rhs) const
 							{return (_ptr != rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//

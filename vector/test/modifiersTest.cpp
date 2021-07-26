@@ -1,6 +1,32 @@
 #include "vector.hpp"
 #include "resources.hpp"
 #include <vector>
+#include <list>
+#include "../../list/list.hpp"
+
+#define TESTED_TYPE int
+
+template <typename Container, typename Lst>
+void		assign2(Container vec)
+{
+	Lst lst;
+	typename Lst::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+
+	Container vct(lst.begin(), lst.end());
+	_PRINT_VEC_(vct);
+
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+		*lst_it++ = i * 5;
+	vct.assign(lst.begin(), lst.end());
+	_PRINT_VEC_(vct);
+
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	_PRINT_VEC_(vct);
+	(void)vec;
+}
 
 ///////ASSIGN
 template <template <typename, typename> class Container,
@@ -306,6 +332,10 @@ void	modifiersTest()
 	_FT_TITLE_("(int)"); assignTest(ftvec);
 	_STD_TITLE_("(str)"); assignTest(stdvec2);
 	_FT_TITLE_("(str)"); assignTest(ftvec2);
+
+	_SSTITLE_("'ASSIGN2' TEST");
+	_STD_TITLE_("(int)"); assign2<std::vector<int>, std::list<int> >(stdvec);
+	_FT_TITLE_("(int)"); assign2<ft::vector<int>, ft::list<int> >(ftvec);
 
 	_SSTITLE_("'PUSH_BACK' TEST");
 	_STD_TITLE_("(int)"); pushbackTest(stdvec);
