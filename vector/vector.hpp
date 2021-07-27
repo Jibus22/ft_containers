@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <cstddef>
 #include "../iterators/vecIter.hpp"
 #include "../iterators/reverseIterator.hpp"
 #include "../utils/enable_if.hpp"
@@ -49,21 +50,21 @@ public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	explicit vector(const allocator_type& alloc = allocator_type()):
-		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+		_array(NULL), _capacity(0), _size(0), _allocator(alloc)
 	{};
 
 	explicit vector(size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type()) :
-		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+		_array(NULL), _capacity(0), _size(0), _allocator(alloc)
 	{assign(n, val);};
 
 	template <class InputIterator>
     vector(InputIterator first, InputIterator last,
 			const allocator_type& alloc = allocator_type()) :
-		_array(nullptr), _capacity(0), _size(0), _allocator(alloc)
+		_array(NULL), _capacity(0), _size(0), _allocator(alloc)
 	{assign(first, last);};
 
-	vector(const vector& src) : _array(nullptr), _capacity(0), _size(0),
+	vector(const vector& src) : _array(NULL), _capacity(0), _size(0),
 	_allocator(src._allocator)
 	{*this = src;};
 

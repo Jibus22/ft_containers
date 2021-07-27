@@ -34,7 +34,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	mapIter() : _ptr(nullptr) {};
+	mapIter() : _ptr(NULL) {};
 	mapIter(const mapIter & src) : _ptr(src._ptr) {};
 	mapIter(node *ptr) : _ptr(ptr) {};
 
@@ -134,7 +134,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	cmapIter() : _ptr(nullptr) {};
+	cmapIter() : _ptr(NULL) {};
 	cmapIter(const cmapIter & src) : _ptr(src._ptr) {};
 	cmapIter(const mapIter<value_type, key_compare, node_allocator> & src):
 		_ptr(src._ptr) {};

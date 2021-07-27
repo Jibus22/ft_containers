@@ -1,6 +1,7 @@
 #ifndef QUEUE_HPP
 # define QUEUE_HPP
 
+#include <cstddef>
 #include "../list/list.hpp"
 
 #ifndef __APPLE__

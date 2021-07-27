@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <exception>
+#include <cstddef>
 #include "../iterators/listIter.hpp"
 #include "../iterators/reverseIterator.hpp"
 #include "../utils/enable_if.hpp"

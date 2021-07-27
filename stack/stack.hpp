@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 # define STACK_HPP
 
+#include <cstddef>
 #include "../vector/vector.hpp"
 
 #ifndef __APPLE__

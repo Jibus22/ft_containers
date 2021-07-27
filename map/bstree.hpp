@@ -17,10 +17,10 @@ struct bstNode
 	value_type	val;
 
 	bstNode(const value_type& v = value_type()):
-		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(v)
+		lft(NULL), rgt(NULL), prt(NULL), head(NULL), val(v)
 	{};
 	bstNode(const bstNode& src) :
-		lft(nullptr), rgt(nullptr), prt(nullptr), head(nullptr), val(src.val)
+		lft(NULL), rgt(NULL), prt(NULL), head(NULL), val(src.val)
 	{};
 	bstNode&	operator=(const bstNode& rhs) {
 		if (this == &rhs)
@@ -87,7 +87,7 @@ struct bstree
 				p->rgt->head = p->head;
 				p->rgt->head->rgt = p->rgt;
 				if (p->head->lft != p )
-					p->head = nullptr;
+					p->head = NULL;
 			}
 			return p->rgt;
 		}
@@ -100,7 +100,7 @@ struct bstree
 				p->lft->head = p->head;
 				p->lft->head->lft = p->lft;
 				if (p->head->rgt != p )
-					p->head = nullptr;
+					p->head = NULL;
 			}
 			return p->lft;
 		}
@@ -117,7 +117,7 @@ struct bstree
 		if (_comp(p->val.first, succ->val.first))
 			return succ;
 		else
-			return nullptr;
+			return NULL;
 	};
 
 	pointer	predecessor(const pointer p) const
@@ -131,7 +131,7 @@ struct bstree
 		if (_comp(succ->val.first, p->val.first))
 			return succ;
 		else
-			return nullptr;
+			return NULL;
 	};
 
 	pointer	getMin(pointer p) const
@@ -172,7 +172,7 @@ struct bstree
 			else
 				return p;
 		}
-		return p;//Here it must be nullptr in any case
+		return p;//Here it must be NULL in any case
 	};
 
 	int	delNode(const pointer p, const key_type& key, pointer *p2) const
@@ -215,7 +215,7 @@ struct bstree
 		else if (tosend->rgt)
 			*relay = tosend->rgt;
 		else
-			*relay = nullptr;
+			*relay = NULL;
 		if (*relay && tosend->prt != todel)//if succ don't take place of parent
 			(*relay)->prt = tosend->prt;//child of succ take parent succ as prt
 		if (tosend == todel && tosend->head)//if this is leaf node & min/max node

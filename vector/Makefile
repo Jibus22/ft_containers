@@ -26,7 +26,7 @@ INC = $(addprefix -I , $(PATH_INCLUDE) $(PATH_INCLUDE2) $(PATH_INCLUDE3)\
 ##### COMPILER #####
 CXX = clang++
 ##### COMPILATION FLAG #####
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 ##### OSTYPE #####
 UNAME := $(shell uname)

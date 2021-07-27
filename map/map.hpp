@@ -2,6 +2,7 @@
 # define MAP_HPP
 
 #include <iostream>
+#include <cstddef>
 #include "../iterators/mapIter.hpp"
 #include "../iterators/reverseIterator.hpp"
 #include "../utils/enable_if.hpp"
@@ -82,7 +83,7 @@ public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
 	explicit map(const key_compare& comp = key_compare(),
-			const allocator_type& alloc = allocator_type()): _root(nullptr),
+			const allocator_type& alloc = allocator_type()): _root(NULL),
 	_head(newNd(node())), _size(0), _comp(comp), _allocator(alloc)
 	{
 		initMe();
@@ -91,14 +92,14 @@ public:
 	template <class InputIterator>
 	map(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()): _root(nullptr),
+				const allocator_type& alloc = allocator_type()): _root(NULL),
 	_head(newNd(node())), _size(0), _comp(comp), _allocator(alloc)
 	{
 		initMe();
 		insert(first, last);
 	};
 
-	map(const map& x): _root(nullptr), _head(newNd(node())), _size(0),
+	map(const map& x): _root(NULL), _head(newNd(node())), _size(0),
 	_comp(x._comp), _allocator(x._allocator)
 	{
 		initMe();
@@ -393,7 +394,7 @@ public:
 	private:
 	ptr				copy() const
 	{
-		ptr		newNode = nullptr;
+		ptr		newNode = NULL;
 
 		_tree.preOrderCpy(_root, &newNode);
 		return newNode;
@@ -401,7 +402,7 @@ public:
 
 	void			initMe()
 	{
-		_root = nullptr;
+		_root = NULL;
 		_head->lft = _head;
 		_head->rgt = _head;
 		_head->head = _head;

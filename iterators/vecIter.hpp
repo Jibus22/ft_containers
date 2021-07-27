@@ -1,6 +1,7 @@
 #ifndef VECITER_HPP
 # define VECITER_HPP
 
+#include <cstddef>
 #include "../utils/iterator_traits.hpp"
 
 namespace ft {
@@ -26,7 +27,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	vecIter() : _ptr(nullptr) {};
+	vecIter() : _ptr(NULL) {};
 	vecIter(const vecIter& src) : _ptr(src._ptr) {};
 	vecIter(pointer ptr) : _ptr(ptr) {};
 
@@ -145,7 +146,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	cvecIter() : _ptr(nullptr) {};
+	cvecIter() : _ptr(NULL) {};
 	cvecIter(const cvecIter& src) : _ptr(src._ptr) {};
 	cvecIter(const vecIter<value_type>& src) : _ptr(src._ptr) {};
 	cvecIter(pointer ptr) : _ptr(ptr) {};

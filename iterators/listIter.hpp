@@ -1,6 +1,7 @@
 #ifndef LISTITER_HPP
 # define LISTITER_HPP
 
+#include <cstddef>
 #include "../list/ftnode.hpp"
 #include "../utils/iterator_traits.hpp"
 
@@ -29,7 +30,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	listIter() : _ptr(nullptr) {};
+	listIter() : _ptr(NULL) {};
 	listIter(listIter const & src) : _ptr(src._ptr) {};
 	listIter(node *ptr) : _ptr(ptr) {};
 
@@ -108,7 +109,7 @@ private:
 public:
 	//___________MEMBER FUNCTIONS_____________________________________________//
 	//___________Constructors_________________________________________________//
-	clistIter() : _ptr(nullptr) {};
+	clistIter() : _ptr(NULL) {};
 	clistIter(clistIter const & src) : _ptr(src._ptr) {};
 	clistIter(listIter<value_type> const & src) : _ptr(src._ptr) {};
 	clistIter(node *ptr) : _ptr(ptr) {};
