@@ -104,10 +104,17 @@ public:
 	size_type			max_size() const {return _allocator.max_size();};
 	void				resize(size_type n, value_type val = value_type())
 	{
+		size_type const	&headroom = (__APPLE__ ? _capacity : _size);
+
 		for (size_type s = _size; s > n; s--)
 			pop_back();
-		if (n > 2 * _capacity)
-			reserve(n);
+		if (n > _capacity)
+		{
+			if (n <= headroom * 2)
+				this->reserve(headroom * 2);
+			else
+				this->reserve(n);
+		}
 		for (size_type s = _size; s < n; s++)
 			push_back(val);
 	};
@@ -232,10 +239,10 @@ public:
 
 		if (diff < 0 || n == 0)
 			return ;
-		if (i > 2 * _capacity)
-			reserve(i);
-		else if (i > _capacity)
-			reserve(_capacity > 0 ? _capacity * 2 : 1);
+		if (__APPLE__ && i > _capacity)
+			reserve(i > 2 * _capacity ? i : _capacity * 2);
+		else if (!__APPLE__ && i > _capacity)
+			reserve(i > 2 * _size ? i : _size * 2);
 		while (diff-- > 0)
 		{
 			_allocator.construct(_array + --i, _array[--j]);
@@ -263,10 +270,10 @@ public:
 		if (diff < 0 || len == 0)
 			return ;
 		i = _size + len;
-		if (i > 2 * _capacity)
-			reserve(i);
-		else if (i > _capacity)
-			reserve(_capacity > 0 ? _capacity * 2 : 1);
+		if (__APPLE__ && i > _capacity)
+			reserve(i > 2 * _capacity ? i : _capacity * 2);
+		else if (!__APPLE__ && i > _capacity)
+			reserve(i > 2 * _size ? i : _size * 2);
 		while (diff-- > 0)
 		{
 			_allocator.construct(_array + --i, _array[--j]);
