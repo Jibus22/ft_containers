@@ -1,16 +1,20 @@
 # Description
 
 Implementation of STL containers: vector, list, map, stack, queue & iterators_traits, reverse_iterator, enable_if, is_integral, equal/lexicographical compare, std::pair, std::make_pair.
+
 All memory allocation & deallocation, as well as construction & destruction, is made with the help of std::allocator.
+
 iterator_traits are used with reverse_iterator & with distance method helper in ft::vector to optimize the distance algorithm (with help of iterator tags), as some member function use template iterator instead of internal ones.
 
 ft::list is implemented with a doubly circular linked list.
+
 ft::map is implemented with a non-balanced circular BST.
 
 This project makes us explore the notions of templates & metaprogramming.
 
 ---
 Results from this nice tester: - https://github.com/mli42/containers_test
+
 osx:
 ![illustration](.ftc_osx.jpg)
 ubuntu:
