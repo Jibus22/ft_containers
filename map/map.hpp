@@ -238,7 +238,7 @@ public:
 		for (InputIterator i = first; i != last; i++)
 			insert(*i);
 	};
-	iterator		erase(iterator position)
+	void				erase(iterator position)
 	{
 		iterator	it(position);
 
@@ -246,9 +246,8 @@ public:
 		if (!_tree.delNode(position.getNode(), position->first, &_root))
 			if (!--_size)
 				initMe();
-		return it;
 	};
-	size_type		erase(const key_type& k)
+	size_type			erase(const key_type& k)
 	{
 		if (_tree.delNode(_root, k, &_root))
 			return 0;
@@ -256,7 +255,7 @@ public:
 			initMe();
 		return 1;
 	};
-	iterator		erase(iterator first, iterator last)
+	void				erase(iterator first, iterator last)
 	{
 		iterator	i(first);
 
@@ -265,7 +264,6 @@ public:
 			erase(i);
 			i = first;
 		}
-		return last;
 	};
 	void				swap(map& x)
 	{

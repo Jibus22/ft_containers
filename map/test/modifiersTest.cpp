@@ -113,7 +113,7 @@ MAP1 into MAP2", ENDL);
 template <typename Container>
 void	eraseTest(Container mapp)
 {
-	typename Container::iterator	it, it2, itret;
+	typename Container::iterator	it, it2;
 	typename Container::size_type	ret;
 
 	fillmap(mapp, 1);
@@ -122,16 +122,14 @@ void	eraseTest(Container mapp)
 	_PRINT_MAP_CONTENT_(mapp);
 	_THISTESTIS_("", ENDL);
 	_THISTESTIS_("erase begin: ", ENDL);
-	it = mapp.erase(mapp.begin());
+	mapp.erase(mapp.begin());
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
-	_THISTESTIS_("return:", NOENDL);
-	_DISPLAY_MAP_NODE_(it);
 
 	_THISTESTIS_("erase end-1: ", ENDL);
 	it2 = mapp.end();
 	it2--;
-	it = mapp.erase(it2);
+	mapp.erase(it2);
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
 
@@ -154,14 +152,12 @@ void	eraseTest(Container mapp)
 	it = mapp.begin();
 	it2 = mapp.end();
 	for (int i = 0; i < 3; i++, ++it, --it2);
-	itret = mapp.erase(it, it2);
+	mapp.erase(it, it2);
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
-	_THISTESTIS_("return:", NOENDL);
-	_DISPLAY_MAP_NODE_(itret);
 
 	_THISTESTIS_("test of erase(it first, it last). begin to end: ", ENDL);
-	itret = mapp.erase(mapp.begin(), mapp.end());
+	mapp.erase(mapp.begin(), mapp.end());
 	_THISTESTIS_("after: ", ENDL);
 	_PRINT_MAP_CONTENT_(mapp);
 }
