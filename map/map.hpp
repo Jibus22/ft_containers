@@ -204,7 +204,9 @@ public:
 		ptr			p = position.getNode();
 		ptr			p2;
 
-		if (++i == end())
+		if (i == end())
+			return (insert(val)).first;
+		else if (++i == end())
 		{
 			if (_comp((*position).first, val.first))
 			{
@@ -266,13 +268,16 @@ public:
 	};
 	void				swap(map& x)
 	{
-		ptr			tmp = _root;
-		size_type	tmpsize = _size;
+		ptr			tmp_root = _root;
+		ptr			tmp_head = _head;
+		size_type	tmp_size = _size;
 
 		_root = x._root;
+		_head = x._head;
 		_size = x._size;
-		x._root = tmp;
-		x._size = tmpsize;
+		x._root = tmp_root;
+		x._head = tmp_head;
+		x._size = tmp_size;
 	};
 	void				clear()
 	{
@@ -439,69 +444,45 @@ public:
 	};
 }; //end class map
 
-template <class Key, class T, class Compare, class Alloc>
-void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y)
-{
-	x.swap(y);
-};
+
+//___________Relational operators_________________________________________//
 template <class Key, class T, class Compare, class Alloc>
 bool operator==(const map<Key, T, Compare, Alloc> &lhs,
 		const map<Key, T, Compare, Alloc> &rhs)
 {
-	if (lhs.size() != rhs.size())
-		return (false);
-	typename ft::map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
-	typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
-	while (it != lhs.end() && it2 != rhs.end())
-	{
-		if (it->first != it2->first || it->second != it2->second)
-			return (false);
-		--it;
-		--it2;
-	}
-	return (true);
+	return (lhs.size() == rhs.size()
+		&& ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 };
+
 template <class Key, class T, class Compare, class Alloc>
 bool operator!=(const map<Key, T, Compare, Alloc> &lhs,
-		const map<Key, T, Compare, Alloc> &rhs)
-{
-	return (!(lhs == rhs));
-};
-template <class Key, class T, class Compare, class Alloc>
-bool operator>(const map<Key, T, Compare, Alloc> &lhs,
-		const map<Key, T, Compare, Alloc> &rhs)
-{
-	if (lhs.size() > rhs.size())
-		return (true);
-	typename ft::map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
-	typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
-	while (it != lhs.end() && it2 != rhs.end())
-	{
-		if (*it > *it2)
-			return (true);
-		++it2;
-		++it;
-	}
-	return (false);
-};
+		const map<Key, T, Compare, Alloc> &rhs) {return (!(lhs == rhs));};
+
 template <class Key, class T, class Compare, class Alloc>
 bool operator<(const map<Key, T, Compare, Alloc> &lhs,
 		const map<Key, T, Compare, Alloc> &rhs)
 {
-	return (!(lhs > rhs) && !(lhs == rhs));
+	return ft::lexicographical_compare(lhs.begin(),
+				lhs.end(), rhs.begin(), rhs.end());
 };
+
+template <class Key, class T, class Compare, class Alloc>
+bool operator>(const map<Key, T, Compare, Alloc> &lhs,
+		const map<Key, T, Compare, Alloc> &rhs) {return rhs < lhs;};
+
 template <class Key, class T, class Compare, class Alloc>
 bool operator>=(const map<Key, T, Compare, Alloc> &lhs,
-		const map<Key, T, Compare, Alloc> &rhs)
-{
-	return (!(lhs < rhs));
-};
+		const map<Key, T, Compare, Alloc> &rhs) {return (!(lhs < rhs));};
+
 template <class Key, class T, class Compare, class Alloc>
 bool operator<=(const map<Key, T, Compare, Alloc> &lhs,
-		const map<Key, T, Compare, Alloc> &rhs)
-{
-	return (!(lhs > rhs));
-};
+		const map<Key, T, Compare, Alloc> &rhs) {return (!(rhs < lhs));};
+
+
+//___________Swap Overload________________________________________________//
+template <class Key, class T, class Compare, class Alloc>
+void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y)
+{x.swap(y);};
 
 } //end ft
 

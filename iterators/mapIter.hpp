@@ -50,10 +50,15 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
-							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
-							{return (_ptr != rhs._ptr);};
+	bool			operator==(const cmapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr == rhs._ptr);};
+	bool			operator!=(const cmapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr != rhs._ptr);};
+
+	bool			operator==(const mapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr == rhs._ptr);};
+	bool			operator!=(const mapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr != rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
 	reference				operator*() const {return _ptr->val;};
@@ -153,10 +158,15 @@ public:
 
 	//___________OPERATOR OVERLOADS___________________________________________//
 	//___________Comparisons__________________________________________________//
-	bool					operator==(const iterator & rhs) const
-							{return (_ptr == rhs._ptr);};
-	bool					operator!=(const iterator & rhs) const
-							{return (_ptr != rhs._ptr);};
+	bool			operator==(const cmapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr == rhs._ptr);};
+	bool			operator!=(const cmapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr != rhs._ptr);};
+
+	bool			operator==(const mapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr == rhs._ptr);};
+	bool			operator!=(const mapIter<T, Compare, Allocator>& rhs) const
+					{return (_ptr != rhs._ptr);};
 
 	//___________Dereferencement______________________________________________//
 	const value_type&		operator*() const {return _ptr->val;};
